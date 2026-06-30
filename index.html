@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aesthetic Minimal Signage</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=Noto+Sans+JP:wght@100;300;400;500;700&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+      overflow: hidden;
+      background-color: #f6f8fa;
+      color: #1e293b;
+    }
+    
+    .serif-letterpress {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+      letter-spacing: -0.04em;
+    }
+
+    .minimal-tech {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 0.2em;
+    }
+
+    /* シネマティックで静かなスライドトランジション */
+    .slide-transition {
+      opacity: 0;
+      transform: scale(0.99) translateY(4px);
+      transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide-transition.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* 究極の超薄クリスタルサテンガラス */
+    .satin-glass {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px rgba(255, 255, 255, 0.6) solid;
+      box-shadow: 
+        0 20px 60px rgba(15, 23, 42, 0.05), 
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    /* 静寂な淡いパステル流体背景 */
+    @keyframes slow-ambient {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(30px, -15px) scale(1.05); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .ambient-aurora {
+      animation: slow-ambient 35s infinite alternate ease-in-out;
+    }
+
+    /* プログレスバー */
+    .progress-bar-fill {
+      width: 0%;
+      transition: width linear;
+    }
+
+    /* 無限ティッカー */
+    @keyframes ticker {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+    .ticker-content {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ticker 60s linear infinite;
+    }
+  </style>
+</head>
+<body class="w-screen h-screen flex flex-col justify-between relative select-none p-6 md:p-10">
+
+  <!-- ==================== AMBIENT BACKGROUND ==================== -->
+  <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#f6f8fa]">
+    <!-- 淡く優しいパステル調のグラデーションオーブ -->
+    <div class="ambient-aurora absolute top-[-20%] left-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-blue-200/30 via-indigo-100/20 to-transparent rounded-full filter blur-[120px]"></div>
+    <div class="ambient-aurora absolute bottom-[-20%] right-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-pink-100/30 via-purple-100/20 to-transparent rounded-full filter blur-[120px]" style="animation-delay: -10s;"></div>
+  </div>
+
+  <!-- ==================== MINIMAL HEADER ==================== -->
+  <header class="w-full px-8 py-4 flex justify-between items-center z-10 satin-glass rounded-[20px] mb-6 shadow-sm">
+    <div class="flex items-center gap-3">
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-500/60 animate-pulse"></span>
+      <div class="flex flex-col">
+        <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">OHIRA CAMPUS</span>
+        <span class="text-xs font-light text-slate-600">SIGNAGE OS <span class="text-[9px] text-slate-400 ml-1">v4.5</span></span>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-8">
+      <!-- 大衡村の天気 -->
+      <div id="mini-weather" class="flex items-center gap-2 text-[11px] text-slate-500 font-light">
+        <span id="mini-weather-text" class="minimal-tech uppercase">OHIRA TELEMETRY</span>
+      </div>
+
+      <!-- 時計 -->
+      <div class="text-right border-l border-slate-200 pl-6 flex items-center gap-4">
+        <div>
+          <p id="header-date" class="text-[8px] text-slate-400 font-semibold uppercase tracking-widest minimal-tech"></p>
+          <p id="header-time" class="text-base font-light text-slate-700 minimal-tech tracking-wider"></p>
+        </div>
+      </div>
+
+      <!-- 管理ボタン (管理者モードの時のみ右上に固定表示されます) -->
+      <button id="admin-mode-indicator" onclick="openAdminPanelDirectly()" class="hidden p-2 bg-slate-900 text-white hover:bg-slate-800 rounded-xl transition-all text-xs font-bold minimal-tech shadow-md" title="手動管理を開く">
+        ADMIN PANEL
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== DISPLAY CANVAS ==================== -->
+  <main class="flex-grow w-full relative overflow-hidden z-10 flex items-center justify-center mb-6">
+    <!-- スライドコンテナ -->
+    <div id="slides-container" class="w-full h-full relative"></div>
+
+    <!-- 極細プログレスインジケーター (文字と絶対に被らないよう下端いっぱいに配置) -->
+    <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-black/[0.02] overflow-hidden z-20">
+      <div id="slide-progress" class="h-full bg-slate-400 progress-bar-fill"></div>
+    </div>
+  </main>
+
+  <!-- ==================== MARQUEE FOOTER ==================== -->
+  <footer class="w-full h-10 z-10 satin-glass rounded-[16px] overflow-hidden flex items-center px-6">
+    <div class="text-[9px] font-bold text-slate-400 tracking-widest uppercase shrink-0 mr-6 flex items-center minimal-tech">
+      宮城 大衡村 // OHIRA UPDATES
+    </div>
+    <!-- overflow-hidden を追加し、流れるテキストが「宮城 大衡村」の文字と絶対に重ならないように修正 -->
+    <div class="ticker-wrap flex-grow h-full flex items-center text-slate-600 font-light text-xs tracking-widest uppercase overflow-hidden">
+      <div id="ticker-content" class="ticker-content minimal-tech">
+        <!-- JSでニュースが挿入されます -->
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== CONTROL CENTER (ADMIN PANEL INTERFACE) ==================== -->
+  <div id="admin-panel" class="fixed inset-0 bg-white/95 backdrop-blur-3xl z-50 flex justify-end transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+    <div class="w-full max-w-2xl bg-[#fafafa] h-full shadow-2xl flex flex-col border-l border-slate-200">
+      <!-- ヘッダー -->
+      <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white/50">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-slate-100 rounded-full border border-slate-200">
+            <i data-lucide="sliders" class="w-4 h-4 text-slate-600"></i>
+          </div>
+          <div>
+            <h2 class="text-xs font-bold text-slate-800 tracking-widest uppercase minimal-tech">Signage Control Center</h2>
+            <p class="text-xs text-slate-400">大衡中学校デジタルサイネージ管理システム</p>
+          </div>
+        </div>
+        <button onclick="toggleAdminPanel()" class="p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-800 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- メイン設定画面 -->
+      <div class="flex-grow overflow-y-auto p-6 space-y-8">
+        <!-- 学校向け説明 -->
+        <div class="p-4 bg-slate-100 border border-slate-200 rounded-2xl">
+          <h4 class="text-xs font-bold text-slate-700 flex items-center gap-1.5 minimal-tech">
+            <i data-lucide="info" class="w-4 h-4 text-indigo-500"></i> Vercelリアルタイム同期対応
+          </h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+            現在、大衡中学校専用のクラウドデータベース(Firebase Firestore)に接続しています。手元のPCやスマホ(`?mode=admin`付き of URL)で編集した内容は、サイネージを映しているテレビやプロジェクター側に瞬時に自動適応されます。
+          </p>
+        </div>
+
+        <!-- AI API設定 -->
+        <section class="space-y-4">
+          <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2 minimal-tech">
+            <i data-lucide="sparkles" class="w-4 h-4 text-indigo-500"></i> Gemini AI 自動構築
+          </h3>
+          <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Gemini APIキーを設定すると、AIが自動で「今日のみんなを応援する英語の名言」や「理科・歴史の面白雑学」などを美しくデザインして生成するインテリジェントスライドが解放されます！
+            </p>
+            <div class="flex gap-2">
+              <input type="password" id="api-key-input" placeholder="AIキーを入力 (AIzaSy...)" class="flex-grow px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400 transition-all">
+              <button onclick="saveApiKey()" class="px-5 py-2 bg-slate-900 text-white hover:bg-slate-800 rounded-xl text-sm font-bold transition-colors">保存</button>
+            </div>
+            <div id="api-status" class="text-xs text-emerald-600 flex items-center gap-1.5 hidden">
+              <i data-lucide="check" class="w-4 h-4"></i> API稼働中
+            </div>
+          </div>
+        </section>
+
+        <!-- 表示設定 -->
+        <section class="space-y-4">
+          <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2 minimal-tech">
+            <i data-lucide="settings" class="w-4 h-4 text-slate-500"></i> スライドパラメータ
+          </h3>
+          <div class="grid grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <div>
+              <label class="block text-xs text-slate-500 mb-1.5 font-bold">標準表示秒数</label>
+              <input type="number" id="global-duration" value="8" min="3" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-500 mb-1.5 font-bold">トランジション</label>
+              <select id="global-transition" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none">
+                <option value="fade">なめらかシネマティックスライド</option>
+              </select>
+            </div>
+            <div class="col-span-2">
+              <label class="block text-xs text-slate-500 mb-1.5 font-bold">下部テロップメッセージ（「|」で複数を区切れます）</label>
+              <textarea id="global-ticker-text" rows="2" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none resize-none"></textarea>
+            </div>
+            <div class="col-span-2 flex justify-end">
+              <button onclick="saveGlobalSettings()" class="px-5 py-2 bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold rounded-xl transition-colors">設定を反映</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- スライド管理 -->
+        <section class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2 minimal-tech">
+              <i data-lucide="layers" class="w-4 h-4 text-slate-500"></i> スライドスタック
+            </h3>
+            <button onclick="openNewSlideModal()" class="flex items-center gap-1.5 text-xs bg-slate-900 text-white hover:bg-slate-800 px-4 py-2 rounded-xl transition-all font-bold shadow-md">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> スライド作成
+            </button>
+          </div>
+
+          <!-- リストコンテナ -->
+          <div id="admin-slides-list" class="space-y-3"></div>
+        </section>
+      </div>
+
+      <!-- パネルフッター -->
+      <div class="p-6 border-t border-slate-200 bg-slate-50 flex justify-between">
+        <button onclick="resetToDefaults()" class="px-4 py-2 border border-rose-200 text-rose-600 hover:bg-rose-50 rounded-xl text-xs font-semibold transition-colors">
+          初期リセット
+        </button>
+        <button onclick="toggleAdminPanel()" class="px-6 py-2 bg-slate-200 hover:bg-slate-350 text-slate-800 text-xs font-semibold rounded-xl transition-colors">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NEW SLIDE CREATOR MODAL ==================== -->
+  <div id="slide-creator-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[60] flex items-center justify-center p-4 hidden">
+    <div class="w-full max-w-lg bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+        <h3 class="text-xs font-bold text-slate-700 uppercase tracking-widest minimal-tech">New Slide Designer</h3>
+        <button onclick="closeNewSlideModal()" class="p-1 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 overflow-y-auto max-h-[60vh]">
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider minimal-tech">スライド機能</label>
+          <select id="new-slide-type" onchange="onSlideTypeChange()" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none">
+            <option value="clock">🕰️ デジタル時計 & お知らせボード</option>
+            <option value="schedule">📅 スケジュールタイムライン（今日の予定）</option>
+            <option value="image">🖼️ 写真ポスター (スマホの写真をアップロードできます！)</option>
+            <option value="weather">☀️ お天気ダッシュボード</option>
+            <option value="news">📰 クラス・校内トピックス連絡</option>
+            <option value="countdown">⏳ イベントカウントダウン</option>
+            <option value="ai-quote">🤖 AI自動: 今日みんなに贈るインスピレーション名言</option>
+            <option value="ai-news">🤖 AI自動: なぜなにサイエンス・社会クイズ</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider minimal-tech">見出し (スライドタイトル)</label>
+          <input type="text" id="new-slide-title" placeholder="（例）本日のスケジュール / 今日の流れ" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none">
+        </div>
+
+        <div id="dynamic-inputs" class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3"></div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider minimal-tech">表示秒数</label>
+            <input type="number" id="new-slide-duration" value="8" min="3" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider minimal-tech">文字の配置</label>
+            <select id="new-slide-align" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none">
+              <option value="center">中央</option>
+              <option value="left">左寄せ</option>
+              <option value="right">右寄せ</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-5 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+        <button onclick="closeNewSlideModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl text-sm font-bold transition-all">キャンセル</button>
+        <button onclick="addNewSlide()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold transition-all">スライドを追加</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ALERT COMPONENT ==================== -->
+  <div id="custom-alert" class="fixed top-8 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-slate-900 text-white rounded-full font-bold shadow-2xl flex items-center gap-2 transform -translate-y-24 transition-transform duration-300 pointer-events-none text-xs tracking-widest minimal-tech">
+    <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+    <span id="custom-alert-text">MESSAGE</span>
+  </div>
+
+  <!-- Firebase Scripts (Vercelでのリアルタイムクラウド同期用) -->
+  <script type="module">
+    // Firebase CDN Imports
+    // ( Firebaseのバージョンは11.6.1で正常に稼働することを確認済み )
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+    import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+    // --- FIREBASE & CLOUD STORAGE CONFIGURATION ---
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'miyagi-minimal-signage-v45';
+    
+    // 大衡中学校用に提供された本番のFirebase設定
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWN0wX9izOv5PqsRxMSC09lVSBGy_Oolk",
+      authDomain: "sei-ohira.firebaseapp.com",
+      projectId: "sei-ohira",
+      storageBucket: "sei-ohira.firebasestorage.app",
+      messagingSenderId: "615345211161",
+      appId: "1:615345211161:web:f0c919a26d56e7ff2fa788",
+      measurementId: "G-C3SYGNEN6C"
+    };
+
+    // Firebaseの初期化
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // グローバル状態
+    let slides = [];
+    let tickerText = "【大衡中学校・連絡】本日は美化委員による校内美化運動が実施されます。綺麗な学習環境を維持しましょう！ 🌿 | 【図書室】冬休み前の図書特別貸出（1人5冊まで）がスタート。お気に入りの1冊を探してみよう！ 📚";
+    let globalDuration = 8;
+    let globalTransition = 'fade';
+    let apiKey = localStorage.getItem(`${appId}-gemini-api-key`) || '';
+    let currentSlideIndex = 0;
+    let slideshowTimer = null;
+    let tempUploadedImageBase64 = "";
+    let isEditingMode = false;
+
+    // --- AUTHENTICATION BEFORE QUERIES (RULE 3) ---
+    const initAuth = async () => {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          try {
+            // 本番プロジェクトの構成と不一致の場合は匿名ログインにフォールバックする
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } catch (tokenErr) {
+            console.warn("Custom token failed (likely mismatched project ID). Falling back to anonymous auth:", tokenErr);
+            await signInAnonymously(auth);
+          }
+        } else {
+          await signInAnonymously(auth);
+        }
+      } catch (err) {
+        console.error("Firebase auth failed:", err);
+      }
+    };
+
+    // --- CLOUD REAL-TIME DATABASE SYNC ---
+    // Firestore Public Path Rules (RULE 1に適合)
+    const slidesDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'slides-list', 'default');
+    const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'default');
+
+    // データベースから設定を読み込み & リアルタイムバインド
+    const startRealtimeDatabaseSync = (user) => {
+      if (!user) return;
+
+      // 1. スライドリストのリアルタイム監視
+      onSnapshot(slidesDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          slides = docSnapshot.data().slides || [];
+        } else {
+          // ドキュメントが存在しない場合はデフォルト値を保存
+          slides = getInitialDefaultSlides();
+          setDoc(slidesDocRef, { slides });
+        }
+        renderSlideshow();
+        if (isEditingMode) renderAdminSlidesList();
+      }, (error) => {
+        console.error("Error fetching slides from Firestore:", error);
+      });
+
+      // 2. 基本設定（ティッカー文、スライド秒数）のリアルタイム監視
+      onSnapshot(settingsDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          tickerText = data.tickerText || tickerText;
+          globalDuration = data.globalDuration || globalDuration;
+        } else {
+          // デフォルトをサーバーに書き込み
+          setDoc(settingsDocRef, { tickerText, globalDuration });
+        }
+        applyTicker();
+        startSlideshowLoop();
+      }, (error) => {
+        console.error("Error fetching settings from Firestore:", error);
+      });
+    };
+
+    // 宮城県大衡村（大衡中学校）に最適化したデフォルトスライドデータ
+    function getInitialDefaultSlides() {
+      return [
+        {
+          id: "slide-1",
+          type: "clock",
+          title: "MORNING THOUGHT",
+          content: "「考えることをやめないこと」それが未来を創る第一歩。今日も新しい視点を見つけよう。",
+          duration: 8,
+          align: "center"
+        },
+        {
+          id: "slide-schedule",
+          type: "schedule",
+          title: "TODAY'S TIMELINE",
+          content: "08:30 | 朝礼・連絡事項\n08:45 | 1限目：大衡学サイエンス\n10:40 | 2限目：野外自然フィールドワーク\n12:15 | ランチタイム & 万葉読書\n13:30 | 共同創作プログラミング\n15:00 | 片付け & 部活動開始",
+          duration: 10,
+          align: "left"
+        },
+        {
+          id: "slide-2",
+          type: "image",
+          title: "DISCOVER PORTALS",
+          content: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop",
+          subtext: "図書室には、あなたの常識を覆す物語がひっそりと眠っています。休み時間にゲートを開けてみましょう。",
+          duration: 10,
+          align: "left"
+        },
+        {
+          id: "slide-3",
+          type: "weather",
+          title: "OHIRA FORECAST",
+          city: "Ohira", // 大衡村
+          duration: 8,
+          align: "center"
+        },
+        {
+          id: "slide-4",
+          type: "countdown",
+          title: "CREATIVE FESTIVAL",
+          content: "2026-10-15 09:00",
+          subtext: "限界なんてない。みんなで極上のアートと体験を創造しよう。",
+          duration: 8,
+          align: "center"
+        }
+      ];
+    }
+
+    // --- LIFE CYCLE BOOT ---
+    window.addEventListener('DOMContentLoaded', async () => {
+      lucide.createIcons();
+      initTime();
+      initWeatherMini();
+
+      // 管理者パラメータのURL判定
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('mode') === 'admin') {
+        isEditingMode = true;
+        const adminIndicator = document.getElementById('admin-mode-indicator');
+        if (adminIndicator) adminIndicator.classList.remove('hidden');
+      }
+
+      // 認証の初期化をしてからデータベースとの同期を開始
+      await initAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          startRealtimeDatabaseSync(user);
+        }
+      });
+    });
+
+    // --- SYSTEM CLOCK ---
+    function initTime() {
+      function updateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const date = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        const days = ['日', '月', '火', '水', '木', '金', '土'];
+        const day = days[now.getDay()];
+
+        const dateStr = `${year}.${month}.${date} [${day}]`;
+        const timeStr = `${hours}:${minutes}:${seconds}`;
+
+        const headerDate = document.getElementById('header-date');
+        const headerTime = document.getElementById('header-time');
+        if (headerDate) headerDate.innerText = dateStr;
+        if (headerTime) headerTime.innerText = timeStr;
+
+        // スライド内の時計更新
+        const slideClock = document.getElementById('slide-clock-time');
+        const slideDate = document.getElementById('slide-clock-date');
+        if (slideClock) slideClock.innerText = `${hours}:${minutes}`;
+        if (slideDate) slideDate.innerText = `${year} / ${month} / ${date} [${day.toUpperCase()}]`;
+      }
+      updateTime();
+      setInterval(updateTime, 1000);
+    }
+
+    // --- WEATHER SYSTEM (MIYAGI / OHIRA OPTIMIZED) ---
+    async function initWeatherMini() {
+      const weatherTextEl = document.getElementById('mini-weather-text');
+      if (!weatherTextEl) return;
+      try {
+        // 宮城県大衡村の座標（北緯38.47度、東経140.88度）
+        let lat = 38.47;
+        let lon = 140.88;
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=Asia%2FTokyo`);
+        const data = await res.json();
+        
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          const weatherMap = {
+            0: "晴天 CLEAR", 1: "晴天 CLEAR", 2: "薄曇 CLOUDY", 3: "曇天 CLOUDY",
+            45: "霧 FOG", 48: "霧 FOG", 51: "小雨 DRIZZLE", 53: "小雨 DRIZZLE", 55: "小雨",
+            61: "雨 RAIN", 63: "本降りの雨 RAIN", 65: "大雨 HEAVY RAIN", 71: "小雪 SNOW", 73: "降雪 SNOW", 75: "大雪 SNOW",
+            95: "雷雨 THUNDER"
+          };
+          const weatherDesc = weatherMap[code] || "CLEAR";
+          weatherTextEl.innerText = `宮城 大衡村 // ${temp}℃ ${weatherDesc}`;
+        }
+      } catch (e) {
+        weatherTextEl.innerText = "ONLINE";
+      }
+    }
+
+    // --- SLIDES RENDERER ---
+    window.renderSlideshow = function() {
+      const container = document.getElementById('slides-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (slides.length === 0) {
+        container.innerHTML = `
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 satin-glass rounded-[24px]">
+            <i data-lucide="info" class="w-12 h-12 text-slate-400 mb-4 animate-pulse"></i>
+            <h3 class="text-sm font-bold text-slate-800 tracking-widest minimal-tech mb-2">SLIDES READY</h3>
+            <p class="text-slate-500 text-xs max-w-xs">データベースからスライド情報をロードしています...</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      slides.forEach((slide, idx) => {
+        const slideEl = document.createElement('div');
+        slideEl.id = `slide-item-${idx}`;
+        // 下部にプログレスバー用の余白（pb-16）をしっかり取ります
+        slideEl.className = `slide-transition absolute inset-0 w-full h-full pt-10 pb-16 px-10 md:px-12 flex flex-col justify-between rounded-[24px] satin-glass pointer-events-none`;
+
+        let alignClass = 'items-center text-center';
+        if (slide.align === 'left') alignClass = 'items-start text-left';
+        if (slide.align === 'right') alignClass = 'items-end text-right';
+
+        let innerHTML = '';
+
+        switch (slide.type) {
+          case 'clock':
+            innerHTML = `
+              <div class="w-full flex justify-between items-start opacity-60 z-10">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">PORTAL INFOMETRY</span>
+                <i data-lucide="clock" class="w-4 h-4 text-slate-500"></i>
+              </div>
+              <div class="my-auto w-full flex flex-col ${alignClass} space-y-4 md:space-y-6 z-10 text-slate-800">
+                <div id="slide-clock-date" class="text-xs font-bold text-slate-400 tracking-[0.4em] uppercase minimal-tech">----.--.-- [---]</div>
+                <div id="slide-clock-time" class="text-9xl md:text-[11.5rem] font-extrabold text-slate-800 tracking-tighter leading-none serif-letterpress select-none drop-shadow-[0_10px_40px_rgba(0,0,0,0.03)]">00:00</div>
+                <div class="max-w-2xl bg-white/20 border border-white/40 rounded-2xl px-6 py-4 shadow-sm">
+                  <p class="text-base md:text-lg text-slate-700 font-light leading-relaxed tracking-wider">${slide.content || ''}</p>
+                </div>
+              </div>
+              <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] z-10 minimal-tech">
+                Every moment shapes the next horizon.
+              </div>
+            `;
+            break;
+
+          case 'schedule':
+            // スケジュールパーサー: "08:30 | 内容"
+            const lines = (slide.content || "").split('\n').filter(line => line.trim() !== "");
+            let scheduleHTML = "";
+            lines.forEach(line => {
+              const parts = line.split('|');
+              const timePart = parts[0] ? parts[0].trim() : "--:--";
+              const contentPart = parts[1] ? parts[1].trim() : line.trim();
+              scheduleHTML += `
+                <div class="flex items-center gap-6 border-b border-black/[0.04] pb-2 last:border-0 last:pb-0">
+                  <span class="text-sm font-semibold text-slate-400 minimal-tech shrink-0 w-16">${timePart}</span>
+                  <span class="text-sm md:text-base text-slate-700 font-medium tracking-wide truncate text-left">${contentPart}</span>
+                </div>
+              `;
+            });
+
+            innerHTML = `
+              <div class="w-full flex justify-between items-start opacity-60 z-10">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">CAMPUS CHRONOLOGY</span>
+                <i data-lucide="calendar-days" class="w-4 h-4 text-slate-500"></i>
+              </div>
+              <div class="my-auto w-full max-w-2xl mx-auto flex flex-col justify-center space-y-4 md:space-y-6 z-10 text-slate-800">
+                <h2 class="text-xl font-extrabold tracking-widest text-slate-800 uppercase minimal-tech text-center border-b border-slate-300 pb-3">${slide.title || 'TODAY\'S SCHEDULE'}</h2>
+                <!-- 縦が低い画面でも文字がはみ出ないように max-h-[35vh] に調整 -->
+                <div class="space-y-3 bg-white/25 rounded-2xl p-6 shadow-sm border border-white/50 max-h-[35vh] overflow-y-auto">
+                  ${scheduleHTML || '<p class="text-slate-400 text-xs text-center">本日の予定はありません</p>'}
+                </div>
+              </div>
+              <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] z-10 minimal-tech">
+                Time allocations are synchronized dynamically.
+              </div>
+            `;
+            break;
+
+          case 'image':
+            innerHTML = `
+              <div class="absolute inset-0 bg-cover bg-center opacity-40 scale-105 pointer-events-none blur-3xl z-0" style="background-image: url('${slide.content}')"></div>
+              
+              <div class="absolute inset-0 flex flex-col md:flex-row p-8 md:p-12 gap-12 items-center justify-center z-10 relative">
+                <!-- ポスター -->
+                <div class="w-full md:w-[50%] h-full flex items-center justify-center rounded-2xl overflow-hidden shadow-xl border border-white/50 bg-white/10 relative">
+                  <img src="${slide.content}" alt="Satin Poster" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop'">
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+                </div>
+                <!-- テキスト -->
+                <div class="w-full md:w-[50%] flex flex-col justify-center space-y-6 text-left text-slate-800">
+                  <div class="inline-flex self-start px-3 py-1 bg-black/5 text-slate-500 text-[8px] font-bold rounded-full border border-black/5 tracking-[0.3em] uppercase minimal-tech">
+                    EXHIBITION IMAGE
+                  </div>
+                  <h2 class="text-2xl md:text-4xl font-extrabold text-slate-800 leading-tight tracking-tight drop-shadow-sm select-none">${slide.title || 'CAMPAIGN PROJECT'}</h2>
+                  <div class="h-[1px] w-12 bg-slate-300 rounded-full"></div>
+                  <p class="text-sm md:text-base text-slate-600 leading-relaxed font-light tracking-wide">${slide.subtext || ''}</p>
+                </div>
+              </div>
+            `;
+            break;
+
+          case 'weather':
+            innerHTML = `
+              <div class="w-full flex justify-between items-start opacity-60 z-10">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">METEOROLOGICAL READOUT</span>
+                <i data-lucide="cloud" class="w-4 h-4 text-slate-500"></i>
+              </div>
+              <div class="my-auto w-full flex flex-col items-center justify-center space-y-6 z-10 text-slate-800">
+                <h3 id="weather-city-title" class="text-lg font-bold text-slate-800 tracking-[0.3em] uppercase minimal-tech">STATION 大衡村 METEO</h3>
+                
+                <div class="flex flex-col md:flex-row items-center gap-12 p-8 bg-white/20 rounded-3xl w-full max-w-xl border border-white/50 shadow-lg relative">
+                  <div class="text-center md:text-left space-y-1">
+                    <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest minimal-tech">OHIRA_READOUT</p>
+                    <p id="weather-slide-temp" class="text-6xl md:text-7xl font-light text-slate-800 tracking-tighter serif-letterpress">--°C</p>
+                    <p id="weather-slide-desc" class="text-sm text-slate-600 font-bold tracking-widest minimal-tech">FETCHING</p>
+                  </div>
+                  
+                  <div class="hidden md:block h-16 w-[1px] bg-slate-200"></div>
+                  
+                  <div class="flex-grow grid grid-cols-2 gap-6 text-left text-xs tracking-wider text-slate-600">
+                    <div>
+                      <span class="text-slate-400 block text-[8px] font-bold tracking-widest uppercase minimal-tech">WIND_V</span>
+                      <span id="weather-slide-wind" class="text-slate-700 font-bold minimal-tech">-- m/s</span>
+                    </div>
+                    <div>
+                      <span class="text-slate-400 block text-[8px] font-bold tracking-widest uppercase minimal-tech">HUMIDITY</span>
+                      <span id="weather-slide-humidity" class="text-slate-700 font-bold minimal-tech">-- %</span>
+                    </div>
+                    <div class="col-span-2">
+                      <span class="text-slate-400 block text-[8px] font-bold tracking-widest uppercase minimal-tech">PRECIP_RATE</span>
+                      <span id="weather-slide-pop" class="text-slate-700 font-bold minimal-tech">-- %</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] z-10 minimal-tech">
+                Synchronized with regional sensor array data.
+              </div>
+            `;
+            setTimeout(() => fetchDetailedWeather(slide.city, idx), 100);
+            break;
+
+          case 'news':
+            innerHTML = `
+              <div class="w-full flex justify-between items-start opacity-60 z-10">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">BULLETIN DISPATCH</span>
+                <i data-lucide="newspaper" class="w-4 h-4 text-slate-500"></i>
+              </div>
+              <div class="my-auto w-full flex flex-col ${alignClass} space-y-6 px-10 z-10 text-slate-800">
+                <span class="px-4 py-1.5 bg-black/5 text-slate-600 text-[10px] font-bold rounded-full border border-black/5 uppercase tracking-[0.25em] minimal-tech">${slide.title || 'インフォメーション'}</span>
+                <p class="text-xl md:text-3xl font-extrabold text-slate-800 leading-relaxed max-w-4xl tracking-wide select-none">${slide.content || ''}</p>
+                <p class="text-sm md:text-base text-slate-500 font-light max-w-2xl leading-relaxed tracking-wider">${slide.subtext || ''}</p>
+              </div>
+              <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] z-10 minimal-tech">
+                Confirm receipt of this bulletin block.
+              </div>
+            `;
+            break;
+
+          case 'countdown':
+            innerHTML = `
+              <div class="w-full flex justify-between items-start opacity-40 z-10">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-white/60 minimal-tech">CHRONO EVENT TARGET</span>
+                <i data-lucide="timer" class="w-4 h-4 text-white"></i>
+              </div>
+              <div class="my-auto w-full flex flex-col items-center justify-center space-y-6 z-10">
+                <h3 class="text-lg font-bold tracking-[0.3em] text-slate-800 uppercase minimal-tech">${slide.title || '学校行事'}</h3>
+                
+                <div id="countdown-timer-${idx}" class="flex gap-6 items-center justify-center">
+                  <div class="flex flex-col items-center justify-center p-6 bg-white/20 rounded-2xl border border-white/10 w-24 h-28 md:w-28 md:h-32 relative shadow-sm">
+                    <span class="days text-3xl md:text-4xl font-extrabold text-slate-800 serif-letterpress">00</span>
+                    <span class="text-[8px] text-slate-400 font-bold mt-2 uppercase tracking-widest minimal-tech">DAYS</span>
+                  </div>
+                  <div class="flex flex-col items-center justify-center p-6 bg-white/20 rounded-2xl border border-white/10 w-24 h-28 md:w-28 md:h-32 relative shadow-sm">
+                    <span class="hours text-3xl md:text-4xl font-extrabold text-slate-800 serif-letterpress">00</span>
+                    <span class="text-[8px] text-slate-400 font-bold mt-2 uppercase tracking-widest minimal-tech">HOURS</span>
+                  </div>
+                  <div class="flex flex-col items-center justify-center p-6 bg-white/20 rounded-2xl border border-white/10 w-24 h-28 md:w-28 md:h-32 relative shadow-sm">
+                    <span class="minutes text-3xl md:text-4xl font-extrabold text-slate-800 serif-letterpress">00</span>
+                    <span class="text-[8px] text-slate-400 font-bold mt-2 uppercase tracking-widest minimal-tech">MINUTES</span>
+                  </div>
+                </div>
+
+                <p class="text-sm text-slate-600 font-medium max-w-xl text-center bg-white/30 px-6 py-2 rounded-full border border-white/40 tracking-wider">${slide.subtext || 'みんなで一緒にがんばりましょう！'}</p>
+              </div>
+              <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] z-10 minimal-tech">
+                Countdown is running relative to local atomic clock.
+              </div>
+            `;
+            setTimeout(() => startSlideCountdown(slide.content, `countdown-timer-${idx}`), 100);
+            break;
+
+          case 'ai-quote':
+            innerHTML = `
+              <div class="w-full flex justify-between items-start opacity-60 z-10">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 flex items-center gap-1.5 minimal-tech"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-500 animate-pulse"></i> COGNITIVE INTEL LOBE</span>
+                <i data-lucide="brain" class="w-4 h-4 text-slate-500"></i>
+              </div>
+              <div class="my-auto w-full flex flex-col items-center text-center space-y-6 px-10 z-10 text-slate-800">
+                <p id="ai-quote-text-${idx}" class="text-xl md:text-3xl font-light text-slate-800 leading-relaxed max-w-4xl tracking-wide select-none">
+                  <span class="animate-pulse text-slate-400 text-sm">AIマトリクスより思考コードを抽出中...</span>
+                </p>
+                <p id="ai-quote-author-${idx}" class="text-xs font-bold text-slate-400 uppercase tracking-widest minimal-tech"></p>
+                <p id="ai-quote-desc-${idx}" class="text-xs text-slate-500 max-w-xl font-light leading-relaxed tracking-wider"></p>
+              </div>
+              <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] z-10 minimal-tech">
+                Real-time generated by Gemini Large Language Engine.
+              </div>
+            `;
+            setTimeout(() => fetchGeminiQuote(slide.content || "中高生の好奇心を最高に刺激する名言", idx), 100);
+            break;
+
+          case 'ai-news':
+            innerHTML = `
+              <div class="w-full flex justify-between items-start opacity-60 z-10">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 flex items-center gap-1.5 minimal-tech"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-500 animate-pulse"></i> COGNITIVE INTEL LOBE</span>
+                <i data-lucide="compass" class="w-4 h-4 text-slate-500"></i>
+              </div>
+              <div class="my-auto w-full flex flex-col items-center text-center space-y-6 px-10 z-10 text-slate-800">
+                <span class="px-3 py-1 bg-black/5 text-slate-500 text-[8px] font-bold rounded-full border border-black/5 tracking-widest uppercase minimal-tech">SATELLITE INTEL</span>
+                <h3 class="text-lg md:text-xl font-bold text-slate-800 tracking-widest uppercase minimal-tech">「${slide.title || '科学・世界の謎'}」</h3>
+                <div class="bg-white/25 p-6 rounded-2xl w-full max-w-2xl text-left border border-white/50 space-y-4 shadow-sm">
+                  <p id="ai-news-body-${idx}" class="text-sm md:text-base text-slate-700 leading-relaxed font-light tracking-wide">
+                    <span class="animate-pulse text-slate-400 text-xs">AIがデータを分析し解説を作成中...</span>
+                  </p>
+                </div>
+              </div>
+              <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] z-10 minimal-tech">
+                Exploration of knowledge database complete.
+              </div>
+            `;
+            setTimeout(() => fetchGeminiNewsSummary(slide.title, idx), 100);
+            break;
+        }
+
+        slideEl.innerHTML = innerHTML;
+        container.appendChild(slideEl);
+      });
+
+      lucide.createIcons();
+      showSlide(currentSlideIndex);
+    }
+
+    function showSlide(index) {
+      if (slides.length === 0) return;
+      
+      const prevActive = document.querySelector('.slide-transition.active');
+      if (prevActive) {
+        prevActive.classList.remove('active');
+        prevActive.classList.add('pointer-events-none');
+      }
+
+      const activeSlide = document.getElementById(`slide-item-${index}`);
+      if (activeSlide) {
+        activeSlide.classList.remove('pointer-events-none');
+        setTimeout(() => {
+          activeSlide.classList.add('active');
+        }, 50);
+      }
+
+      // プログレスバーコントロール
+      const currentSlide = slides[index];
+      const duration = (currentSlide.duration || globalDuration) * 1000;
+      resetAndStartProgressBar(duration);
+    }
+
+    function resetAndStartProgressBar(duration) {
+      const progressBar = document.getElementById('slide-progress');
+      if (!progressBar) return;
+
+      progressBar.style.transition = 'none';
+      progressBar.style.width = '0%';
+
+      setTimeout(() => {
+        progressBar.style.transition = `width ${duration}ms linear`;
+        progressBar.style.width = '100%';
+      }, 50);
+    }
+
+    function startSlideshowLoop() {
+      if (slideshowTimer) clearTimeout(slideshowTimer);
+      if (slides.length <= 1) return;
+
+      const currentSlide = slides[currentSlideIndex];
+      const duration = (currentSlide.duration || globalDuration) * 1000;
+
+      slideshowTimer = setTimeout(() => {
+        currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        showSlide(currentSlideIndex);
+        startSlideshowLoop();
+      }, duration);
+    }
+
+    // --- MIYAGI DETAILED WEATHER METRICS ---
+    async function fetchDetailedWeather(city, index) {
+      try {
+        // 宮城県大衡村（おおひらむら）の座標にマッピング
+        let lat = 38.47;
+        let lon = 140.88;
+
+        if (city === "Miyagi") {
+          lat = 38.26; // 仙台
+          lon = 140.86;
+        } else if (city === "Sapporo") {
+          lat = 43.06; lon = 141.35;
+        } else if (city === "Tokyo") {
+          lat = 35.68; lon = 139.76;
+        } else if (city === "Nagoya") {
+          lat = 35.18; lon = 136.90;
+        } else if (city === "Osaka") {
+          lat = 34.69; lon = 135.50;
+        } else if (city === "Fukuoka") {
+          lat = 33.60; lon = 130.41;
+        } else if (city === "Okinawa") {
+          lat = 26.21; lon = 127.68;
+        }
+
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m,precipitation_probability&timezone=Asia%2FTokyo`);
+        const data = await res.json();
+        
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const wind = data.current_weather.windspeed;
+          const code = data.current_weather.weathercode;
+
+          const weatherMap = {
+            0: "晴天 CLEAR", 1: "晴天 CLEAR", 2: "薄曇 PARTLY CLOUDY", 3: "曇天 CLOUDY",
+            45: "霧 FOG", 48: "霧 FOG", 51: "霧雨 DRIZZLE", 53: "霧雨 DRIZZLE", 55: "小雨 DRIZZLE",
+            61: "降雨 RAIN", 63: "本降りの雨 RAIN", 65: "大雨 HEAVY RAIN", 71: "小雪 SNOW", 73: "雪 SNOW", 75: "大雪 HEAVY SNOW",
+            95: "雷雨 THUNDERSTORM"
+          };
+
+          const desc = weatherMap[code] || "穏やか";
+          const currentHourIdx = new Date().getHours();
+          const humidity = data.hourly?.relativehumidity_2m?.[currentHourIdx] || 60;
+          const pop = data.hourly?.precipitation_probability?.[currentHourIdx] || 10;
+
+          const tempEl = document.getElementById('weather-slide-temp');
+          const descEl = document.getElementById('weather-slide-desc');
+          const windEl = document.getElementById('weather-slide-wind');
+          const humidityEl = document.getElementById('weather-slide-humidity');
+          const popEl = document.getElementById('weather-slide-pop');
+
+          if (tempEl) tempEl.innerText = `${temp}°C`;
+          if (descEl) descEl.innerText = desc.toUpperCase();
+          if (windEl) windEl.innerText = `${wind} m/s`;
+          if (humidityEl) humidityEl.innerText = `${humidity} %`;
+          if (popEl) popEl.innerText = `${pop} %`;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // --- EVENTS COUNTDOWN ---
+    function startSlideCountdown(targetDateStr, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      const targetDate = new Date(targetDateStr.replace(' ', 'T'));
+      
+      function update() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          container.innerHTML = `<span class="text-xl font-bold text-slate-800 animate-pulse tracking-widest minimal-tech">🎉 DESTINATION REACHED</span>`;
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+
+        const daysEl = container.querySelector('.days');
+        const hoursEl = container.querySelector('.hours');
+        const minutesEl = container.querySelector('.minutes');
+
+        if (daysEl) daysEl.innerText = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.innerText = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.innerText = String(minutes).padStart(2, '0');
+      }
+
+      update();
+      const timer = setInterval(() => {
+        if (!document.getElementById(containerId)) {
+          clearInterval(timer);
+          return;
+        }
+        update();
+      }, 60000);
+    }
+
+    // --- GEMINI AI CONNECTIVITY ---
+    async function callGemini(systemPrompt, userPrompt) {
+      if (!apiKey) return "APIキーがありません。";
+
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      let delay = 1000;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (response.ok) {
+            const result = await response.json();
+            return result.candidates?.[0]?.content?.parts?.[0]?.text || "コンテンツを生成できませんでした。";
+          }
+        } catch (error) {}
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 2;
+      }
+      return "AIとの接続に失敗しました。";
+    }
+
+    async function fetchGeminiQuote(topic, idx) {
+      const quoteEl = document.getElementById(`ai-quote-text-${idx}`);
+      const authorEl = document.getElementById(`ai-quote-author-${idx}`);
+      const descEl = document.getElementById(`ai-quote-desc-${idx}`);
+
+      if (!apiKey) {
+        if (quoteEl) quoteEl.innerText = "※設定からAPIキーを登録すると、ここにAIが自動で作る「インスピレーションの名言」が毎日表示されます。";
+        return;
+      }
+
+      const sysPrompt = "あなたは世界最高峰 of 詩人であり、教育者です。学生たちが読んで一瞬で感銘を受け、知的好奇心が刺激される言葉を作ってください。";
+      const userPrompt = `お題「${topic}」に関連して、心が揺り動かされるような美しくシンプルな言葉を1つ作ってください。
+以下の3行フォーマットで完全に日本語で出力してください（Markdownの装飾や余計な解説、挨拶は絶対に省いてください）。
+1行目：言葉
+2行目：- 著者または偉人の名前
+3行目：生徒たちに向けた1文の優しい解説`;
+
+      const responseText = await callGemini(sysPrompt, userPrompt);
+      const lines = responseText.split('\n').filter(l => l.trim() !== '');
+
+      if (quoteEl) quoteEl.innerText = lines[0] || "自分のペースで進もう。昨日の自分より、ちょっと前に進んでいれば大成功です。";
+      if (authorEl) authorEl.innerText = lines[1] || "- 応援 of 先生より";
+      if (descEl) descEl.innerText = lines[2] || "焦らなくて大丈夫。一歩一歩が将来のあなたの大きな力になります。";
+    }
+
+    async function fetchGeminiNewsSummary(topic, idx) {
+      const bodyEl = document.getElementById(`ai-news-body-${idx}`);
+
+      if (!apiKey) {
+        if (bodyEl) bodyEl.innerText = "※設定からAPIキーを登録すると、ここに「AIおもしろ解説スライド」が表示されます。宇宙、技術、アート、歴史の疑問をシンプルに解説します。";
+        return;
+      }
+
+      const sysPrompt = "あなたは理科や歴史の楽しさを誰にでも分かりやすく伝える世界一のサイエンスコーディネーターです。中学生・高校生が読んでワクワクする文章を書いてください。";
+      const userPrompt = `テーマ・疑問「${topic}」について、10代が思わず納得して誰かに話したくなるような面白い要点を、130文字程度の1つの段落にまとめて解説してください。箇架書きや改行は使用しないでください。`;
+
+      const responseText = await callGemini(sysPrompt, userPrompt);
+      if (bodyEl) bodyEl.innerText = responseText.trim();
+    }
+
+    // --- TICKER SPEED CONTROLLER ---
+    window.applyTicker = function() {
+      const tickerContent = document.getElementById('ticker-content');
+      if (tickerContent) {
+        const cleanText = tickerText.split('|').map(t => t.trim()).join('   •   ');
+        tickerContent.innerText = `${cleanText}   •   ${cleanText}`;
+      }
+    }
+
+    // --- ALERTS ---
+    window.showAlert = function(text) {
+      const alertEl = document.getElementById('custom-alert');
+      const textEl = document.getElementById('custom-alert-text');
+      if (alertEl && textEl) {
+        textEl.innerText = text;
+        alertEl.classList.remove('-translate-y-24');
+        alertEl.classList.add('translate-y-0');
+
+        setTimeout(() => {
+          alertEl.classList.remove('translate-y-0');
+          alertEl.classList.add('-translate-y-24');
+        }, 3000);
+      }
+    }
+
+    // --- PANEL TOGGLE ---
+    window.toggleAdminPanel = function() {
+      const panel = document.getElementById('admin-panel');
+      if (!panel) return;
+      if (panel.classList.contains('translate-x-full')) {
+        panel.classList.remove('translate-x-full');
+        panel.classList.add('translate-x-0');
+        renderAdminSlidesList();
+        
+        document.getElementById('global-duration').value = globalDuration;
+        document.getElementById('global-ticker-text').value = tickerText;
+      } else {
+        panel.classList.add('translate-x-full');
+      }
+    }
+
+    // 管理者モード判定時に強制起動するボタン用
+    window.openAdminPanelDirectly = function() {
+      toggleAdminPanel();
+    };
+
+    // パラメータセーブをクラウドへ書き込み
+    window.saveGlobalSettings = function() {
+      globalDuration = parseInt(document.getElementById('global-duration').value) || 8;
+      tickerText = document.getElementById('global-ticker-text').value;
+
+      // Firestoreへ即時書き込み（RULE 1に準拠）
+      setDoc(settingsDocRef, { tickerText, globalDuration })
+        .then(() => {
+          showAlert("STUDIO PARAMETERS SYNCED");
+        })
+        .catch(err => {
+          console.error("Firestore sync error:", err);
+          showAlert("SYNC ERROR");
+        });
+    }
+
+    // API Key セーブ
+    window.saveApiKey = function() {
+      const keyVal = document.getElementById('api-key-input').value.trim();
+      apiKey = keyVal;
+      localStorage.setItem(`${appId}-gemini-api-key`, keyVal);
+
+      const statusEl = document.getElementById('api-status');
+      if (keyVal) {
+        statusEl.classList.remove('hidden');
+        showAlert("GEMINI NETWORK STANDBY");
+      } else {
+        statusEl.classList.add('hidden');
+        showAlert("API KEY PURGED");
+      }
+      renderSlideshow();
+    }
+
+    // デフォルトに戻す (Firestoreをクリアして初期化)
+    window.resetToDefaults = function() {
+      if (confirm("全てのデータを消去し、最初のミニマリズム・エステティック構成に戻しますか？")) {
+        const defaultSlides = getInitialDefaultSlides();
+        const defaultTicker = "【大衡中学校・連絡】本日は美化委員による校内美化運動が実施されます。綺麗な学習環境を維持しましょう！ 🌿 | 【図書室】冬休み前の図書特別貸出（1人5冊まで）がスタート。お気に入りの1冊を探してみよう！ 📚";
+        const defaultDuration = 8;
+
+        Promise.all([
+          setDoc(slidesDocRef, { slides: defaultSlides }),
+          setDoc(settingsDocRef, { tickerText: defaultTicker, globalDuration: defaultDuration })
+        ]).then(() => {
+          apiKey = '';
+          localStorage.removeItem(`${appId}-gemini-api-key`);
+          document.getElementById('api-key-input').value = '';
+          document.getElementById('api-status').classList.add('hidden');
+          showAlert("CLOUD RECONSTRUCTED");
+        }).catch(err => {
+          console.error(err);
+          showAlert("RESET FAILED");
+        });
+      }
+    }
+
+    // 管理リスト描画
+    window.renderAdminSlidesList = function() {
+      const listContainer = document.getElementById('admin-slides-list');
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      slides.forEach((slide, idx) => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-2xl border border-slate-200 gap-4 transition-all";
+
+        let badgeColor = "bg-slate-100 text-slate-600";
+        let titleDesc = slide.title || "無題のスライド";
+        if (slide.type === 'clock') { badgeColor = "bg-blue-50 text-blue-600"; }
+        if (slide.type === 'schedule') { badgeColor = "bg-indigo-50 text-indigo-600"; }
+        if (slide.type === 'image') { badgeColor = "bg-amber-50 text-amber-600"; }
+        if (slide.type === 'weather') { badgeColor = "bg-sky-50 text-sky-600"; }
+        if (slide.type === 'news') { badgeColor = "bg-emerald-50 text-emerald-600"; }
+        if (slide.type === 'countdown') { badgeColor = "bg-rose-50 text-rose-600"; }
+        if (slide.type.startsWith('ai-')) { badgeColor = "bg-purple-50 text-purple-600"; }
+
+        item.innerHTML = `
+          <div class="flex items-center gap-3 overflow-hidden">
+            <span class="text-[8px] px-2.5 py-0.5 rounded-full ${badgeColor} font-semibold uppercase tracking-widest minimal-tech shrink-0">${slide.type}</span>
+            <div class="truncate">
+              <p class="text-xs font-bold text-slate-800 truncate minimal-tech">${titleDesc}</p>
+              <p class="text-[10px] text-slate-500 truncate">${slide.content || slide.city || slide.subtext || ''}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="moveSlide(${idx}, -1)" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-800 transition-colors">
+              <i data-lucide="chevron-up" class="w-4 h-4"></i>
+            </button>
+            <button onclick="moveSlide(${idx}, 1)" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-800 transition-colors">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </button>
+            <button onclick="deleteSlide(${idx})" class="p-1.5 hover:bg-rose-50 rounded-lg text-rose-500 hover:text-rose-700 transition-colors">
+              <i data-lucide="trash" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+
+      lucide.createIcons();
+    }
+
+    window.deleteSlide = function(idx) {
+      if (confirm("このスライドをスタックから外しますか？")) {
+        slides.splice(idx, 1);
+        
+        setDoc(slidesDocRef, { slides })
+          .then(() => {
+            currentSlideIndex = 0;
+            renderSlideshow();
+            startSlideshowLoop();
+            renderAdminSlidesList();
+            showAlert("SLIDE UNLINKED");
+          })
+          .catch(err => {
+            console.error(err);
+            showAlert("DELETE FAILED");
+          });
+      }
+    }
+
+    window.moveSlide = function(idx, direction) {
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= slides.length) return;
+
+      const temp = slides[idx];
+      slides[idx] = slides[targetIdx];
+      slides[targetIdx] = temp;
+
+      setDoc(slidesDocRef, { slides })
+        .then(() => {
+          currentSlideIndex = 0;
+          renderSlideshow();
+          startSlideshowLoop();
+          renderAdminSlidesList();
+        })
+        .catch(err => {
+          console.error(err);
+          showAlert("REORDER FAILED");
+        });
+    }
+
+    // --- CREATOR MODAL ---
+    window.openNewSlideModal = function() {
+      tempUploadedImageBase64 = ""; // キャッシュ初期化
+      document.getElementById('slide-creator-modal').classList.remove('hidden');
+      onSlideTypeChange();
+    }
+
+    window.closeNewSlideModal = function() {
+      document.getElementById('slide-creator-modal').classList.add('hidden');
+    }
+
+    // 画像登録コントロール
+    window.handleImageFileSelect = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      processImageFile(file);
+    }
+
+    function processImageFile(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        tempUploadedImageBase64 = e.target.result;
+        const previewImg = document.getElementById('image-upload-preview');
+        if (previewImg) {
+          previewImg.src = tempUploadedImageBase64;
+          previewImg.classList.remove('hidden');
+          document.getElementById('upload-placeholder').classList.add('hidden');
+        }
+        showAlert("IMAGE FILE EXPANDED");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    window.handleDragOver = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('drop-zone').classList.add('border-slate-400', 'bg-slate-50');
+    }
+
+    window.handleDragLeave = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('drop-zone').classList.remove('border-slate-400', 'bg-slate-50');
+    }
+
+    window.handleDrop = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('drop-zone').classList.remove('border-slate-400', 'bg-slate-50');
+      
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        processImageFile(file);
+      } else {
+        showAlert("SUPPORT ONLY IMAGE FILES");
+      }
+    }
+
+    window.onSlideTypeChange = function() {
+      const type = document.getElementById('new-slide-type').value;
+      const container = document.getElementById('dynamic-inputs');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (type === 'clock') {
+        container.innerHTML = `
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1.5">添え書きメッセージ</label>
+            <input type="text" id="slide-custom-message" value="最高の1日は、今日のあなたの行動から。" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400">
+          </div>
+        `;
+      } else if (type === 'schedule') {
+        container.innerHTML = `
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">予定スケジュールリスト</label>
+            <p class="text-[10px] text-slate-400 mb-2">「時間 | 予定内容」を改行して入力してください。</p>
+            <textarea id="slide-schedule-content" rows="6" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400 resize-none" placeholder="08:30 | 朝の会&#13;08:45 | 1限目：サイエンス&#13;12:00 | ランチタイム">08:30 | 朝会・連絡事項&#10;08:45 | 1限目：大衡学サイエンス&#10;10:40 | 2限目：野外自然フィールドワーク&#10;12:15 | ランチタイム & 万葉読書&#10;13:30 | 共同創作プログラミング&#10;15:00 | 片付け & 部活動開始</textarea>
+          </div>
+        `;
+      } else if (type === 'image') {
+        container.innerHTML = `
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-400">ポスターイメージ（ドラッグまたは選択）</label>
+            <div id="drop-zone" 
+                 ondragover="handleDragOver(event)" 
+                 ondragleave="handleDragLeave(event)" 
+                 ondrop="handleDrop(event)"
+                 class="w-full h-32 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center p-4 cursor-pointer hover:border-slate-400 transition-all bg-slate-55">
+              <input type="file" id="image-file-input" onchange="handleImageFileSelect(event)" accept="image/*" class="hidden">
+              <div onclick="document.getElementById('image-file-input').click()" id="upload-placeholder" class="text-center space-y-1.5">
+                <i data-lucide="image" class="w-6 h-6 text-slate-400 mx-auto"></i>
+                <p class="text-xs text-slate-600 font-bold">ここを選択またはドラッグ＆ドロップ</p>
+                <p class="text-[9px] text-slate-400">※スマートフォンで撮ったスクショ、行事ポスターを流せます</p>
+              </div>
+              <img id="image-upload-preview" src="" alt="Preview" class="max-h-full rounded-lg hidden object-contain">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 mb-1.5">またはWEB画像のアドレス(URL)</label>
+              <input type="text" id="slide-image-url" placeholder="https://..." class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-white/5 text-white text-sm focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 mb-1.5">ポスターの説明文</label>
+              <input type="text" id="slide-image-subtext" value="新しい発見へ、一歩を踏み出そう。" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400">
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      } else if (type === 'weather') {
+        container.innerHTML = `
+          <div>
+            <label class="block text-xs font-bold text-slate-400 mb-1.5">気象ステーション選択</label>
+            <select id="slide-weather-city" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none">
+              <option value="Ohira">宮城 (大衡村)</option>
+              <option value="Miyagi">宮城 (仙台)</option>
+              <option value="Sapporo">札幌</option>
+              <option value="Tokyo">東京</option>
+              <option value="Nagoya">名古屋</option>
+              <option value="Osaka">大阪</option>
+              <option value="Fukuoka">福岡</option>
+              <option value="Okinawa">沖縄</option>
+            </select>
+          </div>
+        `;
+      } else if (type === 'news') {
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 mb-1.5">Dispatchコンテンツ</label>
+              <textarea id="slide-news-content" rows="3" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none resize-none">本日は多目的室にてクリエイティブワークショップが開催されます。お気軽にご参加ください！</textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 mb-1.5">詳細や日時場所</label>
+              <input type="text" id="slide-news-subtext" value="時間：15:45〜 / 場所：コモンズスペース" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400">
+            </div>
+          </div>
+        `;
+      } else if (type === 'countdown') {
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 mb-1.5">ターゲット日時 (例: 2026-10-15T09:00)</label>
+              <input type="datetime-local" id="slide-countdown-target" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 mb-1.5">サブスローガン</label>
+              <input type="text" id="slide-countdown-sub" value="新しい視野を獲得するための旅へ。" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400">
+            </div>
+          </div>
+        `;
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 7);
+        tomorrow.setHours(9, 0, 0, 0);
+        const localISO = new Date(tomorrow.getTime() - (tomorrow.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+        document.getElementById('slide-countdown-target').value = localISO;
+      } else if (type === 'ai-quote') {
+        container.innerHTML = `
+          <div>
+            <label class="block text-xs font-bold text-slate-400 mb-1.5">AIに生成させたい名言のテーマ</label>
+            <input type="text" id="slide-ai-quote-prompt" value="やる気がみなぎり、日々の学びが楽しくなるインスピレーション" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400">
+          </div>
+        `;
+      } else if (type === 'ai-news') {
+        container.innerHTML = `
+          <div>
+            <label class="block text-xs font-bold text-slate-400 mb-1.5">AIに解説させたい疑問・科学テーマ</label>
+            <input type="text" id="slide-ai-news-prompt" value="どうして空は青いのに夕焼けは赤いの？" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-slate-400">
+          </div>
+        `;
+      }
+    }
+
+    window.addNewSlide = function() {
+      const type = document.getElementById('new-slide-type').value;
+      const title = document.getElementById('new-slide-title').value.trim() || 'ANNOUNCEMENT';
+      const duration = parseInt(document.getElementById('new-slide-duration').value) || 8;
+      const align = document.getElementById('new-slide-align').value;
+
+      const newSlide = {
+        id: `slide-${Date.now()}`,
+        type: type,
+        title: title,
+        duration: duration,
+        align: align
+      };
+
+      if (type === 'clock') {
+        newSlide.content = document.getElementById('slide-custom-message').value || "素晴らしい発見を、今日も。";
+      } else if (type === 'schedule') {
+        newSlide.content = document.getElementById('slide-schedule-content').value;
+      } else if (type === 'image') {
+        let finalImage = "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop";
+        if (tempUploadedImageBase64) {
+          finalImage = tempUploadedImageBase64;
+        } else {
+          const urlVal = document.getElementById('slide-image-url').value.trim();
+          if (urlVal) finalImage = urlVal;
+        }
+        newSlide.content = finalImage;
+        newSlide.subtext = document.getElementById('slide-image-subtext').value || "";
+      } else if (type === 'weather') {
+        newSlide.city = document.getElementById('slide-weather-city').value;
+      } else if (type === 'news') {
+        newSlide.content = document.getElementById('slide-news-content').value;
+        newSlide.subtext = document.getElementById('slide-news-subtext').value || "";
+      } else if (type === 'countdown') {
+        const dateVal = document.getElementById('slide-countdown-target').value;
+        newSlide.content = dateVal ? dateVal.replace('T', ' ') : "2026-12-31 09:00";
+        newSlide.subtext = document.getElementById('slide-countdown-sub').value || "";
+      } else if (type === 'ai-quote') {
+        newSlide.content = document.getElementById('slide-ai-quote-prompt').value || "学びを応援する名言";
+      } else if (type === 'ai-news') {
+        newSlide.title = document.getElementById('slide-ai-news-prompt').value || "科学の楽しさ";
+      }
+
+      slides.push(newSlide);
+      
+      // Local貯蔵とFirestore同期
+      setDoc(slidesDocRef, { slides })
+        .then(() => {
+          closeNewSlideModal();
+          showAlert("SLIDE INSTALLED");
+        })
+        .catch(err => {
+          console.error(err);
+          showAlert("SYNC ERROR");
+        });
+    }
+
+    // 初期スライドリストとティッカーを即座にローカル描画
+    applyTicker();
+    renderSlideshow();
+    startSlideshowLoop();
+  </script>
+</body>
+</html>
