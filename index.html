@@ -13,16 +13,111 @@
     body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; overflow: hidden; background-color: #f6f8fa; color: #1e293b; }
     .serif-letterpress { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; letter-spacing: -0.04em; }
     .minimal-tech { font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.2em; }
-    .slide-transition { opacity: 0; transform: scale(0.99) translateY(4px); transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.8s cubic-bezier(0.16, 1, 0.3, 1); }
-    .slide-transition.active { opacity: 1; transform: scale(1) translateY(0); }
-    .satin-glass { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(40px); border: 1px rgba(255, 255, 255, 0.6) solid; box-shadow: 0 20px 60px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
-    @keyframes slow-ambient { 0% { transform: translate(0px, 0px) scale(1); } 50% { transform: translate(30px, -15px) scale(1.05); } 100% { transform: translate(0px, 0px) scale(1); } }
-    .ambient-aurora { animation: slow-ambient 35s infinite alternate ease-in-out; }
-    .progress-bar-fill { width: 0%; transition: width linear; }
-    @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
-    .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 60s linear infinite; }
-    .preview-canvas { transform: scale(0.4); transform-origin: top left; pointer-events: none; }
-    .layout-card.selected { border-color: #6366f1; background-color: rgba(99, 102, 241, 0.05); }
+    
+    /* シネマティックで静かなスライドトランジション */
+    .slide-transition {
+      opacity: 0;
+      transform: scale(1.01);
+      transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide-transition.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* スライド内要素の時間差スタッガードアニメーション定義 */
+    .slide-transition .slide-title,
+    .slide-transition .slide-body,
+    .slide-transition .slide-item-card,
+    .slide-transition .slide-badge,
+    .slide-transition .slide-line {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* アクティブ化されたときに時間差（delay）をつけてフェードイン */
+    .slide-transition.active .slide-title {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.2s;
+    }
+    .slide-transition.active .slide-body {
+      opacity: 0.8;
+      transform: translateY(0);
+      transition-delay: 0.4s;
+    }
+    .slide-transition.active .slide-badge {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.1s;
+    }
+    .slide-transition.active .slide-line {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.3s;
+    }
+    .slide-transition.active .slide-item-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ギャラリー用の超スローモーションKen Burns効果 */
+    .slide-transition .slide-image-container {
+      opacity: 0;
+      transform: scale(0.96) translateX(-20px);
+      transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: 0.1s;
+    }
+    .slide-transition.active .slide-image-container {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+    }
+    .slide-transition .slide-zoom-img {
+      transform: scale(1.12);
+      transition: transform 12s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide-transition.active .slide-zoom-img {
+      transform: scale(1.0);
+    }
+
+    /* 究極の超薄クリスタルサテンガラス */
+    .satin-glass {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px rgba(255, 255, 255, 0.6) solid;
+      box-shadow: 
+        0 20px 60px rgba(15, 23, 42, 0.05), 
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    /* 静寂な淡いパステル流体背景 */
+    @keyframes slow-ambient {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(30px, -15px) scale(1.05); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .ambient-aurora {
+      animation: slow-ambient 35s infinite alternate ease-in-out;
+    }
+
+    /* プログレスバー */
+    .progress-bar-fill {
+      width: 0%;
+      transition: width linear;
+    }
+
+    /* 無限ティッカー */
+    @keyframes ticker {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+    .ticker-content {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ticker 60s linear infinite;
+    }
   </style>
 </head>
 <body class="w-screen h-screen flex flex-col justify-between relative select-none p-6 md:p-10">
@@ -297,12 +392,12 @@
         let inner = '';
         if (slide.type === 'clock') {
           inner = `
-            <div class="w-full flex justify-between items-start opacity-50"><span class="text-xs font-bold tracking-widest minimal-tech">PORTAL INFOMETRY</span><i data-lucide="clock" class="w-5 h-5"></i></div>
-            <div class="my-auto text-center space-y-6">
-              <h1 id="live-clock-${idx}" class="text-[12rem] font-extrabold text-slate-800 tracking-tighter serif-letterpress leading-none">00:00</h1>
-              <p class="text-2xl text-slate-500 font-light max-w-4xl mx-auto">${slide.content}</p>
+            <div class="w-full flex justify-between items-start opacity-50 z-10"><span class="text-xs font-bold tracking-widest minimal-tech">PORTAL INFOMETRY</span><i data-lucide="clock" class="w-5 h-5"></i></div>
+            <div class="my-auto text-center space-y-6 z-10">
+              <h1 id="live-clock-${idx}" class="text-[12rem] font-extrabold text-slate-800 tracking-tighter serif-letterpress leading-none slide-title">00:00</h1>
+              <p class="text-2xl text-slate-500 font-light max-w-4xl mx-auto slide-body">${slide.content}</p>
             </div>
-            <div class="w-full text-center text-[10px] font-bold opacity-30 minimal-tech uppercase tracking-widest">${slide.title}</div>
+            <div class="w-full text-center text-[10px] font-bold opacity-30 minimal-tech uppercase tracking-widest z-10">${slide.title}</div>
           `;
           setInterval(() => {
             const el = document.getElementById(`live-clock-${idx}`);
@@ -310,45 +405,45 @@
           }, 1000);
         } else if (slide.type === 'schedule') {
           const lines = slide.content.split('\n').map(l => l.split('|'));
-          const list = lines.map(p => `
-            <div class="flex items-center gap-10 border-b border-black/[0.03] pb-4">
-              <span class="text-2xl font-bold text-slate-300 minimal-tech w-32 uppercase">${p[0]?.trim() || '--:--'}</span>
+          const list = lines.map((p, itemIdx) => `
+            <div class="flex items-center gap-10 border-b border-black/[0.03] pb-4 slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
+              <span class="text-2xl font-bold text-slate-350 minimal-tech w-32 uppercase">${p[0]?.trim() || '--:--'}</span>
               <span class="text-3xl font-medium text-slate-700">${p[1]?.trim() || ''}</span>
             </div>
           `).join('');
           inner = `
-            <div class="w-full flex justify-between opacity-40 mb-6"><span class="text-xs font-bold tracking-widest minimal-tech uppercase">Today's Schedule</span><i data-lucide="list" class="w-5 h-5"></i></div>
-            <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full">
-              <h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech text-left">${slide.title}</h2>
-              <div class="space-y-6 custom-scrollbar overflow-y-auto pr-4">${list}</div>
+            <div class="w-full flex justify-between opacity-40 mb-6 z-10"><span class="text-xs font-bold tracking-widest minimal-tech uppercase">Today's Schedule</span><i data-lucide="list" class="w-5 h-5"></i></div>
+            <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full z-10">
+              <h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech text-left slide-title">${slide.title}</h2>
+              <div class="space-y-6 custom-scrollbar overflow-y-auto pr-4 slide-body">${list}</div>
             </div>
           `;
         } else if (slide.type === 'weekly') {
           const lines = slide.content.split('\n').map(l => l.split('|'));
-          const cards = lines.map(p => `
-            <div class="flex-1 min-w-[160px] flex flex-col p-6 bg-white/30 border border-white/60 rounded-3xl text-center shadow-sm">
+          const cards = lines.map((p, itemIdx) => `
+            <div class="flex-1 min-w-[160px] flex flex-col p-6 bg-white/40 border border-white/60 rounded-3xl text-center shadow-sm slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
               <span class="text-sm font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-2 mb-3">${p[0]?.trim() || 'Day'}</span>
               <span class="text-lg font-semibold text-slate-700 leading-snug">${p[1]?.trim() || ''}</span>
             </div>
           `).join('');
           inner = `
-            <div class="w-full flex justify-between opacity-40 mb-6"><span class="text-xs font-bold tracking-widest minimal-tech uppercase">Weekly Overview</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
-            <div class="flex-grow flex flex-col w-full text-center">
-              <h2 class="text-3xl font-black mb-12 uppercase tracking-widest minimal-tech">${slide.title}</h2>
+            <div class="w-full flex justify-between opacity-40 mb-6 z-10"><span class="text-xs font-bold tracking-widest minimal-tech uppercase">Weekly Overview</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
+            <div class="flex-grow flex flex-col w-full text-center z-10">
+              <h2 class="text-3xl font-black mb-12 uppercase tracking-widest minimal-tech slide-title">${slide.title}</h2>
               <div class="flex flex-row gap-4 justify-center items-stretch">${cards}</div>
             </div>
           `;
         } else if (slide.type === 'image') {
           inner = `
             <div class="w-full h-full flex items-center gap-16">
-              <div class="w-1/2 h-full rounded-[40px] overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
-                <img src="${slide.content_img}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'">
+              <div class="w-1/2 h-full rounded-[40px] overflow-hidden shadow-2xl border-4 border-white bg-slate-100 slide-image-container">
+                <img src="${slide.content_img}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'">
               </div>
-              <div class="w-1/2 space-y-8 text-left">
-                <span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase">Announcement</span>
-                <h2 class="text-6xl font-black text-slate-800 leading-tight">${slide.title}</h2>
-                <div class="h-2 w-20 bg-slate-900 rounded-full"></div>
-                <p class="text-2xl text-slate-500 font-light leading-relaxed">${slide.content}</p>
+              <div class="w-1/2 space-y-8 text-left z-10">
+                <span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Announcement</span>
+                <h2 class="text-6xl font-black text-slate-800 leading-tight slide-title">${slide.title}</h2>
+                <div class="h-2 w-20 bg-slate-900 rounded-full slide-line"></div>
+                <p class="text-2xl text-slate-500 font-light leading-relaxed slide-body">${slide.content}</p>
               </div>
             </div>
           `;
@@ -426,15 +521,64 @@
 
       let html = '';
       if (activeDesignLayout === 'clock') {
-        html = `<div class="w-full h-full p-20 flex flex-col justify-between items-center text-center"><span class="text-xs font-bold tracking-[0.4em] text-slate-300 minimal-tech">PREVIEW CHRONO</span><div class="my-auto space-y-6"><h1 class="text-[13rem] font-extrabold text-slate-800 tracking-tighter leading-none serif-letterpress">12:34</h1><p class="text-3xl text-slate-500 font-light">${content}</p></div><span class="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">${title}</span></div>`;
+        html = `
+          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between items-center text-center">
+            <span class="text-xs font-bold tracking-[0.4em] text-slate-300 minimal-tech slide-badge">PREVIEW CHRONO</span>
+            <div class="my-auto space-y-6">
+              <h1 class="text-[13rem] font-extrabold text-slate-800 tracking-tighter leading-none serif-letterpress slide-title">12:34</h1>
+              <p class="text-3xl text-slate-500 font-light slide-body">${content}</p>
+            </div>
+            <span class="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech slide-line">${title}</span>
+          </div>
+        `;
       } else if (activeDesignLayout === 'schedule') {
-        const rows = content.split('\n').map(l => l.split('|')).map(p => `<div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0"><span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${p[0]?.trim() || '--:--'}</span><span class="text-4xl font-semibold text-slate-700">${p[1]?.trim() || ''}</span></div>`).join('');
-        html = `<div class="w-full h-full p-20 flex flex-col justify-between"><div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech">STATION DATA</span><i data-lucide="calendar" class="w-5 h-5"></i></div><div class="flex-grow flex flex-col max-w-4xl mx-auto w-full"><h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech">${title}</h2><div class="space-y-6">${rows}</div></div><div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech">Sync Status Active</div></div>`;
+        const rows = content.split('\n').map(l => l.split('|')).map((p, itemIdx) => `
+          <div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0 slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
+            <span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${p[0]?.trim() || '--:--'}</span>
+            <span class="text-4xl font-semibold text-slate-700">${p[1]?.trim() || ''}</span>
+          </div>
+        `).join('');
+        html = `
+          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between">
+            <div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech slide-badge">STATION DATA</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
+            <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full">
+              <h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech slide-title">${title}</h2>
+              <div class="space-y-6 slide-body">${rows}</div>
+            </div>
+            <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech slide-line">Sync Status Active</div>
+          </div>
+        `;
       } else if (activeDesignLayout === 'weekly') {
-        const cards = content.split('\n').map(l => l.split('|')).map(p => `<div class="flex-1 flex flex-col p-8 bg-white/40 border border-slate-100 rounded-[32px] text-center shadow-sm"><span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${p[0]?.trim() || '曜日'}</span><span class="text-2xl font-bold text-slate-700">${p[1]?.trim() || ''}</span></div>`).join('');
-        html = `<div class="w-full h-full p-20 flex flex-col text-center"><h2 class="text-5xl font-black mb-16 uppercase tracking-widest minimal-tech">${title}</h2><div class="flex flex-row gap-6 justify-center items-stretch">${cards}</div></div>`;
+        const cards = content.split('\n').map(l => l.split('|')).map((p, itemIdx) => `
+          <div class="flex-1 flex flex-col p-8 bg-white/40 border border-slate-100 rounded-[32px] text-center shadow-sm slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
+            <span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${p[0]?.trim() || '曜日'}</span>
+            <span class="text-2xl font-bold text-slate-700">${p[1]?.trim() || ''}</span>
+          </div>
+        `).join('');
+        html = `
+          <div class="slide-transition active w-full h-full p-20 flex flex-col text-center justify-between">
+            <div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech slide-badge">WEEKLY OVERVIEW</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
+            <div class="flex-grow flex flex-col w-full text-center">
+              <h2 class="text-5xl font-black mb-16 uppercase tracking-widest minimal-tech slide-title">${title}</h2>
+              <div class="flex flex-row gap-6 justify-center items-stretch">${cards}</div>
+            </div>
+            <div class="w-full text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech slide-line">Live preview rendering</div>
+          </div>
+        `;
       } else if (activeDesignLayout === 'image') {
-        html = `<div class="w-full h-full flex items-center p-20 gap-20"><div class="w-1/2 h-full rounded-[48px] overflow-hidden shadow-2xl border-8 border-white bg-slate-100"><img src="${finalImg}" class="w-full h-full object-cover"></div><div class="w-1/2 space-y-8 text-left"><span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase">Announcement</span><h2 class="text-7xl font-black text-slate-800 leading-tight">${title}</h2><div class="h-2 w-24 bg-slate-900 rounded-full"></div><p class="text-3xl text-slate-500 font-light leading-relaxed">${content}</p></div></div>`;
+        html = `
+          <div class="slide-transition active w-full h-full flex items-center p-20 gap-20">
+            <div class="w-1/2 h-full rounded-[48px] overflow-hidden shadow-2xl border-8 border-white bg-slate-100 slide-image-container">
+              <img src="${finalImg}" class="w-full h-full object-cover slide-zoom-img">
+            </div>
+            <div class="w-1/2 space-y-8 text-left">
+              <span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Announcement</span>
+              <h2 class="text-7xl font-black text-slate-800 leading-tight slide-title">${title}</h2>
+              <div class="h-2 w-24 bg-slate-900 rounded-full slide-line"></div>
+              <p class="text-3xl text-slate-500 font-light leading-relaxed slide-body">${content}</p>
+            </div>
+          </div>
+        `;
       }
       preview.innerHTML = html;
       lucide.createIcons();
