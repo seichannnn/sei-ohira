@@ -29,6 +29,7 @@
 
   <!-- ==================== AMBIENT BACKGROUND ==================== -->
   <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#f6f8fa]">
+    <!-- 淡く優しいパステル調のグラデーションオーブ -->
     <div class="ambient-aurora absolute top-[-20%] left-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-blue-200/30 via-indigo-100/20 to-transparent rounded-full filter blur-[120px]"></div>
     <div class="ambient-aurora absolute bottom-[-20%] right-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-pink-100/30 via-purple-100/20 to-transparent rounded-full filter blur-[120px]" style="animation-delay: -10s;"></div>
   </div>
@@ -109,6 +110,9 @@
                 <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Ticker Message</label>
                 <input type="text" id="global-ticker-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm focus:outline-none">
               </div>
+              <div class="col-span-2 flex justify-end">
+                <button onclick="saveGlobalSettings()" class="px-6 py-2.5 bg-slate-900 text-white text-[10px] font-bold rounded-xl minimal-tech tracking-widest hover:bg-slate-800">APPLY CHANGES</button>
+              </div>
             </div>
           </section>
 
@@ -180,6 +184,12 @@
     </div>
   </div>
 
+  <!-- ==================== ALERT COMPONENT ==================== -->
+  <div id="custom-alert" class="fixed top-8 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-slate-900 text-white rounded-full font-bold shadow-2xl flex items-center gap-2 transform -translate-y-24 transition-transform duration-300 pointer-events-none text-xs tracking-widest minimal-tech">
+    <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+    <span id="custom-alert-text">MESSAGE</span>
+  </div>
+
   <!-- Firebase & System Module -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
@@ -220,7 +230,8 @@
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('mode') === 'admin') {
         isEditingMode = true;
-        document.getElementById('admin-mode-indicator').classList.remove('hidden');
+        const adminBtn = document.getElementById('admin-mode-indicator');
+        if (adminBtn) adminBtn.classList.remove('hidden');
       }
 
       await signInAnonymously(auth);
@@ -232,7 +243,7 @@
               window.renderSlideshow();
               if (isEditingMode) window.renderAdminSlidesList();
             } else {
-              // データベースが最初期で空の場合はダイアログを出さず、自動でデフォルトを書き込む
+              // データベースが空の時は確認ウィンドウを出さずに自動で初期データを作成してフリーズを防ぐ
               window.autoInitializeDefaultData();
             }
           });
@@ -266,7 +277,10 @@
         const weatherMap = { 0: "CLEAR", 1: "CLEAR", 2: "CLOUDY", 3: "CLOUDY", 45: "FOG", 61: "RAIN", 71: "SNOW", 95: "THUNDER" };
         const weatherText = document.getElementById('mini-weather-text');
         if (weatherText) weatherText.innerText = `OHIRA // ${Math.round(data.current_weather.temperature)}℃ ${weatherMap[data.current_weather.weathercode] || "CLEAR"}`;
-      } catch (e) { document.getElementById('mini-weather-text').innerText = "OHIRA ONLINE"; }
+      } catch (e) { 
+        const weatherText = document.getElementById('mini-weather-text');
+        if (weatherText) weatherText.innerText = "OHIRA ONLINE"; 
+      }
     };
 
     // ==================== SLIDES RENDERER ====================
@@ -344,6 +358,7 @@
       });
       lucide.createIcons();
       window.showSlide(currentSlideIndex);
+      window.startSlideshowLoop(); // データベースロード時にスライドループを自動起動
     };
 
     window.showSlide = (index) => {
@@ -414,7 +429,7 @@
         html = `<div class="w-full h-full p-20 flex flex-col justify-between items-center text-center"><span class="text-xs font-bold tracking-[0.4em] text-slate-300 minimal-tech">PREVIEW CHRONO</span><div class="my-auto space-y-6"><h1 class="text-[13rem] font-extrabold text-slate-800 tracking-tighter leading-none serif-letterpress">12:34</h1><p class="text-3xl text-slate-500 font-light">${content}</p></div><span class="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">${title}</span></div>`;
       } else if (activeDesignLayout === 'schedule') {
         const rows = content.split('\n').map(l => l.split('|')).map(p => `<div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0"><span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${p[0]?.trim() || '--:--'}</span><span class="text-4xl font-semibold text-slate-700">${p[1]?.trim() || ''}</span></div>`).join('');
-        html = `<div class="w-full h-full p-20 flex flex-col justify-between"><div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech">STATION DATA</span><i data-lucide="calendar" class="w-5 h-5"></i></div><div class="flex-grow flex flex-col max-w-4xl mx-auto w-full"><h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech">${title}</h2><div class="space-y-6">${listHTML}</div></div><div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech">Sync Status Active</div></div>`;
+        html = `<div class="w-full h-full p-20 flex flex-col justify-between"><div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech">STATION DATA</span><i data-lucide="calendar" class="w-5 h-5"></i></div><div class="flex-grow flex flex-col max-w-4xl mx-auto w-full"><h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech">${title}</h2><div class="space-y-6">${rows}</div></div><div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech">Sync Status Active</div></div>`;
       } else if (activeDesignLayout === 'weekly') {
         const cards = content.split('\n').map(l => l.split('|')).map(p => `<div class="flex-1 flex flex-col p-8 bg-white/40 border border-slate-100 rounded-[32px] text-center shadow-sm"><span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${p[0]?.trim() || '曜日'}</span><span class="text-2xl font-bold text-slate-700">${p[1]?.trim() || ''}</span></div>`).join('');
         html = `<div class="w-full h-full p-20 flex flex-col text-center"><h2 class="text-5xl font-black mb-16 uppercase tracking-widest minimal-tech">${title}</h2><div class="flex flex-row gap-6 justify-center items-stretch">${cards}</div></div>`;
@@ -433,8 +448,10 @@
       window.selectLayout(s.type);
       
       setTimeout(() => {
-        document.getElementById('ds-title').value = s.title || '';
-        document.getElementById('ds-content').value = s.content || '';
+        const titleInput = document.getElementById('ds-title');
+        const contentInput = document.getElementById('ds-content');
+        if (titleInput) titleInput.value = s.title || '';
+        if (contentInput) contentInput.value = s.content || '';
         if (s.type === 'image') {
            window.tempUploadedImageBase64 = s.content_img || '';
            const inner = document.getElementById('ds-upload-inner');
@@ -472,7 +489,16 @@
     };
 
     // ==================== UI CONTROLS ====================
-    window.toggleAdminPanel = () => document.getElementById('admin-panel').classList.toggle('translate-x-full');
+    window.toggleAdminPanel = () => {
+      const p = document.getElementById('admin-panel');
+      if (p) p.classList.toggle('translate-x-full');
+      if (isEditingMode) {
+        const durationInput = document.getElementById('global-duration');
+        const tickerInput = document.getElementById('global-ticker-input');
+        if (durationInput) durationInput.value = globalDuration;
+        if (tickerInput) tickerInput.value = tickerText;
+      }
+    };
     window.openAdminPanelDirectly = () => window.toggleAdminPanel();
     window.openNewSlideModal = () => { editingSlideId = null; window.tempUploadedImageBase64 = ""; document.getElementById('slide-creator-modal').classList.remove('hidden'); window.selectLayout('clock'); };
     window.closeNewSlideModal = () => document.getElementById('slide-creator-modal').classList.add('hidden');
@@ -505,7 +531,7 @@
       lucide.createIcons();
     };
 
-    // サイレント初期化処理 (データベースが空の時は確認を出さずに書き込む)
+    // サイレント初期化処理 (データベースが空の時は確認を出さずに自動で書き込み)
     window.autoInitializeDefaultData = () => {
       const def = [
         { id:"s1", type:"clock", title:"WELCOME", content:"大衡中学校デジタルサイネージへようこそ。今日も新しい発見を楽しもう！", duration:8 },
@@ -549,7 +575,6 @@
     };
 
     window.tempUploadedImageBase64 = "";
-    window.startSlideshowLoop();
   </script>
 </body>
 </html>
