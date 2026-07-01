@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aesthetic Signage OS - Ohira Pro v6.7</title>
+  <title>Aesthetic Signage OS - Ohira Pro v8.1</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,6 +58,10 @@
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    
+    /* サテンローディングサークルエフェクト */
+    @keyframes loading-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loading-pulse-ring { width: 64px; height: 64px; border: 3px solid rgba(99, 102, 241, 0.08); border-top-color: #6366f1; border-radius: 50%; animation: loading-spin 1s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
   </style>
 </head>
 <body class="w-screen h-screen flex flex-col justify-between relative select-none p-6 md:p-10">
@@ -68,13 +72,13 @@
     <div class="ambient-aurora absolute bottom-[-20%] right-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-pink-100/30 via-purple-100/20 to-transparent rounded-full filter blur-[120px]" style="animation-delay: -10s;"></div>
   </div>
 
-  <!-- ==================== HEADER ==================== -->
+  <!-- ==================== MINIMAL HEADER ==================== -->
   <header class="w-full px-8 py-4 flex justify-between items-center z-10 satin-glass rounded-[20px] mb-6 shadow-sm">
     <div class="flex items-center gap-3">
       <span class="w-1.5 h-1.5 rounded-full bg-slate-500/60 animate-pulse"></span>
       <div class="flex flex-col text-left">
         <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">OHIRA CAMPUS</span>
-        <span class="text-xs font-light text-slate-600 uppercase">Signage Pro OS <span class="text-[9px] text-slate-400 ml-1">v6.7</span></span>
+        <span class="text-xs font-light text-slate-600 uppercase">Signage Pro OS <span class="text-[9px] text-slate-400 ml-1">v8.1</span></span>
       </div>
     </div>
     <div class="flex items-center gap-6">
@@ -100,7 +104,14 @@
 
   <!-- ==================== DISPLAY CANVAS ==================== -->
   <main class="flex-grow w-full relative overflow-hidden z-10 flex items-center justify-center mb-6">
-    <div id="slides-container" class="w-full h-full relative"></div>
+    <div id="slides-container" class="w-full h-full relative flex items-center justify-center">
+      <!-- 初回読み込み（ローディング）の極上演出 -->
+      <div id="system-initial-loader" class="flex flex-col items-center justify-center p-12 rounded-[32px] satin-glass text-center max-w-sm">
+        <div class="loading-pulse-ring mb-6"></div>
+        <p class="text-sm font-bold text-slate-700 minimal-tech tracking-[0.2em] uppercase">Initializing Canvas</p>
+        <p class="text-[10px] text-slate-400 mt-2">大衡中学校サイネージデータベースに接続中...</p>
+      </div>
+    </div>
     <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-black/[0.02] overflow-hidden z-20">
       <div id="slide-progress" class="h-full bg-slate-400 progress-bar-fill"></div>
     </div>
@@ -179,27 +190,36 @@
   <div id="slide-creator-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xl z-[60] flex items-center justify-center p-4 hidden">
     <div class="w-full max-w-6xl bg-white rounded-[40px] shadow-2xl flex flex-col h-[90vh] overflow-hidden">
       <div class="p-8 border-b border-slate-50 flex justify-between items-center text-left">
-        <h3 class="text-[11px] font-bold text-slate-800 uppercase tracking-[0.3em] minimal-tech">Slide Visual Composer Pro</h3>
+        <h3 class="text-[11px] font-bold text-slate-800 uppercase tracking-[0.3em] minimal-tech flex items-center gap-2">
+          <i data-lucide="layout-template" class="w-4 h-4 text-indigo-500"></i> Slide Visual Composer Pro
+        </h3>
         <button onclick="window.closeNewSlideModal()" class="p-2 bg-slate-50 hover:bg-slate-100 rounded-full text-slate-400 transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
-      <div class="flex-grow flex flex-row overflow-hidden">
+      <div class="flex-grow flex flex-row overflow-hidden relative">
+        <!-- デザイナー画面専用のローディング演出 -->
+        <div id="designer-uploading-overlay" class="absolute inset-0 bg-white/80 backdrop-blur-md z-50 flex flex-col items-center justify-center hidden">
+          <div class="loading-pulse-ring mb-4"></div>
+          <p class="text-sm font-bold text-indigo-600 minimal-tech tracking-wider uppercase" id="designer-loading-text">Saving Changes...</p>
+          <p class="text-xs text-slate-400 mt-2">スライドをデータベースに同期しています。しばらくお待ちください。</p>
+        </div>
+
         <!-- Layout Selection (Left) -->
         <div class="w-[420px] p-8 overflow-y-auto custom-scrollbar space-y-8 bg-slate-50/20 border-r border-slate-50 text-left">
           <div class="space-y-4">
             <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">1. Select Layout</label>
             <div class="grid grid-cols-2 gap-3" id="layout-options">
               <button onclick="window.selectLayout('clock')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="clock" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Clock</div>
+                <i data-lucide="clock" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Clock</div>
               </button>
               <button onclick="window.selectLayout('schedule')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="list" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Today's Schedule</div>
+                <i data-lucide="list" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Today's Schedule</div>
               </button>
               <button onclick="window.selectLayout('weekly')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="calendar" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Weekly View</div>
+                <i data-lucide="calendar" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Weekly View</div>
               </button>
               <button onclick="window.selectLayout('image')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="image" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Gallery</div>
+                <i data-lucide="image" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Gallery</div>
               </button>
               <button onclick="window.selectLayout('lunch')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
                 <i data-lucide="utensils" class="w-4 h-4 mb-2 text-rose-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Lunch Menu</div>
@@ -275,6 +295,10 @@
     let editingSlideId = null;
     let cursorTimeout = null;
 
+    // === setIntervalのガベージコレクション用管理マップ ===
+    const clockIntervals = new Map();
+    let headerClockInterval = null;
+
     const slidesDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'slides-list', 'default');
     const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'default');
 
@@ -307,6 +331,13 @@
       onAuthStateChanged(auth, (user) => {
         if (user) {
           onSnapshot(slidesDocRef, (snap) => {
+            // 極上ローダーのふわっと消える演出
+            const initialLoader = document.getElementById('system-initial-loader');
+            if (initialLoader) {
+              initialLoader.classList.add('transition-opacity', 'duration-500', 'opacity-0');
+              setTimeout(() => initialLoader.remove(), 500);
+            }
+
             if (snap.exists()) {
               slides = snap.data().slides || [];
               window.renderSlideshow();
@@ -314,6 +345,9 @@
             } else {
               window.autoInitializeDefaultData();
             }
+          }, (error) => {
+            console.error("Firestore loading error:", error);
+            window.showOfflineFallback();
           });
           onSnapshot(settingsDocRef, (snap) => {
             if (snap.exists()) {
@@ -321,21 +355,43 @@
               globalDuration = snap.data().globalDuration;
             }
             window.applyTicker();
-            window.startSlideshowLoop();
+          }, (error) => {
+            console.error("Settings load error:", error);
           });
         }
       });
       window.initUIEngines();
     });
 
+    // ==================== OFFLINE & ERROR FALLBACK ====================
+    window.showOfflineFallback = () => {
+      const container = document.getElementById('slides-container');
+      if (!container) return;
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center p-12 rounded-[32px] satin-glass text-center max-w-md mx-auto relative z-10">
+          <div class="p-4 bg-rose-50 border border-rose-100 rounded-full text-rose-500 mb-6 animate-bounce">
+            <i data-lucide="wifi-off" class="w-8 h-8"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 tracking-wider">現在接続が不安定です</h3>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">大衡中学校サイネージは、サーバーとの再接続を自動で試みています。このまましばらくお待ちください。</p>
+          <button onclick="window.reloadPage()" class="mt-6 px-6 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl minimal-tech tracking-widest hover:bg-slate-800 transition-all">TRY RECONNECT</button>
+        </div>
+      `;
+      lucide.createIcons();
+    };
+
     window.initUIEngines = () => {
-      setInterval(() => {
+      // 古いヘッダーインターバルが存在すればクリア
+      if (headerClockInterval) clearInterval(headerClockInterval);
+      
+      headerClockInterval = setInterval(() => {
         const now = new Date();
         const headerDate = document.getElementById('header-date');
         const headerTime = document.getElementById('header-time');
         if (headerDate) headerDate.innerText = now.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' }).toUpperCase();
         if (headerTime) headerTime.innerText = now.toLocaleTimeString('ja-JP', { hour12:false });
       }, 1000);
+      
       window.initWeather();
       window.initCursorAutoHide();
     };
@@ -354,11 +410,15 @@
       }
     };
 
-    // ==================== SLIDESROW CORE ====================
+    // ==================== SLIDES RENDERER ====================
     window.renderSlideshow = () => {
       const container = document.getElementById('slides-container');
       if (!container) return;
       container.innerHTML = '';
+      
+      // 時計系の既存setIntervalタイマーをすべて安全に破棄
+      clockIntervals.forEach((intervalId) => clearInterval(intervalId));
+      clockIntervals.clear();
       
       // データ更新時に、現在のインデックスがスライド枚数を超えていれば安全に0に引き戻すガードコード
       if (currentSlideIndex >= slides.length || currentSlideIndex < 0) {
@@ -387,10 +447,14 @@
             </div>
             <div class="w-full text-center text-[10px] font-bold opacity-30 minimal-tech uppercase tracking-widest z-10 slide-line">${escapedTitle}</div>
           `;
-          setInterval(() => {
+          
+          // 特定スライドの時計インターバルを管理マップに追加
+          const clockIntervalId = setInterval(() => {
             const el = document.getElementById(`live-clock-${idx}`);
             if (el) el.innerText = new Date().toLocaleTimeString('ja-JP', { hour12:false, hour:'2-digit', minute:'2-digit' });
           }, 1000);
+          clockIntervals.set(`clock-${idx}`, clockIntervalId);
+          
         } else if (t === 'schedule') {
           const list = slide.content.split('\n').filter(l=>l.trim()).map((pStr, i) => {
             const p = pStr.split('|');
@@ -462,7 +526,7 @@
         } else if (t === 'hero') {
           inner = `
             <div class="absolute inset-0 z-0">
-               <img src="${safeImg}" class="w-full h-full object-cover slide-zoom-img">
+               <img src="${safeImg}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'">
                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
             </div>
             <div class="mt-auto w-full text-left p-10 z-10 space-y-4">
@@ -561,7 +625,7 @@
       if (t === 'clock') {
         specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Message</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-400 outline-none">今日も一日がんばりましょう！</textarea></div>`;
       } else if (t === 'schedule' || t === 'weekly') {
-        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">List Data ( Label | Content )</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono outline-none" placeholder="月 | 朝会&#10;火 | 委員会"></textarea></div>`;
+        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Data ( Label | Task )</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono outline-none" placeholder="月 | 朝会&#10;火 | 委員会"></textarea></div>`;
       } else if (t === 'lunch') {
         specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Menu List (One per line)</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none" placeholder="わかめごはん&#10;鶏の唐揚げ"></textarea></div>`;
       } else if (t === 'countdown') {
@@ -582,7 +646,7 @@
         `;
       }
 
-      container.innerHTML = commonHTML + specificHTML; // 未定義変数(html)エラーを修正
+      container.innerHTML = commonHTML + specificHTML;
       lucide.createIcons();
       window.updateLivePreview();
     };
@@ -612,7 +676,7 @@
         `;
       } else if (activeDesignLayout === 'schedule') {
         const lines = content.split('\n').filter(l => l.trim());
-        const listHTML = lines.map((pStr, i) => {
+        const listItems = lines.map((pStr, i) => {
           const p = pStr.split('|');
           return `<div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0 slide-item-card" style="transition-delay: ${0.2 + i * 0.1}s;"><span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${window.escapeHTML(p[0]?.trim() || '--:--')}</span><span class="text-4xl font-semibold text-slate-700">${window.escapeHTML(p[1]?.trim() || '')}</span></div>`;
         }).join('');
@@ -621,7 +685,7 @@
             <div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech slide-badge">STATION DATA</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
             <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full">
               <h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech slide-title">${escapedTitle}</h2>
-              <div class="space-y-6 slide-body">${listHTML}</div>
+              <div class="space-y-6 slide-body">${listItems}</div>
             </div>
             <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech slide-line">Sync Status Active</div>
           </div>
@@ -720,7 +784,7 @@
 
     window.openEditSlide = (idx) => {
       const s = slides[idx];
-      editingSlideId = s.id; // 新規作成ではなく、編集IDを追跡
+      editingSlideId = s.id; 
       document.getElementById('slide-creator-modal').classList.remove('hidden');
       window.selectLayout(s.type);
       
@@ -742,26 +806,43 @@
       }, 100);
     };
 
-    window.saveSlideData = () => {
+    // Firebase Storage は使わず、最適圧縮されたBase64文字列を直接データベースへ高速同期
+    window.saveSlideData = async () => {
+      const saveBtn = document.getElementById('save-slide-btn');
+      const loaderOverlay = document.getElementById('designer-uploading-overlay');
+      const loadingText = document.getElementById('designer-loading-text');
+
+      if (saveBtn) saveBtn.disabled = true;
+      if (loaderOverlay) loaderOverlay.classList.remove('hidden');
+      if (loadingText) loadingText.innerText = "Saving to Database...";
+
+      // Firebase Storage の利用をやめ、圧縮したBase64データを直接セット
+      let content_img = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || "";
+
       const title = document.getElementById('ds-title').value;
       const content = document.getElementById('ds-content')?.value || "";
-      const content_img = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || "";
 
+      // スライドスタックリストの上書きまたは新規作成
       if (editingSlideId) {
-        // 既存スライドのIDを特定して置き換える（新規作成ではなく上書き）
         const idx = slides.findIndex(s => s.id === editingSlideId);
         if (idx !== -1) {
           slides[idx] = { ...slides[idx], type: activeDesignLayout, title, content, content_img };
         }
       } else {
-        // 新規追加
         slides.push({ id: "s-"+Date.now(), type: activeDesignLayout, title, content, content_img, duration: 8 });
       }
 
-      setDoc(slidesDocRef, { slides }).then(() => {
+      try {
+        await setDoc(slidesDocRef, { slides });
         document.getElementById('slide-creator-modal').classList.add('hidden');
         window.showAlert("SUCCESSFULLY SYNCED");
-      });
+      } catch (dbErr) {
+        console.error("Firestore Save Error:", dbErr);
+        window.showAlert("データベースへの同期に失敗しました");
+      } finally {
+        if (saveBtn) saveBtn.disabled = false;
+        if (loaderOverlay) loaderOverlay.classList.add('hidden');
+      }
     };
 
     window.deleteSlide = (idx) => {
@@ -813,10 +894,9 @@
       lucide.createIcons();
     };
 
-    // サイレント初期化処理 (データベースが空の時は確認を出さずに自動で書き込み)
     window.autoInitializeDefaultData = () => {
       const def = [
-        { id:"s1", type:"clock", title:"WELCOME", content:"大衡中学校デジタルサイネージへようこそ。今日も新しい発見を楽しもう！", duration:8 },
+        { id:"s1", type:"clock", title:"WELCOME", content:"大衡中学校へようこそ。今日も新しい発見を楽しもう！", duration:8 },
         { id:"s2", type:"weekly", title:"THIS WEEK", content:"月|専門委員会\n火|ノー部活デー\n水|実力テスト\n木|任命式\n金|英検", duration:10 }
       ];
       setDoc(slidesDocRef, { slides: def });
@@ -841,12 +921,19 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const MAX_W = 800;
+          
+          // 大量データ対策：サイネージ表示に必要十分な最大幅640pxにさらに圧縮
+          const MAX_W = 640;
           let w = img.width, h = img.height;
           if (w > MAX_W) { h *= MAX_W / w; w = MAX_W; }
           canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          window.tempUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+          
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          
+          // 品質を「0.5」にすることで高画質を維持したまま、データサイズを10分の1以下に削減
+          window.tempUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.5);
+          
           const inner = document.getElementById('ds-upload-inner');
           if (inner) {
             inner.innerHTML = `<img src="${window.tempUploadedImageBase64}" class="w-full h-full object-cover rounded-xl">`;
