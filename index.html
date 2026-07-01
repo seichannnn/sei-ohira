@@ -3,128 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aesthetic Signage OS - Ohira Pro</title>
+  <title>Aesthetic Signage OS - Ohira Edition v6.5</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Noto+Sans+JP:wght@100;300;400;500;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; overflow: hidden; background-color: #f6f8fa; color: #1e293b; }
+    body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; overflow: hidden; background-color: #f6f8fa; color: #1e293b; transition: padding 0.5s ease; }
     .serif-letterpress { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; letter-spacing: -0.04em; }
     .minimal-tech { font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.2em; }
     
-    /* シネマティックで静かなスライドトランジション */
-    .slide-transition {
-      opacity: 0;
-      transform: scale(1.01);
-      transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .slide-transition.active {
-      opacity: 1;
-      transform: scale(1);
-    }
+    /* マウスカーソルを完全に非表示にするクラス */
+    body.hide-cursor, body.hide-cursor * { cursor: none !important; }
 
-    /* スライド内要素の時間差スタッガードアニメーション定義 */
+    /* シネマティックで静かなスライドトランジション */
+    .slide-transition { opacity: 0; transform: scale(1.01); transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .slide-transition.active { opacity: 1; transform: scale(1); }
+
+    /* スライド内要素の時間差スタッガードアニメーション */
     .slide-transition .slide-title,
     .slide-transition .slide-body,
     .slide-transition .slide-item-card,
     .slide-transition .slide-badge,
-    .slide-transition .slide-line {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    .slide-transition .slide-line,
+    .slide-transition .slide-countdown-box,
+    .slide-transition .slide-qr-box {
+      opacity: 0; transform: translateY(20px); transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .slide-transition.active .slide-title { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+    .slide-transition.active .slide-body { opacity: 0.8; transform: translateY(0); transition-delay: 0.4s; }
+    .slide-transition.active .slide-badge { opacity: 1; transform: translateY(0); transition-delay: 0.1s; }
+    .slide-transition.active .slide-line { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+    .slide-transition.active .slide-item-card { opacity: 1; transform: translateY(0); }
+    .slide-transition.active .slide-countdown-box { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+    .slide-transition.active .slide-qr-box { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
 
-    /* アクティブ化されたときに時間差（delay）をつけてフェードイン */
-    .slide-transition.active .slide-title {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.2s;
-    }
-    .slide-transition.active .slide-body {
-      opacity: 0.8;
-      transform: translateY(0);
-      transition-delay: 0.4s;
-    }
-    .slide-transition.active .slide-badge {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.1s;
-    }
-    .slide-transition.active .slide-line {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.3s;
-    }
-    .slide-transition.active .slide-item-card {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* ギャラリー用のKen Burns効果 */
+    .slide-transition .slide-image-container { opacity: 0; transform: scale(0.96) translateX(-20px); transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.1s; }
+    .slide-transition.active .slide-image-container { opacity: 1; transform: scale(1) translateX(0); }
+    .slide-transition .slide-zoom-img { transform: scale(1.15); transition: transform 15s cubic-bezier(0.25, 1, 0.5, 1); }
+    .slide-transition.active .slide-zoom-img { transform: scale(1.0); }
 
-    /* ギャラリー用の超スローモーションKen Burns効果 */
-    .slide-transition .slide-image-container {
-      opacity: 0;
-      transform: scale(0.96) translateX(-20px);
-      transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
-      transition-delay: 0.1s;
-    }
-    .slide-transition.active .slide-image-container {
-      opacity: 1;
-      transform: scale(1) translateX(0);
-    }
-    .slide-transition .slide-zoom-img {
-      transform: scale(1.12);
-      transition: transform 12s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .slide-transition.active .slide-zoom-img {
-      transform: scale(1.0);
-    }
-
-    /* 究極の超薄クリスタルサテンガラス */
-    .satin-glass {
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(40px);
-      -webkit-backdrop-filter: blur(40px);
-      border: 1px rgba(255, 255, 255, 0.6) solid;
-      box-shadow: 
-        0 20px 60px rgba(15, 23, 42, 0.05), 
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    }
-
-    /* 静寂な淡いパステル流体背景 */
-    @keyframes slow-ambient {
-      0% { transform: translate(0px, 0px) scale(1); }
-      50% { transform: translate(30px, -15px) scale(1.05); }
-      100% { transform: translate(0px, 0px) scale(1); }
-    }
-    .ambient-aurora {
-      animation: slow-ambient 35s infinite alternate ease-in-out;
-    }
-
-    /* プログレスバー */
-    .progress-bar-fill {
-      width: 0%;
-      transition: width linear;
-    }
-
-    /* 無限ティッカー */
-    @keyframes ticker {
-      0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-50%, 0, 0); }
-    }
-    .ticker-content {
-      display: inline-block;
-      white-space: nowrap;
-      animation: ticker 60s linear infinite;
-    }
+    .satin-glass { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(40px); border: 1px rgba(255, 255, 255, 0.6) solid; box-shadow: 0 20px 60px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
+    @keyframes slow-ambient { 0% { transform: translate(0px, 0px) scale(1); } 50% { transform: translate(30px, -15px) scale(1.05); } 100% { transform: translate(0px, 0px) scale(1); } }
+    .ambient-aurora { animation: slow-ambient 35s infinite alternate ease-in-out; }
+    .progress-bar-fill { width: 0%; transition: width linear; }
+    @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+    .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 60s linear infinite; }
+    body.pseudo-fs-active { padding: 0 !important; }
+    body.pseudo-fs-active header, body.pseudo-fs-active footer { display: none !important; }
+    body.pseudo-fs-active main { margin: 0 !important; padding: 0 !important; height: 100vh !important; width: 100vw !important; }
+    body.pseudo-fs-active main .satin-glass { border-radius: 0px !important; border: none !important; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
   </style>
 </head>
 <body class="w-screen h-screen flex flex-col justify-between relative select-none p-6 md:p-10">
 
   <!-- ==================== AMBIENT BACKGROUND ==================== -->
   <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#f6f8fa]">
-    <!-- 淡く優しいパステル調のグラデーションオーブ -->
     <div class="ambient-aurora absolute top-[-20%] left-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-blue-200/30 via-indigo-100/20 to-transparent rounded-full filter blur-[120px]"></div>
     <div class="ambient-aurora absolute bottom-[-20%] right-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-pink-100/30 via-purple-100/20 to-transparent rounded-full filter blur-[120px]" style="animation-delay: -10s;"></div>
   </div>
@@ -135,19 +74,26 @@
       <span class="w-1.5 h-1.5 rounded-full bg-slate-500/60 animate-pulse"></span>
       <div class="flex flex-col text-left">
         <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">OHIRA CAMPUS</span>
-        <span class="text-xs font-light text-slate-600 uppercase">Signage OS Portal <span class="text-[9px] text-slate-400 ml-1">v5.0</span></span>
+        <span class="text-xs font-light text-slate-600 uppercase">Signage Pro OS <span class="text-[9px] text-slate-400 ml-1">v6.5</span></span>
       </div>
     </div>
-    <div class="flex items-center gap-8">
+    <div class="flex items-center gap-6">
+      <!-- 大衡村の天気 -->
       <div id="mini-weather" class="flex items-center gap-2 text-[11px] text-slate-500 font-light">
         <span id="mini-weather-text" class="minimal-tech uppercase">OHIRA METEO LOADING</span>
+      </div>
+
+      <!-- 便利ボタン：再読み込み＆全画面表示 -->
+      <div class="flex items-center gap-2 border-l border-slate-200 pl-6">
+        <button onclick="window.reloadPage()" class="p-2 bg-black/[0.03] hover:bg-black/[0.08] rounded-full transition-all text-slate-500 hover:text-slate-800 border border-black/[0.05] flex items-center justify-center"><i data-lucide="rotate-cw" class="w-4 h-4"></i></button>
+        <button onclick="window.toggleFullscreen()" class="p-2 bg-black/[0.03] hover:bg-black/[0.08] rounded-full transition-all text-slate-500 hover:text-slate-800 border border-black/[0.05] flex items-center justify-center"><i id="fullscreen-icon" data-lucide="maximize" class="w-4 h-4"></i></button>
       </div>
       <div class="text-right border-l border-slate-200 pl-6">
         <p id="header-date" class="text-[8px] text-slate-400 font-semibold uppercase tracking-widest minimal-tech"></p>
         <p id="header-time" class="text-base font-light text-slate-700 minimal-tech tracking-wider"></p>
       </div>
-      <button id="admin-mode-indicator" onclick="openAdminPanelDirectly()" class="hidden px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 rounded-xl transition-all text-[10px] font-bold minimal-tech shadow-md tracking-widest">
-        DESIGNER STUDIO
+      <button id="admin-mode-indicator" onclick="window.toggleAdminPanel()" class="hidden px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 rounded-xl transition-all text-[10px] font-bold minimal-tech shadow-md tracking-widest uppercase">
+        Designer Studio
       </button>
     </div>
   </header>
@@ -160,37 +106,40 @@
     </div>
   </main>
 
+  <button id="exit-pseudo-fs-btn" onclick="window.exitPseudoFullscreen()" class="hidden fixed top-6 right-6 z-[100] p-3 bg-slate-900/80 text-white rounded-full shadow-2xl backdrop-blur-md transition-all active:scale-95 border border-white/10 flex items-center justify-center"><i data-lucide="minimize"></i></button>
+
   <!-- ==================== MARQUEE FOOTER ==================== -->
   <footer class="w-full h-10 z-10 satin-glass rounded-[16px] overflow-hidden flex items-center px-6">
-    <div class="text-[9px] font-bold text-slate-400 tracking-widest uppercase shrink-0 mr-6 flex items-center minimal-tech">宮城 大衡村 // UPDATES</div>
+    <div class="text-[9px] font-bold text-slate-400 tracking-widest uppercase shrink-0 mr-6 flex items-center minimal-tech">宮城 大衡村 // Ohira UPDATES</div>
     <div class="ticker-wrap flex-grow h-full flex items-center text-slate-600 font-light text-xs tracking-widest uppercase overflow-hidden">
       <div id="ticker-content" class="ticker-content minimal-tech"></div>
     </div>
   </footer>
 
-  <!-- ==================== VISUAL DESIGNER DRAWER ==================== -->
+  <!-- ==================== ADMIN DRAWER ==================== -->
   <div id="admin-panel" class="fixed inset-0 bg-white/95 backdrop-blur-3xl z-50 flex justify-end transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
     <div class="w-full max-w-4xl bg-[#fafafa] h-full shadow-2xl flex flex-row border-l border-slate-200">
       
-      <!-- 左：スライドスタック管理 -->
-      <div class="w-64 border-r border-slate-100 flex flex-col h-full bg-slate-50/50">
-        <div class="p-6 border-b border-slate-100 flex items-center gap-2">
-          <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i>
-          <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest minimal-tech">Slide Stack</span>
+      <!-- Slide Stack List -->
+      <div class="w-72 border-r border-slate-100 flex flex-col h-full bg-slate-50/50">
+        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i>
+            <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest minimal-tech">Stack</span>
+          </div>
+          <button onclick="window.openNewSlideModal()" class="p-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 shadow-sm"><i data-lucide="plus" class="w-4 h-4"></i></button>
         </div>
-        <div id="admin-slides-list" class="flex-grow overflow-y-auto p-4 space-y-3"></div>
-        <div class="p-4 border-t border-slate-100">
-          <button onclick="openNewSlideModal()" class="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold minimal-tech tracking-widest hover:bg-slate-800 shadow-lg flex items-center justify-center gap-2">
-            <i data-lucide="plus" class="w-3 h-3"></i> NEW SLIDE
-          </button>
+        <div id="admin-slides-list" class="flex-grow overflow-y-auto p-4 space-y-3 custom-scrollbar text-left"></div>
+        <div class="p-6 border-t border-slate-100">
+           <button onclick="window.saveGlobalSettings()" class="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold minimal-tech tracking-widest hover:bg-slate-800 shadow-lg">SYNC CHANGES</button>
         </div>
       </div>
 
-      <!-- 右：詳細設定 & プレビュー -->
+      <!-- Editor Detail -->
       <div class="flex-grow flex flex-col h-full overflow-hidden">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white/50">
-          <h2 class="text-[11px] font-bold text-slate-800 tracking-widest uppercase minimal-tech">Global Control Studio</h2>
-          <button onclick="toggleAdminPanel()" class="p-2 hover:bg-slate-100 rounded-full text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white/50 text-left">
+          <h2 class="text-[11px] font-bold text-slate-800 tracking-widest uppercase minimal-tech">Signage Control Center</h2>
+          <button onclick="window.toggleAdminPanel()" class="p-2 hover:bg-slate-100 rounded-full text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         
         <div class="flex-grow overflow-y-auto p-8 space-y-10 custom-scrollbar text-left">
@@ -199,14 +148,14 @@
             <div class="grid grid-cols-2 gap-6 bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
               <div class="space-y-1.5">
                 <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Interval (Seconds)</label>
-                <input type="number" id="global-duration" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm focus:outline-none">
+                <input type="number" id="global-duration" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm outline-none">
               </div>
               <div class="space-y-1.5">
-                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Ticker Message</label>
-                <input type="text" id="global-ticker-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm focus:outline-none">
+                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Footer News Ticker</label>
+                <input type="text" id="global-ticker-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm outline-none">
               </div>
               <div class="col-span-2 flex justify-end">
-                <button onclick="saveGlobalSettings()" class="px-6 py-2.5 bg-slate-900 text-white text-[10px] font-bold rounded-xl minimal-tech tracking-widest hover:bg-slate-800">APPLY CHANGES</button>
+                <button onclick="window.saveGlobalSettings()" class="px-6 py-2.5 bg-slate-900 text-white text-[10px] font-bold rounded-xl minimal-tech tracking-widest hover:bg-slate-800">APPLY CHANGES</button>
               </div>
             </div>
           </section>
@@ -223,7 +172,7 @@
 
         <div class="p-6 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
           <button onclick="window.resetToDefaults()" class="text-rose-400 text-[10px] font-bold minimal-tech hover:text-rose-600 transition-all uppercase tracking-widest">Factory Reset</button>
-          <p class="text-[9px] text-slate-300 minimal-tech tracking-[0.2em] uppercase">sei ohira portal // Miyagi OHIRA</p>
+          <p class="text-[9px] text-slate-300 minimal-tech tracking-[0.2em] uppercase">sei ohira portal // MIYAGI OHIRA</p>
         </div>
       </div>
     </div>
@@ -231,42 +180,54 @@
 
   <!-- ==================== VISUAL COMPOSER MODAL ==================== -->
   <div id="slide-creator-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xl z-[60] flex items-center justify-center p-4 hidden">
-    <div class="w-full max-w-5xl bg-white rounded-[40px] shadow-2xl flex flex-col h-[90vh] overflow-hidden">
-      <div class="p-8 border-b border-slate-50 flex justify-between items-center">
-        <h3 class="text-[11px] font-bold text-slate-800 uppercase tracking-[0.3em] minimal-tech">Slide Visual Composer</h3>
+    <div class="w-full max-w-6xl bg-white rounded-[40px] shadow-2xl flex flex-col h-[90vh] overflow-hidden">
+      <div class="p-8 border-b border-slate-50 flex justify-between items-center text-left">
+        <h3 class="text-[11px] font-bold text-slate-800 uppercase tracking-[0.3em] minimal-tech">Slide Visual Composer Pro</h3>
         <button onclick="window.closeNewSlideModal()" class="p-2 bg-slate-50 hover:bg-slate-100 rounded-full text-slate-400 transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
       <div class="flex-grow flex flex-row overflow-hidden">
-        <!-- 左：設定 -->
-        <div class="w-[380px] p-8 overflow-y-auto custom-scrollbar space-y-8 bg-slate-50/20 border-r border-slate-50 text-left">
+        <!-- Layout Selection (Left) -->
+        <div class="w-[420px] p-8 overflow-y-auto custom-scrollbar space-y-8 bg-slate-50/20 border-r border-slate-50 text-left">
           <div class="space-y-4">
-            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">1. Layout Type</label>
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">1. Select Layout</label>
             <div class="grid grid-cols-2 gap-3" id="layout-options">
-              <button onclick="window.selectLayout('clock')" class="layout-btn layout-card p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="clock" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[10px] font-bold text-slate-700 uppercase">Clock</div>
+              <button onclick="window.selectLayout('clock')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="clock" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Clock</div>
               </button>
-              <button onclick="window.selectLayout('schedule')" class="layout-btn layout-card p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="list" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[10px] font-bold text-slate-700 uppercase">Today's</div>
+              <button onclick="window.selectLayout('schedule')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="list" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Today's Schedule</div>
               </button>
-              <button onclick="window.selectLayout('weekly')" class="layout-btn layout-card p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="calendar" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[10px] font-bold text-slate-700 uppercase">Weekly</div>
+              <button onclick="window.selectLayout('weekly')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="calendar" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Weekly View</div>
               </button>
-              <button onclick="window.selectLayout('image')" class="layout-btn layout-card p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="image" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[10px] font-bold text-slate-700 uppercase">Gallery</div>
+              <button onclick="window.selectLayout('image')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="image" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Gallery</div>
+              </button>
+              <button onclick="window.selectLayout('lunch')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="utensils" class="w-4 h-4 mb-2 text-rose-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Lunch Menu</div>
+              </button>
+              <button onclick="window.selectLayout('countdown')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="hourglass" class="w-4 h-4 mb-2 text-indigo-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Countdown</div>
+              </button>
+              <button onclick="window.selectLayout('qrcode')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="qr-code" class="w-4 h-4 mb-2 text-emerald-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">QR Code Link</div>
+              </button>
+              <button onclick="window.selectLayout('hero')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+                <i data-lucide="megaphone" class="w-4 h-4 mb-2 text-amber-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Hero News</div>
               </button>
             </div>
           </div>
 
           <div class="space-y-6" id="visual-editor-inputs">
-            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">2. Slide Data</label>
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">2. Content Entry</label>
             <div id="dynamic-visual-inputs" class="space-y-5"></div>
           </div>
         </div>
 
-        <!-- 右：プレビュー -->
+        <!-- Designer Preview (Right) -->
         <div class="flex-grow bg-slate-100/50 p-12 flex items-center justify-center overflow-hidden">
-          <div class="relative w-[1280px] h-[720px] shadow-2xl rounded-[32px] overflow-hidden bg-white scale-[0.42] transform-gpu origin-center">
+          <div class="relative w-[1280px] h-[720px] shadow-2xl rounded-[32px] overflow-hidden bg-white scale-[0.45] transform-gpu origin-center">
             <div id="live-designer-preview" class="w-full h-full relative"></div>
           </div>
         </div>
@@ -291,7 +252,7 @@
     import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-    const appId = 'sei-ohira-v55-ohira';
+    const appId = 'sei-ohira-v60';
     const firebaseConfig = {
       apiKey: "AIzaSyAWN0wX9izOv5PqsRxMSC09lVSBGy_Oolk",
       authDomain: "sei-ohira.firebaseapp.com",
@@ -307,7 +268,7 @@
     const db = getFirestore(app);
 
     let slides = [];
-    let tickerText = "【大衡中学校】おはようございます。本日は校内美化運動が実施されます。 🌿 | 読書旬間スタート。図書室でお待ちしています。 📚";
+    let tickerText = "【大衡中学校】おはようございます。本日は1学期任命式が行われます。 🌿 | 【お知らせ】万葉集読書会は図書室にて開催。 📚";
     let globalDuration = 8;
     let apiKey = localStorage.getItem(`${appId}-gemini-api-key`) || '';
     let currentSlideIndex = 0;
@@ -315,11 +276,27 @@
     let isEditingMode = false;
     let activeDesignLayout = 'clock';
     let editingSlideId = null;
+    let cursorTimeout = null;
 
     const slidesDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'slides-list', 'default');
     const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'default');
 
-    // ==================== INITIALIZATION ====================
+    // ==================== SECURITY SANITIZER (XSS対策) ====================
+    window.escapeHTML = (str) => {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, function(m) {
+        switch (m) {
+          case '&': return '&amp;';
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '"': return '&quot;';
+          case "'": return '&#039;';
+          default: return m;
+        }
+      });
+    };
+
+    // ==================== BOOT ENGINE ====================
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
       const urlParams = new URLSearchParams(window.location.search);
@@ -338,7 +315,6 @@
               window.renderSlideshow();
               if (isEditingMode) window.renderAdminSlidesList();
             } else {
-              // データベースが空の時は確認ウィンドウを出さずに自動で初期データを作成してフリーズを防ぐ
               window.autoInitializeDefaultData();
             }
           });
@@ -348,13 +324,14 @@
               globalDuration = snap.data().globalDuration;
             }
             window.applyTicker();
+            window.startSlideshowLoop();
           });
         }
       });
-      window.initSystemEngine();
+      window.initUIEngines();
     });
 
-    window.initSystemEngine = () => {
+    window.initUIEngines = () => {
       setInterval(() => {
         const now = new Date();
         const headerDate = document.getElementById('header-date');
@@ -363,6 +340,7 @@
         if (headerTime) headerTime.innerText = now.toLocaleTimeString('ja-JP', { hour12:false });
       }, 1000);
       window.initWeather();
+      window.initCursorAutoHide();
     };
 
     window.initWeather = async () => {
@@ -370,15 +348,16 @@
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=38.47&longitude=140.88&current_weather=true&timezone=Asia%2FTokyo`);
         const data = await res.json();
         const weatherMap = { 0: "CLEAR", 1: "CLEAR", 2: "CLOUDY", 3: "CLOUDY", 45: "FOG", 61: "RAIN", 71: "SNOW", 95: "THUNDER" };
+        const temp = Math.round(data.current_weather.temperature);
         const weatherText = document.getElementById('mini-weather-text');
-        if (weatherText) weatherText.innerText = `OHIRA // ${Math.round(data.current_weather.temperature)}℃ ${weatherMap[data.current_weather.weathercode] || "CLEAR"}`;
+        if (weatherText) weatherText.innerText = `OHIRA // ${temp}℃ ${weatherMap[data.current_weather.weathercode] || "CLEAR"}`;
       } catch (e) { 
         const weatherText = document.getElementById('mini-weather-text');
         if (weatherText) weatherText.innerText = "OHIRA ONLINE"; 
       }
     };
 
-    // ==================== SLIDES RENDERER ====================
+    // ==================== SLIDESROW CORE ====================
     window.renderSlideshow = () => {
       const container = document.getElementById('slides-container');
       if (!container) return;
@@ -387,73 +366,131 @@
       slides.forEach((slide, idx) => {
         const slideEl = document.createElement('div');
         slideEl.id = `slide-${idx}`;
-        slideEl.className = `slide-transition absolute inset-0 w-full h-full p-16 flex flex-col justify-between rounded-[24px] satin-glass pointer-events-none`;
+        slideEl.className = `slide-transition absolute inset-0 w-full h-full p-20 flex flex-col justify-between rounded-[24px] satin-glass pointer-events-none`;
         
         let inner = '';
-        if (slide.type === 'clock') {
+        const t = slide.type;
+
+        // XSS脆弱性対策（エスケープ処理を通す）
+        const escapedTitle = window.escapeHTML(slide.title || '');
+        const escapedContent = window.escapeHTML(slide.content || '');
+        const safeImg = window.escapeHTML(slide.content_img || '');
+
+        if (t === 'clock') {
           inner = `
-            <div class="w-full flex justify-between items-start opacity-50 z-10"><span class="text-xs font-bold tracking-widest minimal-tech">PORTAL INFOMETRY</span><i data-lucide="clock" class="w-5 h-5"></i></div>
+            <div class="w-full flex justify-between items-start opacity-50 z-10 slide-badge"><span class="text-xs font-bold tracking-widest minimal-tech">PORTAL CHRONOS</span><i data-lucide="clock" class="w-5 h-5"></i></div>
             <div class="my-auto text-center space-y-6 z-10">
-              <h1 id="live-clock-${idx}" class="text-[12rem] font-extrabold text-slate-800 tracking-tighter serif-letterpress leading-none slide-title">00:00</h1>
-              <p class="text-2xl text-slate-500 font-light max-w-4xl mx-auto slide-body">${slide.content}</p>
+              <h1 id="live-clock-${idx}" class="text-[13rem] font-black text-slate-800 tracking-tighter serif-letterpress leading-none slide-title">00:00</h1>
+              <p class="text-2xl text-slate-500 font-light max-w-4xl mx-auto slide-body">${escapedContent}</p>
             </div>
-            <div class="w-full text-center text-[10px] font-bold opacity-30 minimal-tech uppercase tracking-widest z-10">${slide.title}</div>
+            <div class="w-full text-center text-[10px] font-bold opacity-30 minimal-tech uppercase tracking-widest z-10 slide-line">${escapedTitle}</div>
           `;
           setInterval(() => {
             const el = document.getElementById(`live-clock-${idx}`);
             if (el) el.innerText = new Date().toLocaleTimeString('ja-JP', { hour12:false, hour:'2-digit', minute:'2-digit' });
           }, 1000);
-        } else if (slide.type === 'schedule') {
-          const lines = slide.content.split('\n').map(l => l.split('|'));
-          const list = lines.map((p, itemIdx) => `
-            <div class="flex items-center gap-10 border-b border-black/[0.03] pb-4 slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
-              <span class="text-2xl font-bold text-slate-350 minimal-tech w-32 uppercase">${p[0]?.trim() || '--:--'}</span>
-              <span class="text-3xl font-medium text-slate-700">${p[1]?.trim() || ''}</span>
-            </div>
-          `).join('');
+        } else if (t === 'schedule') {
+          const list = slide.content.split('\n').filter(l=>l.trim()).map((pStr, i) => {
+            const p = pStr.split('|');
+            return `<div class="flex items-center gap-10 border-b border-black/[0.04] pb-6 slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-3xl font-bold text-slate-350 minimal-tech w-44 uppercase text-right">${window.escapeHTML(p[0]?.trim() || '--')}</span><span class="text-4xl font-semibold text-slate-700">${window.escapeHTML(p[1]?.trim() || '')}</span></div>`;
+          }).join('');
           inner = `
-            <div class="w-full flex justify-between opacity-40 mb-6 z-10"><span class="text-xs font-bold tracking-widest minimal-tech uppercase">Today's Schedule</span><i data-lucide="list" class="w-5 h-5"></i></div>
+            <div class="w-full flex justify-between opacity-40 mb-6 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase">Daily Protocol</span><i data-lucide="list" class="w-5 h-5"></i></div>
             <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full z-10">
-              <h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech text-left slide-title">${slide.title}</h2>
+              <h2 class="text-5xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech text-left slide-title">${escapedTitle}</h2>
               <div class="space-y-6 custom-scrollbar overflow-y-auto pr-4 slide-body">${list}</div>
             </div>
           `;
-        } else if (slide.type === 'weekly') {
-          const lines = slide.content.split('\n').map(l => l.split('|'));
-          const cards = lines.map((p, itemIdx) => `
-            <div class="flex-1 min-w-[160px] flex flex-col p-6 bg-white/40 border border-white/60 rounded-3xl text-center shadow-sm slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
-              <span class="text-sm font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-2 mb-3">${p[0]?.trim() || 'Day'}</span>
-              <span class="text-lg font-semibold text-slate-700 leading-snug">${p[1]?.trim() || ''}</span>
-            </div>
-          `).join('');
+        } else if (t === 'weekly') {
+          const cards = slide.content.split('\n').filter(l=>l.trim()).map((pStr, i) => {
+            const p = pStr.split('|');
+            return `<div class="flex-1 flex flex-col p-8 bg-white/40 border border-white/60 rounded-[32px] text-center shadow-sm slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${window.escapeHTML(p[0]?.trim())}</span><span class="text-2xl font-bold text-slate-700 leading-snug">${window.escapeHTML(p[1]?.trim())}</span></div>`;
+          }).join('');
           inner = `
-            <div class="w-full flex justify-between opacity-40 mb-6 z-10"><span class="text-xs font-bold tracking-widest minimal-tech uppercase">Weekly Overview</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
+            <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase">Weekly Overview</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
             <div class="flex-grow flex flex-col w-full text-center z-10">
-              <h2 class="text-3xl font-black mb-12 uppercase tracking-widest minimal-tech slide-title">${slide.title}</h2>
-              <div class="flex flex-row gap-4 justify-center items-stretch">${cards}</div>
+              <h2 class="text-4xl font-black mb-16 uppercase tracking-widest minimal-tech slide-title">${escapedTitle}</h2>
+              <div class="flex flex-row gap-5 justify-center items-stretch slide-body">${cards}</div>
             </div>
           `;
-        } else if (slide.type === 'image') {
+        } else if (t === 'lunch') {
+          const items = slide.content.split('\n').filter(l=>l.trim()).map((p, i) => `<div class="p-6 bg-rose-50/50 border border-rose-100 rounded-3xl slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><p class="text-3xl font-bold text-rose-700">${window.escapeHTML(p.trim())}</p></div>`).join('');
+          inner = `
+            <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-rose-400">Lunch Menu</span><i data-lucide="utensils" class="w-5 h-5 text-rose-400"></i></div>
+            <div class="my-auto flex flex-col max-w-5xl mx-auto w-full z-10 text-center space-y-10">
+              <h2 class="text-5xl font-black text-slate-800 slide-title">${escapedTitle}</h2>
+              <div class="grid grid-cols-2 gap-6 slide-body">${items}</div>
+              <p class="text-xl text-slate-400 font-medium italic slide-line">美味しい給食を食べて、午後の授業もがんばりましょう！</p>
+            </div>
+          `;
+        } else if (t === 'countdown') {
+          const target = new Date(slide.content_img || new Date());
+          const now = new Date();
+          const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+          const unit = diff >= 0 ? "DAYS LEFT" : "COMPLETED";
+          inner = `
+            <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Chrono Target</span><i data-lucide="hourglass" class="w-5 h-5 text-indigo-500"></i></div>
+            <div class="my-auto flex flex-col items-center justify-center text-center z-10 space-y-12">
+              <h2 class="text-6xl font-black text-slate-800 slide-title">${escapedTitle}</h2>
+              <div class="slide-countdown-box flex flex-col items-center">
+                <div class="text-[16rem] font-black leading-none serif-letterpress text-slate-900 tracking-tighter">${Math.max(0, diff)}</div>
+                <div class="text-3xl font-bold text-indigo-500 minimal-tech tracking-[0.5em] mt-4">${unit}</div>
+              </div>
+              <div class="h-1.5 w-32 bg-slate-200 rounded-full slide-line"></div>
+            </div>
+          `;
+        } else if (t === 'qrcode') {
+          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(slide.content_img)}`;
+          inner = `
+            <div class="w-full h-full flex flex-row items-center gap-24">
+              <div class="w-1/2 flex flex-col justify-center text-left space-y-8 z-10">
+                <span class="text-xs font-bold text-emerald-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Direct Access</span>
+                <h2 class="text-7xl font-black text-slate-800 leading-tight slide-title">${escapedTitle}</h2>
+                <div class="h-2 w-24 bg-emerald-500 rounded-full slide-line"></div>
+                <p class="text-3xl text-slate-500 font-light leading-relaxed slide-body">${escapedContent}</p>
+              </div>
+              <div class="w-1/2 flex justify-center items-center slide-qr-box">
+                <div class="p-8 bg-white rounded-[48px] shadow-2xl border-2 border-emerald-50 relative">
+                  <img src="${window.escapeHTML(qrUrl)}" class="w-80 h-80 object-contain">
+                  <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-emerald-500 text-white text-xs font-bold rounded-full shadow-lg minimal-tech">SCAN ME</div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (t === 'hero') {
+          inner = `
+            <div class="absolute inset-0 z-0">
+               <img src="${safeImg}" class="w-full h-full object-cover slide-zoom-img">
+               <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
+            </div>
+            <div class="mt-auto w-full text-left p-10 z-10 space-y-4">
+              <span class="px-4 py-1.5 bg-amber-500 text-white text-xs font-black rounded-full slide-badge minimal-tech uppercase">Featured News</span>
+              <h1 class="text-8xl font-black text-white slide-title leading-tight">${escapedTitle}</h1>
+              <p class="text-3xl text-white/70 font-light slide-body max-w-4xl">${escapedContent}</p>
+            </div>
+          `;
+        } else {
           inner = `
             <div class="w-full h-full flex items-center gap-16">
               <div class="w-1/2 h-full rounded-[40px] overflow-hidden shadow-2xl border-4 border-white bg-slate-100 slide-image-container">
-                <img src="${slide.content_img}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'">
+                <img src="${safeImg}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'">
               </div>
               <div class="w-1/2 space-y-8 text-left z-10">
-                <span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Announcement</span>
-                <h2 class="text-6xl font-black text-slate-800 leading-tight slide-title">${slide.title}</h2>
+                <span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Information</span>
+                <h2 class="text-6xl font-black text-slate-800 leading-tight slide-title">${escapedTitle}</h2>
                 <div class="h-2 w-20 bg-slate-900 rounded-full slide-line"></div>
-                <p class="text-2xl text-slate-500 font-light leading-relaxed slide-body">${slide.content}</p>
+                <p class="text-2xl text-slate-500 font-light leading-relaxed slide-body">${escapedContent}</p>
               </div>
             </div>
           `;
         }
+
         slideEl.innerHTML = inner;
         container.appendChild(slideEl);
       });
       lucide.createIcons();
       window.showSlide(currentSlideIndex);
-      window.startSlideshowLoop(); // データベースロード時にスライドループを自動起動
+      window.startSlideshowLoop();
     };
 
     window.showSlide = (index) => {
@@ -482,9 +519,9 @@
     // ==================== VISUAL DESIGNER ====================
     window.selectLayout = (type) => {
       activeDesignLayout = type;
-      document.querySelectorAll('.layout-btn').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('.layout-btn').forEach(el => el.classList.remove('selected', 'border-indigo-500', 'bg-indigo-50/50'));
       const activeBtn = Array.from(document.querySelectorAll('.layout-btn')).find(el => el.getAttribute('onclick').includes(`'${type}'`));
-      if (activeBtn) activeBtn.classList.add('selected');
+      if (activeBtn) activeBtn.classList.add('selected', 'border-indigo-500', 'bg-indigo-50/50');
       window.updateDesignerInputs();
     };
 
@@ -494,56 +531,77 @@
       container.innerHTML = '';
       window.tempUploadedImageBase64 = "";
 
-      let commonHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Main Title</label><input type="text" id="ds-title" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-400 outline-none"></div>`;
+      let commonHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Main Title / 見出し</label><input type="text" id="ds-title" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-400 outline-none"></div>`;
       
       let specificHTML = '';
-      if (activeDesignLayout === 'clock') {
-        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Message</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-400 outline-none">おはようございます。</textarea></div>`;
-      } else if (activeDesignLayout === 'schedule' || activeDesignLayout === 'weekly') {
-        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">List Data ( Label | Content )</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono focus:border-indigo-400 outline-none"></textarea></div>`;
-      } else if (activeDesignLayout === 'image') {
+      const t = activeDesignLayout;
+      if (t === 'clock') {
+        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Message</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-400 outline-none">今日も一日がんばりましょう！</textarea></div>`;
+      } else if (t === 'schedule' || t === 'weekly') {
+        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">List Data ( Label | Task )</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono outline-none" placeholder="月 | 朝会&#10;火 | 委員会"></textarea></div>`;
+      } else if (t === 'lunch') {
+        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Menu List (One per line)</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none" placeholder="わかめごはん&#10;鶏の唐揚げ"></textarea></div>`;
+      } else if (t === 'countdown') {
+        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Target Date</label><input type="date" id="ds-img" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></div>`;
+      } else if (t === 'qrcode') {
+        specificHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Description</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
+        specificHTML += `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">URL</label><input type="text" id="ds-img" oninput="window.updateLivePreview()" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></div>`;
+      } else if (t === 'image' || t === 'hero') {
         specificHTML = `
-          <div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Drop Image</label><div id="ds-drop-zone" onclick="window.triggerImageFileSelect()" ondragover="window.handleImageDragOver(event)" ondrop="window.handleImageDrop(event)" class="w-full h-32 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center bg-white cursor-pointer hover:border-indigo-300 transition-all text-slate-400 flex-col gap-1"><i data-lucide="image" class="w-6 h-6"></i><span class="text-[10px] font-bold uppercase">Click or Drag</span><input type="file" id="ds-image-file" class="hidden" onchange="window.handleImageSelect(event)" accept="image/*"></div></div>
-          <div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Description</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>
+          <div class="space-y-2">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Asset</label>
+            <div id="ds-drop-zone" onclick="window.triggerImageFileSelect()" ondragover="window.handleImageDragOver(event)" ondrop="window.handleImageDrop(event)" class="w-full h-24 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center bg-white cursor-pointer hover:border-indigo-300 transition-all text-slate-400 flex-col gap-1">
+              <i data-lucide="image" class="w-6 h-6"></i><span class="text-[10px] font-bold uppercase" id="ds-upload-inner">Click to Upload</span>
+            </div>
+            <input type="file" id="ds-image-file" class="hidden" onchange="window.handleImageSelect(event)" accept="image/*">
+          </div>
+          <div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Description</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-indigo-400"></textarea></div>
         `;
       }
-      container.innerHTML = commonHTML + specificHTML;
+
+      container.innerHTML = html;
       lucide.createIcons();
       window.updateLivePreview();
     };
 
+    // プレビュー表示関数を完全に整理・保護
     window.updateLivePreview = () => {
       const preview = document.getElementById('live-designer-preview');
       if (!preview) return;
+      
       const title = document.getElementById('ds-title')?.value || 'TITLE';
       const content = document.getElementById('ds-content')?.value || '';
-      const finalImg = window.tempUploadedImageBase64 || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800';
+      const img = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800';
 
-      let html = '';
+      // XSS対策を適用してプレビューを生成
+      const escapedTitle = window.escapeHTML(title);
+      const escapedContent = window.escapeHTML(content);
+      const safeImg = window.escapeHTML(img);
+
+      let layoutHTML = '';
       if (activeDesignLayout === 'clock') {
-        html = `
+        layoutHTML = `
           <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between items-center text-center">
             <span class="text-xs font-bold tracking-[0.4em] text-slate-300 minimal-tech slide-badge">PREVIEW CHRONO</span>
             <div class="my-auto space-y-6">
               <h1 class="text-[13rem] font-extrabold text-slate-800 tracking-tighter leading-none serif-letterpress slide-title">12:34</h1>
-              <p class="text-3xl text-slate-500 font-light slide-body">${content}</p>
+              <p class="text-3xl text-slate-500 font-light slide-body">${escapedContent}</p>
             </div>
-            <span class="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech slide-line">${title}</span>
+            <span class="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech slide-line">${escapedTitle}</span>
           </div>
         `;
       } else if (activeDesignLayout === 'schedule') {
-        const rows = content.split('\n').map(l => l.split('|')).map((p, itemIdx) => `
-          <div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0 slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
-            <span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${p[0]?.trim() || '--:--'}</span>
-            <span class="text-4xl font-semibold text-slate-700">${p[1]?.trim() || ''}</span>
-          </div>
-        `).join('');
-        html = `
+        const lines = content.split('\n').filter(l => l.trim());
+        const listHTML = lines.map((pStr, itemIdx) => {
+          const p = pStr.split('|');
+          return `<div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0 slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;"><span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${window.escapeHTML(p[0]?.trim() || '--:--')}</span><span class="text-4xl font-semibold text-slate-700">${window.escapeHTML(p[1]?.trim() || '')}</span></div>`;
+        }).join('');
+        layoutHTML = `
           <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between">
             <div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech slide-badge">STATION DATA</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
             <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full">
-              <h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech slide-title">${title}</h2>
-              <div class="space-y-6 slide-body">${rows}</div>
+              <h2 class="text-4xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech slide-title">${escapedTitle}</h2>
+              <div class="space-y-6 slide-body">${listHTML}</div>
             </div>
             <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech slide-line">Sync Status Active</div>
           </div>
@@ -551,36 +609,98 @@
       } else if (activeDesignLayout === 'weekly') {
         const cards = content.split('\n').map(l => l.split('|')).map((p, itemIdx) => `
           <div class="flex-1 flex flex-col p-8 bg-white/40 border border-slate-100 rounded-[32px] text-center shadow-sm slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;">
-            <span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${p[0]?.trim() || '曜日'}</span>
-            <span class="text-2xl font-bold text-slate-700">${p[1]?.trim() || ''}</span>
+            <span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${window.escapeHTML(p[0]?.trim() || '曜日')}</span>
+            <span class="text-2xl font-bold text-slate-700">${window.escapeHTML(p[1]?.trim() || '')}</span>
           </div>
         `).join('');
-        html = `
+        layoutHTML = `
           <div class="slide-transition active w-full h-full p-20 flex flex-col text-center justify-between">
             <div class="w-full flex justify-between mb-8 opacity-40"><span class="text-xs font-bold tracking-widest minimal-tech slide-badge">WEEKLY OVERVIEW</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
             <div class="flex-grow flex flex-col w-full text-center">
-              <h2 class="text-5xl font-black mb-16 uppercase tracking-widest minimal-tech slide-title">${title}</h2>
+              <h2 class="text-5xl font-black mb-16 uppercase tracking-widest minimal-tech slide-title">${escapedTitle}</h2>
               <div class="flex flex-row gap-6 justify-center items-stretch">${cards}</div>
             </div>
             <div class="w-full text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech slide-line">Live preview rendering</div>
           </div>
         `;
+      } else if (activeDesignLayout === 'lunch') {
+        const items = content.split('\n').filter(l=>l.trim()).map((p, i) => `<div class="p-6 bg-rose-50/50 border border-rose-100 rounded-3xl slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><p class="text-3xl font-bold text-rose-700">${window.escapeHTML(p.trim())}</p></div>`).join('');
+        layoutHTML = `
+          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between">
+            <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-rose-400">Lunch Menu</span><i data-lucide="utensils" class="w-5 h-5 text-rose-400"></i></div>
+            <div class="my-auto flex flex-col max-w-5xl mx-auto w-full z-10 text-center space-y-10">
+              <h2 class="text-5xl font-black text-slate-800 slide-title">${escapedTitle}</h2>
+              <div class="grid grid-cols-2 gap-6 slide-body">${items}</div>
+              <p class="text-xl text-slate-400 font-medium italic slide-line">美味しい給食を食べて、午後の授業もがんばりましょう！</p>
+            </div>
+          </div>
+        `;
+      } else if (activeDesignLayout === 'countdown') {
+        const target = new Date(img || new Date());
+        const now = new Date();
+        const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+        const unit = diff >= 0 ? "DAYS LEFT" : "COMPLETED";
+        layoutHTML = `
+          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between">
+            <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Chrono Target</span><i data-lucide="hourglass" class="w-5 h-5"></i></div>
+            <div class="my-auto flex flex-col items-center justify-center text-center z-10 space-y-12">
+              <h2 class="text-6xl font-black text-slate-800 slide-title">${escapedTitle}</h2>
+              <div class="slide-countdown-box flex flex-col items-center">
+                <div class="text-[16rem] font-black leading-none serif-letterpress text-slate-900 tracking-tighter">${Math.max(0, diff)}</div>
+                <div class="text-3xl font-bold text-indigo-500 minimal-tech tracking-[0.5em] mt-4">${unit}</div>
+              </div>
+              <div class="h-1.5 w-32 bg-slate-200 rounded-full slide-line"></div>
+            </div>
+          </div>
+        `;
+      } else if (activeDesignLayout === 'qrcode') {
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(img || 'https://ohira.miyagi.jp')}`;
+        layoutHTML = `
+          <div class="slide-transition active w-full h-full flex flex-row items-center gap-24 p-20">
+            <div class="w-1/2 flex flex-col justify-center text-left space-y-8 z-10">
+              <span class="text-xs font-bold text-emerald-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Direct Access</span>
+              <h2 class="text-7xl font-black text-slate-800 leading-tight slide-title">${escapedTitle}</h2>
+              <div class="h-2 w-24 bg-emerald-500 rounded-full slide-line"></div>
+              <p class="text-3xl text-slate-500 font-light leading-relaxed slide-body">${escapedContent}</p>
+            </div>
+            <div class="w-1/2 flex justify-center items-center slide-qr-box">
+              <div class="p-8 bg-white rounded-[48px] shadow-2xl border-2 border-emerald-50 relative">
+                <img src="${window.escapeHTML(qrUrl)}" class="w-80 h-80 object-contain">
+                <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-emerald-500 text-white text-xs font-bold rounded-full shadow-lg minimal-tech">SCAN ME</div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (activeDesignLayout === 'hero') {
+        layoutHTML = `
+          <div class="slide-transition active w-full h-full relative flex flex-col justify-end p-20">
+            <div class="absolute inset-0 z-0">
+               <img src="${safeImg}" class="w-full h-full object-cover">
+               <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
+            </div>
+            <div class="w-full text-left z-10 space-y-4">
+              <span class="px-4 py-1.5 bg-amber-500 text-white text-xs font-black rounded-full slide-badge minimal-tech uppercase">Featured News</span>
+              <h1 class="text-8xl font-black text-white slide-title leading-tight">${escapedTitle}</h1>
+              <p class="text-3xl text-white/70 font-light slide-body max-w-4xl">${escapedContent}</p>
+            </div>
+          </div>
+        `;
       } else if (activeDesignLayout === 'image') {
-        html = `
+        layoutHTML = `
           <div class="slide-transition active w-full h-full flex items-center p-20 gap-20">
             <div class="w-1/2 h-full rounded-[48px] overflow-hidden shadow-2xl border-8 border-white bg-slate-100 slide-image-container">
-              <img src="${finalImg}" class="w-full h-full object-cover slide-zoom-img">
+              <img src="${safeImg}" class="w-full h-full object-cover">
             </div>
             <div class="w-1/2 space-y-8 text-left">
               <span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Announcement</span>
-              <h2 class="text-7xl font-black text-slate-800 leading-tight slide-title">${title}</h2>
+              <h2 class="text-7xl font-black text-slate-800 leading-tight slide-title">${escapedTitle}</h2>
               <div class="h-2 w-24 bg-slate-900 rounded-full slide-line"></div>
-              <p class="text-3xl text-slate-500 font-light leading-relaxed slide-body">${content}</p>
+              <p class="text-3xl text-slate-500 font-light leading-relaxed slide-body">${escapedContent}</p>
             </div>
           </div>
         `;
       }
-      preview.innerHTML = html;
+      preview.innerHTML = layoutHTML;
       lucide.createIcons();
     };
 
@@ -596,10 +716,13 @@
         const contentInput = document.getElementById('ds-content');
         if (titleInput) titleInput.value = s.title || '';
         if (contentInput) contentInput.value = s.content || '';
-        if (s.type === 'image') {
+        if (s.type === 'image' || s.type === 'hero') {
            window.tempUploadedImageBase64 = s.content_img || '';
            const inner = document.getElementById('ds-upload-inner');
            if (inner && s.content_img) inner.innerHTML = `<img src="${s.content_img}" class="w-full h-full object-cover rounded-xl">`;
+        } else if (['countdown', 'qrcode'].includes(s.type)) {
+           const imgInput = document.getElementById('ds-img');
+           if (imgInput) imgInput.value = s.content_img || '';
         }
         window.updateLivePreview();
       }, 50);
@@ -608,7 +731,7 @@
     window.saveSlideData = () => {
       const title = document.getElementById('ds-title').value;
       const content = document.getElementById('ds-content')?.value || "";
-      const content_img = window.tempUploadedImageBase64 || "";
+      const content_img = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || "";
 
       if (editingSlideId) {
         const idx = slides.findIndex(s => s.id === editingSlideId);
@@ -664,7 +787,7 @@
         <div class="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between group">
           <div class="overflow-hidden">
             <p class="text-[8px] font-bold text-indigo-400 uppercase minimal-tech">${s.type}</p>
-            <p class="text-xs font-bold text-slate-700 truncate">${s.title}</p>
+            <p class="text-xs font-bold text-slate-700 truncate">${window.escapeHTML(s.title)}</p>
           </div>
           <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
             <button onclick="window.openEditSlide(${i})" class="p-1.5 text-slate-400 hover:text-indigo-600"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
@@ -710,12 +833,139 @@
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
           window.tempUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
           const inner = document.getElementById('ds-upload-inner');
-          if (inner) inner.innerHTML = `<img src="${window.tempUploadedImageBase64}" class="w-full h-full object-cover rounded-xl">`;
+          if (inner) {
+            inner.innerHTML = `<img src="${window.tempUploadedImageBase64}" class="w-full h-full object-cover rounded-xl">`;
+          } else {
+            const dropZone = document.getElementById('ds-drop-zone');
+            if (dropZone) dropZone.innerHTML = `<img src="${window.tempUploadedImageBase64}" class="w-full h-full object-cover rounded-xl">`;
+          }
           window.updateLivePreview();
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    };
+
+    // ==================== NEW FULLSCREEN & RELOAD LOGIC ====================
+    window.toggleFullscreen = () => {
+      const isCurrentlyFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+      
+      if (!isCurrentlyFullscreen) {
+        const docEl = document.documentElement;
+        const requestFS = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+        
+        if (requestFS) {
+          requestFS.call(docEl).then(() => {
+            window.showAlert("全画面表示を開始しました");
+          }).catch(err => {
+            console.warn("Fullscreen denied by browser permissions policy. Falling back to window pseudo-fullscreen mode.", err);
+            window.enterPseudoFullscreen();
+          });
+        } else {
+          window.enterPseudoFullscreen();
+        }
+      } else {
+        const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (exitFS) {
+          exitFS.call(document).then(() => {
+            window.showAlert("全画面表示を終了しました");
+          }).catch(() => {
+            window.exitPseudoFullscreen();
+          });
+        } else {
+          window.exitPseudoFullscreen();
+        }
+      }
+    };
+
+    // ウィンドウ内疑似フルスクリーンモードの有効化
+    window.enterPseudoFullscreen = () => {
+      document.body.classList.add('pseudo-fs-active');
+      const exitBtn = document.getElementById('exit-pseudo-fs-btn');
+      if (exitBtn) exitBtn.classList.remove('hidden');
+      
+      const icon = document.getElementById('fullscreen-icon');
+      if (icon) icon.setAttribute('data-lucide', 'minimize');
+      lucide.createIcons();
+      window.showAlert("簡易全画面表示に切り替えました");
+    };
+
+    // ウィンドウ内疑似フルスクリーンモードの無効化
+    window.exitPseudoFullscreen = () => {
+      document.body.classList.remove('pseudo-fs-active');
+      const exitBtn = document.getElementById('exit-pseudo-fs-btn');
+      if (exitBtn) exitBtn.classList.add('hidden');
+      
+      const icon = document.getElementById('fullscreen-icon');
+      if (icon) icon.setAttribute('data-lucide', 'maximize');
+      lucide.createIcons();
+      window.showAlert("簡易全画面表示を終了しました");
+    };
+
+    window.reloadPage = () => {
+      window.showAlert("ページを再読み込みします...");
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+    };
+
+    // フルスクリーン切り替え時のアイコン自動連動（標準規格対応）
+    document.addEventListener('fullscreenchange', () => {
+      const icon = document.getElementById('fullscreen-icon');
+      if (!icon) return;
+      if (document.fullscreenElement) {
+        icon.setAttribute('data-lucide', 'minimize');
+      } else {
+        icon.setAttribute('data-lucide', 'maximize');
+      }
+      lucide.createIcons();
+    });
+
+    // キーボードのEscapeキー押下時に疑似フルスクリーンも解除する
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        if (document.body.classList.contains('pseudo-fs-active')) {
+          window.exitPseudoFullscreen();
+        }
+      }
+    });
+
+    // ==================== NEW CURSOR AUTO HIDE LOGIC ====================
+    window.initCursorAutoHide = () => {
+      let lastX = 0;
+      let lastY = 0;
+
+      function resetCursorTimeout(e) {
+        if (e && e.type === 'mousemove') {
+          if (e.clientX === lastX && e.clientY === lastY) {
+            return; 
+          }
+          lastX = e.clientX;
+          lastY = e.clientY;
+        }
+
+        document.body.classList.remove('hide-cursor');
+        clearTimeout(cursorTimeout);
+        
+        cursorTimeout = setTimeout(() => {
+          const adminPanel = document.getElementById('admin-panel');
+          const creatorModal = document.getElementById('slide-creator-modal');
+          
+          const isAdminOpen = adminPanel && !adminPanel.classList.contains('translate-x-full');
+          const isModalOpen = creatorModal && !creatorModal.classList.contains('hidden');
+          
+          if (!isAdminOpen && !isModalOpen) {
+            document.body.classList.add('hide-cursor');
+          }
+        }, 3000);
+      }
+
+      window.addEventListener('mousemove', resetCursorTimeout);
+      window.addEventListener('mousedown', resetCursorTimeout);
+      window.addEventListener('touchstart', resetCursorTimeout);
+      window.addEventListener('keydown', resetCursorTimeout);
+      
+      resetCursorTimeout();
     };
 
     window.tempUploadedImageBase64 = "";
