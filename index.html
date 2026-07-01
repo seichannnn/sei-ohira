@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aesthetic Signage OS - Ohira Edition v6.5</title>
+  <title>Aesthetic Signage OS - Ohira Pro v6.7</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,19 +62,19 @@
 </head>
 <body class="w-screen h-screen flex flex-col justify-between relative select-none p-6 md:p-10">
 
-  <!-- ==================== AMBIENT BACKGROUND ==================== -->
+  <!-- ==================== BACKGROUND ==================== -->
   <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#f6f8fa]">
     <div class="ambient-aurora absolute top-[-20%] left-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-blue-200/30 via-indigo-100/20 to-transparent rounded-full filter blur-[120px]"></div>
     <div class="ambient-aurora absolute bottom-[-20%] right-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-pink-100/30 via-purple-100/20 to-transparent rounded-full filter blur-[120px]" style="animation-delay: -10s;"></div>
   </div>
 
-  <!-- ==================== MINIMAL HEADER ==================== -->
+  <!-- ==================== HEADER ==================== -->
   <header class="w-full px-8 py-4 flex justify-between items-center z-10 satin-glass rounded-[20px] mb-6 shadow-sm">
     <div class="flex items-center gap-3">
       <span class="w-1.5 h-1.5 rounded-full bg-slate-500/60 animate-pulse"></span>
       <div class="flex flex-col text-left">
         <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">OHIRA CAMPUS</span>
-        <span class="text-xs font-light text-slate-600 uppercase">Signage Pro OS <span class="text-[9px] text-slate-400 ml-1">v6.5</span></span>
+        <span class="text-xs font-light text-slate-600 uppercase">Signage Pro OS <span class="text-[9px] text-slate-400 ml-1">v6.7</span></span>
       </div>
     </div>
     <div class="flex items-center gap-6">
@@ -85,8 +85,8 @@
 
       <!-- 便利ボタン：再読み込み＆全画面表示 -->
       <div class="flex items-center gap-2 border-l border-slate-200 pl-6">
-        <button onclick="window.reloadPage()" class="p-2 bg-black/[0.03] hover:bg-black/[0.08] rounded-full transition-all text-slate-500 hover:text-slate-800 border border-black/[0.05] flex items-center justify-center"><i data-lucide="rotate-cw" class="w-4 h-4"></i></button>
-        <button onclick="window.toggleFullscreen()" class="p-2 bg-black/[0.03] hover:bg-black/[0.08] rounded-full transition-all text-slate-500 hover:text-slate-800 border border-black/[0.05] flex items-center justify-center"><i id="fullscreen-icon" data-lucide="maximize" class="w-4 h-4"></i></button>
+        <button onclick="window.reloadPage()" class="p-2 bg-black/[0.03] hover:bg-black/[0.08] rounded-full transition-all text-slate-500 hover:text-slate-800 border border-black/[0.05] flex items-center justify-center" title="再読み込み"><i data-lucide="rotate-cw" class="w-4 h-4"></i></button>
+        <button onclick="window.toggleFullscreen()" class="p-2 bg-black/[0.03] hover:bg-black/[0.08] rounded-full transition-all text-slate-500 hover:text-slate-800 border border-black/[0.05] flex items-center justify-center" title="全画面表示"><i id="fullscreen-icon" data-lucide="maximize" class="w-4 h-4"></i></button>
       </div>
       <div class="text-right border-l border-slate-200 pl-6">
         <p id="header-date" class="text-[8px] text-slate-400 font-semibold uppercase tracking-widest minimal-tech"></p>
@@ -123,28 +123,28 @@
       <!-- Slide Stack List -->
       <div class="w-72 border-r border-slate-100 flex flex-col h-full bg-slate-50/50">
         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 text-left">
             <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i>
-            <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest minimal-tech">Stack</span>
+            <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest minimal-tech">Slide Stack</span>
           </div>
-          <button onclick="window.openNewSlideModal()" class="p-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 shadow-sm"><i data-lucide="plus" class="w-4 h-4"></i></button>
+          <button onclick="window.openNewSlideAction()" class="p-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 shadow-sm" title="新しいスライド"><i data-lucide="plus" class="w-4 h-4"></i></button>
         </div>
         <div id="admin-slides-list" class="flex-grow overflow-y-auto p-4 space-y-3 custom-scrollbar text-left"></div>
-        <div class="p-6 border-t border-slate-100">
-           <button onclick="window.saveGlobalSettings()" class="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold minimal-tech tracking-widest hover:bg-slate-800 shadow-lg">SYNC CHANGES</button>
+        <div class="p-6 border-t border-slate-100 text-left">
+           <button onclick="window.saveGlobalSettings()" class="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold minimal-tech tracking-widest hover:bg-slate-800 shadow-lg">SYNC STUDIO</button>
         </div>
       </div>
 
       <!-- Editor Detail -->
       <div class="flex-grow flex flex-col h-full overflow-hidden">
         <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white/50 text-left">
-          <h2 class="text-[11px] font-bold text-slate-800 tracking-widest uppercase minimal-tech">Signage Control Center</h2>
+          <h2 class="text-[11px] font-bold text-slate-800 tracking-widest uppercase minimal-tech">Global Configuration</h2>
           <button onclick="window.toggleAdminPanel()" class="p-2 hover:bg-slate-100 rounded-full text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         
         <div class="flex-grow overflow-y-auto p-8 space-y-10 custom-scrollbar text-left">
           <section class="space-y-4">
-            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest minimal-tech flex items-center gap-2"><i data-lucide="settings-2" class="w-4 h-4"></i> Global Parameters</h3>
+            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest minimal-tech flex items-center gap-2"><i data-lucide="settings-2" class="w-4 h-4"></i> Display Parameters</h3>
             <div class="grid grid-cols-2 gap-6 bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
               <div class="space-y-1.5">
                 <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Interval (Seconds)</label>
@@ -154,16 +154,13 @@
                 <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Footer News Ticker</label>
                 <input type="text" id="global-ticker-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm outline-none">
               </div>
-              <div class="col-span-2 flex justify-end">
-                <button onclick="window.saveGlobalSettings()" class="px-6 py-2.5 bg-slate-900 text-white text-[10px] font-bold rounded-xl minimal-tech tracking-widest hover:bg-slate-800">APPLY CHANGES</button>
-              </div>
             </div>
           </section>
 
           <section class="space-y-4">
             <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest minimal-tech flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i> AI Link (Gemini)</h3>
             <div class="p-6 bg-indigo-50/20 border border-indigo-100/50 rounded-[32px] space-y-4">
-              <p class="text-[11px] text-slate-500 leading-relaxed">Gemini APIキーを設定すると、AIが自動で「今日のみんなを応援する英語の名言」や「理科・歴史の面白雑学」などを自動生成します。</p>
+              <p class="text-[11px] text-slate-500 leading-relaxed">Gemini APIキーを設定すると、AIが自動で知的なスライドを生成する機能が解放されます。</p>
               <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full px-4 py-2.5 rounded-xl bg-white border border-indigo-100 text-slate-800 text-sm focus:outline-none shadow-inner">
               <button onclick="window.saveApiKey()" class="px-6 py-2 bg-indigo-600 text-white rounded-xl text-[9px] font-bold minimal-tech tracking-widest">CONNECT AI</button>
             </div>
@@ -281,7 +278,7 @@
     const slidesDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'slides-list', 'default');
     const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'default');
 
-    // ==================== SECURITY SANITIZER (XSS対策) ====================
+    // ==================== SECURITY SANITIZER ====================
     window.escapeHTML = (str) => {
       if (!str) return '';
       return String(str).replace(/[&<>"']/g, function(m) {
@@ -363,6 +360,11 @@
       if (!container) return;
       container.innerHTML = '';
       
+      // データ更新時に、現在のインデックスがスライド枚数を超えていれば安全に0に引き戻すガードコード
+      if (currentSlideIndex >= slides.length || currentSlideIndex < 0) {
+        currentSlideIndex = 0;
+      }
+
       slides.forEach((slide, idx) => {
         const slideEl = document.createElement('div');
         slideEl.id = `slide-${idx}`;
@@ -371,7 +373,7 @@
         let inner = '';
         const t = slide.type;
 
-        // XSS脆弱性対策（エスケープ処理を通す）
+        // XSS脆弱性対策
         const escapedTitle = window.escapeHTML(slide.title || '');
         const escapedContent = window.escapeHTML(slide.content || '');
         const safeImg = window.escapeHTML(slide.content_img || '');
@@ -404,7 +406,7 @@
         } else if (t === 'weekly') {
           const cards = slide.content.split('\n').filter(l=>l.trim()).map((pStr, i) => {
             const p = pStr.split('|');
-            return `<div class="flex-1 flex flex-col p-8 bg-white/40 border border-white/60 rounded-[32px] text-center shadow-sm slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${window.escapeHTML(p[0]?.trim())}</span><span class="text-2xl font-bold text-slate-700 leading-snug">${window.escapeHTML(p[1]?.trim())}</span></div>`;
+            return `<div class="flex-1 flex flex-col p-8 bg-white/40 border border-white/60 rounded-[32px] text-center shadow-sm slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${window.escapeHTML(p[0]?.trim() || '')}</span><span class="text-2xl font-bold text-slate-700 leading-snug">${window.escapeHTML(p[1]?.trim() || '')}</span></div>`;
           }).join('');
           inner = `
             <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase">Weekly Overview</span><i data-lucide="calendar" class="w-5 h-5"></i></div>
@@ -429,7 +431,7 @@
           const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
           const unit = diff >= 0 ? "DAYS LEFT" : "COMPLETED";
           inner = `
-            <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Chrono Target</span><i data-lucide="hourglass" class="w-5 h-5"></i></div>
+            <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Chrono Target</span><i data-lucide="hourglass" class="w-5 h-5 text-indigo-500"></i></div>
             <div class="my-auto flex flex-col items-center justify-center text-center z-10 space-y-12">
               <h2 class="text-6xl font-black text-slate-800 slide-title">${escapedTitle}</h2>
               <div class="slide-countdown-box flex flex-col items-center">
@@ -440,9 +442,9 @@
             </div>
           `;
         } else if (t === 'qrcode') {
-          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(slide.content_img)}`;
+          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(slide.content_img || 'https://ohira.miyagi.jp')}`;
           inner = `
-            <div class="w-full h-full flex flex-row items-center gap-24">
+            <div class="w-full h-full flex flex-row items-center gap-24 p-20">
               <div class="w-1/2 flex flex-col justify-center text-left space-y-8 z-10">
                 <span class="text-xs font-bold text-emerald-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Direct Access</span>
                 <h2 class="text-7xl font-black text-slate-800 leading-tight slide-title">${escapedTitle}</h2>
@@ -494,11 +496,22 @@
     };
 
     window.showSlide = (index) => {
-      if (!slides.length) return;
+      if (!slides || slides.length === 0) return;
+      
+      // 安全にインデックス範囲を保護するガード処理
+      if (index >= slides.length || index < 0) {
+        currentSlideIndex = 0;
+        index = 0;
+      }
+
       document.querySelectorAll('.slide-transition').forEach(el => el.classList.remove('active'));
       const active = document.getElementById(`slide-${index}`);
       if (active) active.classList.add('active');
-      const duration = (slides[index].duration || globalDuration) * 1000;
+      
+      const currentSlide = slides[index];
+      const slideDuration = currentSlide ? (currentSlide.duration || globalDuration) : globalDuration;
+      const duration = slideDuration * 1000;
+      
       const bar = document.getElementById('slide-progress');
       if (bar) {
         bar.style.transition = 'none'; bar.style.width = '0%';
@@ -508,12 +521,20 @@
 
     window.startSlideshowLoop = () => {
       if (slideshowTimer) clearTimeout(slideshowTimer);
-      if (slides.length <= 1) return;
+      if (!slides || slides.length <= 1) return;
+      
+      if (currentSlideIndex >= slides.length || currentSlideIndex < 0) {
+        currentSlideIndex = 0;
+      }
+
+      const currentSlide = slides[currentSlideIndex];
+      const slideDuration = currentSlide ? (currentSlide.duration || globalDuration) : globalDuration;
+
       slideshowTimer = setTimeout(() => {
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
         window.showSlide(currentSlideIndex);
         window.startSlideshowLoop();
-      }, (slides[currentSlideIndex].duration || globalDuration) * 1000);
+      }, slideDuration * 1000);
     };
 
     // ==================== VISUAL DESIGNER ====================
@@ -529,7 +550,9 @@
       const container = document.getElementById('dynamic-visual-inputs');
       if (!container) return;
       container.innerHTML = '';
-      window.tempUploadedImageBase64 = "";
+      
+      // 既存スライドの編集中は、すでに展開されているBase64画像データをクリアしないように保護
+      if (!editingSlideId) window.tempUploadedImageBase64 = "";
 
       let commonHTML = `<div class="space-y-2"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Main Title / 見出し</label><input type="text" id="ds-title" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-400 outline-none"></div>`;
       
@@ -551,7 +574,7 @@
           <div class="space-y-2">
             <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Asset</label>
             <div id="ds-drop-zone" onclick="window.triggerImageFileSelect()" ondragover="window.handleImageDragOver(event)" ondrop="window.handleImageDrop(event)" class="w-full h-24 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center bg-white cursor-pointer hover:border-indigo-300 transition-all text-slate-400 flex-col gap-1">
-              <i data-lucide="image" class="w-6 h-6"></i><span class="text-[10px] font-bold uppercase" id="ds-upload-inner">Click to Upload</span>
+              <i data-lucide="image" class="w-6 h-6 animate-pulse"></i><span class="text-[10px] font-bold uppercase" id="ds-upload-inner">Click to Upload</span>
             </div>
             <input type="file" id="ds-image-file" class="hidden" onchange="window.handleImageSelect(event)" accept="image/*">
           </div>
@@ -559,7 +582,7 @@
         `;
       }
 
-      container.innerHTML = commonHTML + specificHTML; // html 参照エラーを修正
+      container.innerHTML = commonHTML + specificHTML; // 未定義変数(html)エラーを修正
       lucide.createIcons();
       window.updateLivePreview();
     };
@@ -589,9 +612,9 @@
         `;
       } else if (activeDesignLayout === 'schedule') {
         const lines = content.split('\n').filter(l => l.trim());
-        const listHTML = lines.map((pStr, itemIdx) => {
+        const listHTML = lines.map((pStr, i) => {
           const p = pStr.split('|');
-          return `<div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0 slide-item-card" style="transition-delay: ${0.2 + itemIdx * 0.1}s;"><span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${window.escapeHTML(p[0]?.trim() || '--:--')}</span><span class="text-4xl font-semibold text-slate-700">${window.escapeHTML(p[1]?.trim() || '')}</span></div>`;
+          return `<div class="flex items-center gap-12 border-b border-black/[0.03] pb-6 last:border-0 slide-item-card" style="transition-delay: ${0.2 + i * 0.1}s;"><span class="text-3xl font-bold text-slate-300 minimal-tech w-40">${window.escapeHTML(p[0]?.trim() || '--:--')}</span><span class="text-4xl font-semibold text-slate-700">${window.escapeHTML(p[1]?.trim() || '')}</span></div>`;
         }).join('');
         layoutHTML = `
           <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between">
@@ -623,13 +646,13 @@
       } else if (activeDesignLayout === 'lunch') {
         const items = content.split('\n').filter(l=>l.trim()).map((p, i) => `<div class="p-6 bg-rose-50/50 border border-rose-100 rounded-3xl slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><p class="text-3xl font-bold text-rose-700">${window.escapeHTML(p.trim())}</p></div>`).join('');
         layoutHTML = `
-          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between">
+          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between text-center">
             <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-rose-400">Lunch Menu</span><i data-lucide="utensils" class="w-5 h-5 text-rose-400"></i></div>
-            <div class="my-auto flex flex-col max-w-5xl mx-auto w-full z-10 text-center space-y-10">
+            <div class="my-auto space-y-10">
               <h2 class="text-5xl font-black text-slate-800 slide-title">${escapedTitle}</h2>
               <div class="grid grid-cols-2 gap-6 slide-body">${items}</div>
-              <p class="text-xl text-slate-400 font-medium italic slide-line">美味しい給食を食べて、午後の授業もがんばりましょう！</p>
             </div>
+            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech slide-line">Bon Appétit</p>
           </div>
         `;
       } else if (activeDesignLayout === 'countdown') {
@@ -638,16 +661,16 @@
         const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
         const unit = diff >= 0 ? "DAYS LEFT" : "COMPLETED";
         layoutHTML = `
-          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between">
+          <div class="slide-transition active w-full h-full p-20 flex flex-col justify-between text-center">
             <div class="w-full flex justify-between opacity-40 mb-8 z-10 slide-badge"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Chrono Target</span><i data-lucide="hourglass" class="w-5 h-5"></i></div>
-            <div class="my-auto flex flex-col items-center justify-center text-center z-10 space-y-12">
+            <div class="my-auto space-y-12">
               <h2 class="text-6xl font-black text-slate-800 slide-title">${escapedTitle}</h2>
               <div class="slide-countdown-box flex flex-col items-center">
                 <div class="text-[16rem] font-black leading-none serif-letterpress text-slate-900 tracking-tighter">${Math.max(0, diff)}</div>
                 <div class="text-3xl font-bold text-indigo-500 minimal-tech tracking-[0.5em] mt-4">${unit}</div>
               </div>
-              <div class="h-1.5 w-32 bg-slate-200 rounded-full slide-line"></div>
             </div>
+            <div class="w-full text-center text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] minimal-tech slide-line">Live counting active</div>
           </div>
         `;
       } else if (activeDesignLayout === 'qrcode') {
@@ -668,23 +691,9 @@
             </div>
           </div>
         `;
-      } else if (activeDesignLayout === 'hero') {
+      } else if (activeDesignLayout === 'hero' || activeDesignLayout === 'image') {
         layoutHTML = `
-          <div class="slide-transition active w-full h-full relative flex flex-col justify-end p-20">
-            <div class="absolute inset-0 z-0">
-               <img src="${safeImg}" class="w-full h-full object-cover">
-               <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
-            </div>
-            <div class="w-full text-left z-10 space-y-4">
-              <span class="px-4 py-1.5 bg-amber-500 text-white text-xs font-black rounded-full slide-badge minimal-tech uppercase">Featured News</span>
-              <h1 class="text-8xl font-black text-white slide-title leading-tight">${escapedTitle}</h1>
-              <p class="text-3xl text-white/70 font-light slide-body max-w-4xl">${escapedContent}</p>
-            </div>
-          </div>
-        `;
-      } else if (activeDesignLayout === 'image') {
-        layoutHTML = `
-          <div class="slide-transition active w-full h-full flex items-center p-20 gap-20">
+          <div class="slide-transition active w-full h-full p-20 flex items-center gap-20">
             <div class="w-1/2 h-full rounded-[48px] overflow-hidden shadow-2xl border-8 border-white bg-slate-100 slide-image-container">
               <img src="${safeImg}" class="w-full h-full object-cover">
             </div>
@@ -697,15 +706,22 @@
           </div>
         `;
       }
-      preview.innerHTML = layoutHTML; // html 参照エラーを修正
+      preview.innerHTML = layoutHTML;
       lucide.createIcons();
     };
 
     // ==================== EDIT & SAVE LOGIC ====================
+    window.openNewSlideAction = () => {
+      editingSlideId = null; 
+      window.tempUploadedImageBase64 = ""; 
+      document.getElementById('slide-creator-modal').classList.remove('hidden'); 
+      window.selectLayout('clock');
+    };
+
     window.openEditSlide = (idx) => {
       const s = slides[idx];
-      editingSlideId = s.id;
-      window.openNewSlideModal();
+      editingSlideId = s.id; // 新規作成ではなく、編集IDを追跡
+      document.getElementById('slide-creator-modal').classList.remove('hidden');
       window.selectLayout(s.type);
       
       setTimeout(() => {
@@ -713,6 +729,7 @@
         const contentInput = document.getElementById('ds-content');
         if (titleInput) titleInput.value = s.title || '';
         if (contentInput) contentInput.value = s.content || '';
+        
         if (s.type === 'image' || s.type === 'hero') {
            window.tempUploadedImageBase64 = s.content_img || '';
            const inner = document.getElementById('ds-upload-inner');
@@ -722,7 +739,7 @@
            if (imgInput) imgInput.value = s.content_img || '';
         }
         window.updateLivePreview();
-      }, 50);
+      }, 100);
     };
 
     window.saveSlideData = () => {
@@ -731,16 +748,18 @@
       const content_img = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || "";
 
       if (editingSlideId) {
+        // 既存スライドのIDを特定して置き換える（新規作成ではなく上書き）
         const idx = slides.findIndex(s => s.id === editingSlideId);
         if (idx !== -1) {
           slides[idx] = { ...slides[idx], type: activeDesignLayout, title, content, content_img };
         }
       } else {
+        // 新規追加
         slides.push({ id: "s-"+Date.now(), type: activeDesignLayout, title, content, content_img, duration: 8 });
       }
 
       setDoc(slidesDocRef, { slides }).then(() => {
-        window.closeNewSlideModal();
+        document.getElementById('slide-creator-modal').classList.add('hidden');
         window.showAlert("SUCCESSFULLY SYNCED");
       });
     };
@@ -764,7 +783,6 @@
       }
     };
     window.openAdminPanelDirectly = () => window.toggleAdminPanel();
-    window.openNewSlideModal = () => { editingSlideId = null; window.tempUploadedImageBase64 = ""; document.getElementById('slide-creator-modal').classList.remove('hidden'); window.selectLayout('clock'); };
     window.closeNewSlideModal = () => document.getElementById('slide-creator-modal').classList.add('hidden');
     
     window.saveApiKey = () => { apiKey = document.getElementById('api-key-input').value; localStorage.setItem(`${appId}-gemini-api-key`, apiKey); window.showAlert("AI LINK SECURED"); };
@@ -799,7 +817,7 @@
     window.autoInitializeDefaultData = () => {
       const def = [
         { id:"s1", type:"clock", title:"WELCOME", content:"大衡中学校デジタルサイネージへようこそ。今日も新しい発見を楽しもう！", duration:8 },
-        { id:"s2", type:"weekly", title:"THIS WEEK", content:"月|全校朝会\n火|ノー部活デー\n水|実力テスト\n木|委員会\n金|英検", duration:10 }
+        { id:"s2", type:"weekly", title:"THIS WEEK", content:"月|専門委員会\n火|ノー部活デー\n水|実力テスト\n木|任命式\n金|英検", duration:10 }
       ];
       setDoc(slidesDocRef, { slides: def });
       setDoc(settingsDocRef, { tickerText: "【大衡中学校】おはようございます。本日は校内美化運動が実施されます。 🌿 | 読書旬間スタート。図書室でお待ちしています。 📚", globalDuration: 8 });
@@ -843,7 +861,7 @@
       reader.readAsDataURL(file);
     };
 
-    // ==================== NEW FULLSCREEN & RELOAD LOGIC ====================
+    // フルスクリーン & 再読み込み
     window.toggleFullscreen = () => {
       const isCurrentlyFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
       
