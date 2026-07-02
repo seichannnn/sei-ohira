@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aesthetic Signage OS - Ohira Pro v9.1</title>
+  <title>Aesthetic Signage OS - Ohira Pro v11.1</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,8 +21,6 @@
     .slide-transition.active .stagger-delay-1 { transition-delay: 0.1s; }
     .slide-transition.active .stagger-delay-2 { transition-delay: 0.2s; }
     .slide-transition.active .stagger-delay-3 { transition-delay: 0.3s; }
-    .slide-transition.active .stagger-delay-4 { transition-delay: 0.4s; }
-    .slide-transition.active .stagger-delay-5 { transition-delay: 0.5s; }
     .slide-transition .slide-zoom-img { transform: scale(1.15); transition: transform 15s cubic-bezier(0.25, 1, 0.5, 1); }
     .slide-transition.active .slide-zoom-img { transform: scale(1.0); }
     .satin-glass { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(40px); border: 1px rgba(255, 255, 255, 0.6) solid; box-shadow: 0 20px 60px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
@@ -42,19 +40,17 @@
 </head>
 <body class="w-screen h-screen flex flex-col justify-between relative select-none p-6 md:p-10">
 
-  <!-- ==================== BACKGROUND ==================== -->
   <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#f6f8fa]">
     <div class="ambient-aurora absolute top-[-20%] left-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-blue-200/30 via-indigo-100/20 to-transparent rounded-full filter blur-[120px]"></div>
     <div class="ambient-aurora absolute bottom-[-20%] right-[-15%] w-[80vw] h-[80vh] bg-gradient-to-tr from-pink-100/30 via-purple-100/20 to-transparent rounded-full filter blur-[120px]" style="animation-delay: -10s;"></div>
   </div>
 
-  <!-- ==================== MINIMAL HEADER ==================== -->
   <header class="w-full px-8 py-4 flex justify-between items-center z-10 satin-glass rounded-[20px] mb-6 shadow-sm">
     <div class="flex items-center gap-3">
       <span class="w-1.5 h-1.5 rounded-full bg-slate-500/60 animate-pulse"></span>
       <div class="flex flex-col text-left">
         <span class="text-[9px] font-bold tracking-[0.3em] text-slate-400 uppercase minimal-tech">OHIRA CAMPUS</span>
-        <span class="text-xs font-light text-slate-600 uppercase">Signage Pro OS <span class="text-[9px] text-slate-400 ml-1">v9.1</span></span>
+        <span class="text-xs font-light text-slate-600 uppercase">Signage Pro OS <span class="text-[9px] text-slate-400 ml-1">v11.1</span></span>
       </div>
     </div>
     <div class="flex items-center gap-6">
@@ -73,13 +69,11 @@
     </div>
   </header>
 
-  <!-- ==================== DISPLAY CANVAS ==================== -->
-  <main class="flex-grow w-full relative overflow-hidden z-10 flex items-center justify-center mb-6">
+  <main class="flex-grow w-full relative overflow-hidden z-10 flex items-center justify-center mb-6 text-left">
     <div id="slides-container" class="w-full h-full relative flex items-center justify-center">
       <div id="system-initial-loader" class="flex flex-col items-center justify-center p-12 rounded-[32px] satin-glass text-center max-w-sm">
         <div class="loading-pulse-ring mb-6"></div>
-        <p class="text-sm font-bold text-slate-700 minimal-tech tracking-[0.2em] uppercase">Initializing Pro System</p>
-        <p class="text-[10px] text-slate-400 mt-2">大衡中学校クラウドへ接続中...</p>
+        <p class="text-sm font-bold text-slate-700 minimal-tech tracking-[0.2em] uppercase">Booting Canvas OS</p>
       </div>
     </div>
     <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-black/[0.02] overflow-hidden z-20">
@@ -89,142 +83,165 @@
 
   <button id="exit-pseudo-fs-btn" onclick="window.exitPseudoFullscreen()" class="hidden fixed top-6 right-6 z-[100] p-3 bg-slate-900/80 text-white rounded-full shadow-2xl backdrop-blur-md transition-all active:scale-95 border border-white/10 flex items-center justify-center"><i data-lucide="minimize"></i></button>
 
-  <!-- ==================== MARQUEE FOOTER ==================== -->
   <footer class="w-full h-10 z-10 satin-glass rounded-[16px] overflow-hidden flex items-center px-6">
-    <div class="text-[9px] font-bold text-slate-400 tracking-widest uppercase shrink-0 mr-6 flex items-center minimal-tech">宮城 大衡村 // UPDATES</div>
+    <div class="text-[9px] font-bold text-slate-400 tracking-widest uppercase shrink-0 mr-6 flex items-center minimal-tech">宮城 大衡村 // Ohira UPDATES</div>
     <div class="ticker-wrap flex-grow h-full flex items-center text-slate-600 font-light text-xs tracking-widest uppercase overflow-hidden">
-      <div id="ticker-content" class="ticker-content minimal-tech">大衡中学校サイネージOS読み込み中...</div>
+      <div id="ticker-content" class="ticker-content minimal-tech">Connecting to cloud signage nodes...</div>
     </div>
   </footer>
 
-  <!-- ==================== ADMIN DRAWER ==================== -->
+  <!-- ==================== ADMIN STUDIO ==================== -->
   <div id="admin-panel" class="fixed inset-0 bg-white/95 backdrop-blur-3xl z-50 flex justify-end transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
     <div class="w-full max-w-4xl bg-[#fafafa] h-full shadow-2xl flex flex-row border-l border-slate-200">
-      <div class="w-72 border-r border-slate-100 flex flex-col h-full bg-slate-50/50">
+      
+      <!-- Slide Stack List -->
+      <div class="w-80 border-r border-slate-100 flex flex-col h-full bg-slate-50/50">
         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-          <div class="flex items-center gap-2 text-left">
+          <div class="flex items-center gap-2 text-left mr-2">
             <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i>
             <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest minimal-tech">Stack</span>
           </div>
-          <button onclick="window.openNewSlideAction()" class="p-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 shadow-sm" title="新規スライド"><i data-lucide="plus" class="w-4 h-4"></i></button>
+          
+          <!-- 履歴操作UI (Undo / Redo) -->
+          <div class="flex items-center gap-1 border-r border-slate-200 pr-2 mr-1">
+            <button onclick="window.undo()" id="undo-btn" class="p-1.5 hover:bg-slate-200 rounded text-slate-400 hover:text-indigo-600 disabled:opacity-30 disabled:hover:bg-transparent" disabled title="元に戻す (Undo)">
+              <i data-lucide="undo-2" class="w-4 h-4"></i>
+            </button>
+            <button onclick="window.redo()" id="redo-btn" class="p-1.5 hover:bg-slate-200 rounded text-slate-400 hover:text-indigo-600 disabled:opacity-30 disabled:hover:bg-transparent" disabled title="やり直す (Redo)">
+              <i data-lucide="redo-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+          
+          <button onclick="window.openNewSlideAction()" class="p-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 shadow-sm" title="新しいスライド"><i data-lucide="plus" class="w-4 h-4"></i></button>
         </div>
         <div id="admin-slides-list" class="flex-grow overflow-y-auto p-4 space-y-3 custom-scrollbar text-left"></div>
-        <div class="p-6 border-t border-slate-100 text-left">
+        <div class="p-6 border-t border-slate-100">
            <button onclick="window.saveGlobalSettings()" class="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold minimal-tech tracking-widest hover:bg-slate-800 shadow-lg">SYNC STUDIO</button>
         </div>
       </div>
+      
       <div class="flex-grow flex flex-col h-full overflow-hidden">
         <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white/50 text-left">
-          <h2 class="text-[11px] font-bold text-slate-800 tracking-widest uppercase minimal-tech">Configuration Studio</h2>
+          <h2 class="text-[11px] font-bold text-slate-800 tracking-widest uppercase minimal-tech">Configuration Center</h2>
           <button onclick="window.toggleAdminPanel()" class="p-2 hover:bg-slate-100 rounded-full text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div class="flex-grow overflow-y-auto p-8 space-y-10 custom-scrollbar text-left">
           <section class="space-y-4">
-            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest minimal-tech flex items-center gap-2"><i data-lucide="settings-2" class="w-4 h-4"></i> Display Params</h3>
+            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest minimal-tech flex items-center gap-2"><i data-lucide="settings-2" class="w-4 h-4"></i> Environment</h3>
             <div class="grid grid-cols-2 gap-6 bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
               <div class="space-y-1.5">
-                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Interval (Sec)</label>
-                <input type="number" id="global-duration" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm outline-none focus:border-indigo-400">
+                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Interval (Seconds)</label>
+                <input type="number" id="global-duration" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm outline-none">
               </div>
               <div class="space-y-1.5">
-                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Footer News Ticker</label>
-                <input type="text" id="global-ticker-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm outline-none focus:border-indigo-400">
+                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Ticker Tape News</label>
+                <input type="text" id="global-ticker-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-800 text-sm outline-none">
               </div>
             </div>
           </section>
           <section class="space-y-4">
-            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest minimal-tech flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i> Intelligence</h3>
+            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest minimal-tech flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i> AI Knowledge</h3>
             <div class="p-6 bg-indigo-50/20 border border-indigo-100/50 rounded-[32px] space-y-4">
-              <p class="text-[11px] text-slate-500 leading-relaxed">Gemini APIキーを入力すると、学習や生活に役立つヒントをAIが生成します。</p>
-              <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full px-4 py-2.5 rounded-xl bg-white border border-indigo-100 text-slate-800 text-sm focus:outline-none">
+              <p class="text-[11px] text-slate-500 leading-relaxed">Gemini APIキーを設定すると、スライド作成時にAIが学習ヒントを自動生成します。</p>
+              <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full px-4 py-2.5 rounded-xl bg-white border border-indigo-100 text-slate-800 text-sm focus:outline-none shadow-inner">
               <button onclick="window.saveApiKey()" class="px-6 py-2 bg-indigo-600 text-white rounded-xl text-[9px] font-bold minimal-tech tracking-widest">SAVE KEY</button>
             </div>
           </section>
-        </div>
-        <div class="p-6 border-t border-slate-100 flex justify-between items-center bg-slate-50">
-          <button onclick="window.resetToDefaults()" class="text-rose-400 text-[10px] font-bold minimal-tech hover:text-rose-600 transition-all uppercase tracking-widest">Hard Reset</button>
-          <p class="text-[9px] text-slate-300 minimal-tech tracking-[0.2em] uppercase">sei ohira portal // MIYAGI OHIRA</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== VISUAL COMPOSER MODAL ==================== -->
+  <!-- ==================== SLIDE COMPOSER MODAL ==================== -->
   <div id="slide-creator-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xl z-[60] flex items-center justify-center p-4 hidden">
-    <div class="w-full max-w-6xl bg-white rounded-[40px] shadow-2xl flex flex-col h-[90vh] overflow-hidden">
+    <div class="w-full max-w-7xl bg-white rounded-[40px] shadow-2xl flex flex-col h-[90vh] overflow-hidden">
       <div class="p-8 border-b border-slate-50 flex justify-between items-center text-left">
-        <h3 class="text-[11px] font-bold text-slate-800 uppercase tracking-[0.3em] minimal-tech flex items-center gap-2"><i data-lucide="layout-template" class="w-4 h-4 text-indigo-500"></i> Slide Composer Pro</h3>
+        <h3 class="text-[11px] font-bold text-slate-800 uppercase tracking-[0.3em] minimal-tech flex items-center gap-2"><i data-lucide="layout-template" class="w-4 h-4 text-indigo-500"></i> Ohira Composer v11</h3>
         <button onclick="window.closeNewSlideModal()" class="p-2 bg-slate-50 hover:bg-slate-100 rounded-full text-slate-400 transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <div class="flex-grow flex flex-row overflow-hidden relative">
+        <!-- 同期＆圧縮インジケータ -->
         <div id="designer-sync-overlay" class="absolute inset-0 bg-white/80 backdrop-blur-md z-50 flex flex-col items-center justify-center hidden">
           <div class="loading-pulse-ring mb-4"></div>
-          <p class="text-sm font-bold text-indigo-600 minimal-tech tracking-wider uppercase">Syncing to Cloud...</p>
+          <p class="text-sm font-bold text-indigo-600 minimal-tech tracking-wider uppercase" id="designer-sync-text">Syncing to Cloud...</p>
         </div>
         <!-- Layout Selection (Left) -->
-        <div class="w-[420px] p-8 overflow-y-auto custom-scrollbar space-y-8 bg-slate-50/20 border-r border-slate-50 text-left">
+        <div class="w-[480px] p-8 overflow-y-auto custom-scrollbar space-y-8 bg-slate-50/20 border-r border-slate-50 text-left">
           <div class="space-y-4">
-            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">1. Select Layout</label>
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">1. Layout Variation</label>
             <div class="grid grid-cols-2 gap-3" id="layout-options">
-              <button onclick="window.selectLayout('clock')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="clock" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Clock</div>
+              <button onclick="window.selectLayout('clock')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="clock" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Clock</div>
               </button>
-              <button onclick="window.selectLayout('schedule')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="list" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Today's</div>
+              <button onclick="window.selectLayout('schedule')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="list" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Today's</div>
               </button>
-              <button onclick="window.selectLayout('weekly')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="calendar" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Weekly</div>
+              <button onclick="window.selectLayout('weekly')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="calendar" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Weekly</div>
               </button>
-              <button onclick="window.selectLayout('weather_weekly')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+              <button onclick="window.selectLayout('weather_weekly')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
                 <i data-lucide="cloud-sun" class="w-4 h-4 mb-2 text-blue-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Weather 7-Day</div>
               </button>
-              <button onclick="window.selectLayout('image')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="image" class="w-4 h-4 mb-2"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Gallery</div>
+              <button onclick="window.selectLayout('image')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="image" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Gallery</div>
               </button>
-              <button onclick="window.selectLayout('lunch')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+              <button onclick="window.selectLayout('full_photo')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="maximize" class="w-4 h-4 mb-2 text-slate-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Full Photo</div>
+              </button>
+              <button onclick="window.selectLayout('hero')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="megaphone" class="w-4 h-4 mb-2 text-amber-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Hero News</div>
+              </button>
+              <button onclick="window.selectLayout('english')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="languages" class="w-4 h-4 mb-2 text-indigo-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">English Word</div>
+              </button>
+              <button onclick="window.selectLayout('message')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="sticky-note" class="w-4 h-4 mb-2 text-amber-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Sticky Board</div>
+              </button>
+              <button onclick="window.selectLayout('alert')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="zap" class="w-4 h-4 mb-2 text-rose-500"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Important Alert</div>
+              </button>
+              <button onclick="window.selectLayout('lunch')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
                 <i data-lucide="utensils" class="w-4 h-4 mb-2 text-rose-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Lunch</div>
               </button>
-              <button onclick="window.selectLayout('countdown')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
-                <i data-lucide="hourglass" class="w-4 h-4 mb-2 text-indigo-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Countdown</div>
+              <button onclick="window.selectLayout('countdown')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
+                <i data-lucide="hourglass" class="w-4 h-4 mb-2 text-purple-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">Countdown</div>
               </button>
-              <button onclick="window.selectLayout('qrcode')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-200">
+              <button onclick="window.selectLayout('qrcode')" class="layout-btn p-4 rounded-2xl border-2 border-slate-100 bg-white text-left transition-all hover:border-indigo-300">
                 <i data-lucide="qr-code" class="w-4 h-4 mb-2 text-emerald-400"></i><div class="text-[9px] font-bold text-slate-700 uppercase">QR Portal</div>
               </button>
             </div>
           </div>
           <div class="space-y-6" id="visual-editor-inputs">
-            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">2. Slide Data</label>
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest minimal-tech">2. Content Setup</label>
             <div id="dynamic-visual-inputs" class="space-y-5"></div>
           </div>
         </div>
-
         <!-- Designer Preview (Right) -->
         <div class="flex-grow bg-slate-100/50 p-12 flex items-center justify-center overflow-hidden">
-          <div class="relative w-[1280px] h-[720px] shadow-2xl rounded-[32px] overflow-hidden bg-white scale-[0.45] transform-gpu origin-center">
+          <div class="relative w-[1280px] h-[720px] shadow-2xl rounded-[32px] overflow-hidden bg-white scale-[0.42] transform-gpu origin-center">
             <div id="live-designer-preview" class="w-full h-full relative"></div>
           </div>
         </div>
       </div>
-
       <div class="p-8 border-t border-slate-50 bg-white flex justify-end gap-4">
-        <button onclick="window.closeNewSlideModal()" class="px-8 py-3 text-slate-400 text-[10px] font-bold tracking-widest minimal-tech">CANCEL</button>
-        <button id="save-slide-btn" onclick="window.saveSlideData()" class="px-10 py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-bold tracking-widest minimal-tech shadow-xl">SAVE & SYNC</button>
+        <button onclick="window.closeNewSlideModal()" class="px-8 py-3 text-slate-400 text-[10px] font-bold tracking-widest minimal-tech uppercase">Cancel</button>
+        <button id="save-slide-btn" onclick="window.saveSlideData()" class="px-10 py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-bold tracking-widest minimal-tech shadow-xl uppercase">Save & Deploy</button>
       </div>
     </div>
   </div>
 
+  <!-- ==================== ALERT COMPONENT ==================== -->
   <div id="custom-alert" class="fixed top-8 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-slate-900 text-white rounded-full font-bold shadow-2xl flex items-center gap-2 transform -translate-y-24 transition-transform duration-300 pointer-events-none text-xs tracking-widest minimal-tech">
     <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
     <span id="custom-alert-text">MESSAGE</span>
   </div>
 
-  <!-- Firebase & System Module -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
     import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-    const appId = 'sei-ohira-v90';
+    const appId = 'sei-ohira-v66'; 
     const firebaseConfig = {
       apiKey: "AIzaSyAWN0wX9izOv5PqsRxMSC09lVSBGy_Oolk",
       authDomain: "sei-ohira.firebaseapp.com",
@@ -235,14 +252,12 @@
       measurementId: "G-C3SYGNEN6C"
     };
 
-    // Firebase初期化フラグ
-    let isFirebaseReady = false;
-
-    // file:// プロトコルによるセキュリティ制限のチェック
-    const isLocalFileMode = window.location.protocol === 'file:';
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     let slides = [];
-    let tickerText = "【大衡中学校】おはようございます。本日は1週間の天気情報を確認して、快適な学校生活を送りましょう。 🌿 | 【図書室】冬休み前の図書特別貸出を実施中です。 📚";
+    let tickerText = "【大衡中学校】Welcome to Ohira Signage OS. Have a great school life! 🌿 | 本日の給食：大衡村の恵みたっぷりカレー 🍛";
     let globalDuration = 8;
     let currentSlideIndex = 0;
     let slideshowTimer = null;
@@ -250,14 +265,18 @@
     let activeDesignLayout = 'clock';
     let editingSlideId = null;
     let cursorTimeout = null;
+    let alertTimeout = null; // アラートのタイマー制御用
+
+    // 履歴スタック（Undo / Redo用）の初期化
+    let slidesHistory = [];
+    let historyIndex = -1;
 
     const clockIntervals = new Map();
     let headerClockInterval = null;
 
-    let app, auth, db;
-    let slidesDocRef, settingsDocRef;
+    const slidesDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'slides-list', 'default');
+    const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'default');
 
-    // Security & Date Helpers
     window.escapeHTML = (s) => (s||"").toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"}[m]));
     window.getRemainingDays = (d) => {
       if(!d) return 0;
@@ -267,145 +286,50 @@
       return Math.ceil((target - today) / 86400000);
     };
 
-    // ==================== INITIALIZATION BOOT ====================
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
-      
-      // 管理者モードのURL判定
       if (new URLSearchParams(window.location.search).get('mode') === 'admin') {
         isEditingMode = true;
-        const adminBtn = document.getElementById('admin-mode-indicator');
-        if (adminBtn) adminBtn.classList.remove('hidden');
+        document.getElementById('admin-mode-indicator').classList.remove('hidden');
       }
-
       window.initUIEngines();
-
-      if (isLocalFileMode) {
-        // file:// スキーム時の親切な警告フォールバック表示
-        window.showLocalFileModeWarning();
-      } else {
-        // 通常の https 環境でFirebaseを初期化
-        try {
-          app = initializeApp(firebaseConfig);
-          auth = getAuth(app);
-          db = getFirestore(app);
-
-          slidesDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'slides-list', 'default');
-          settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'default');
-
-          await signInAnonymously(auth);
-          
-          onAuthStateChanged(auth, (user) => {
-            if (!user) return;
-            isFirebaseReady = true;
-
-            // スライドデータ監視
-            onSnapshot(slidesDocRef, (snap) => {
-              const loader = document.getElementById('system-initial-loader');
-              if (loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.remove(), 500); }
-              
-              if (snap.exists()) {
-                slides = snap.data().slides || [];
-                window.renderSlideshow();
-                if (isEditingMode) window.renderAdminSlidesList();
-              } else {
-                window.autoInitializeDefaultData();
-              }
-            }, (error) => {
-              console.error("Firestore Loading Error:", error);
-              window.showOfflineFallback();
-            });
-
-            // 設定データ監視
-            onSnapshot(settingsDocRef, (snap) => {
-              if (snap.exists()) {
-                tickerText = snap.data().tickerText;
-                globalDuration = snap.data().globalDuration;
-              }
-              window.applyTicker();
-              window.startSlideshowLoop();
-            }, (error) => {
-              console.error("Settings Load Error:", error);
-            });
-          });
-        } catch (initErr) {
-          console.error("Firebase Initialization Error:", initErr);
-          window.showOfflineFallback();
-        }
-      }
+      await signInAnonymously(auth);
+      onAuthStateChanged(auth, (user) => {
+        if (!user) return;
+        onSnapshot(slidesDocRef, (snap) => {
+          const loader = document.getElementById('system-initial-loader');
+          if (loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.remove(), 500); }
+          if (snap.exists()) { 
+            slides = snap.data().slides || []; 
+            window.renderSlideshow(); 
+            if (isEditingMode) window.renderAdminSlidesList(); 
+            
+            // 初回読み込み時に履歴スタックの初期状態を記録
+            if (slidesHistory.length === 0) {
+              slidesHistory.push(JSON.parse(JSON.stringify(slides)));
+              historyIndex = 0;
+              window.updateHistoryButtons();
+            }
+          }
+          else window.autoInitializeDefaultData();
+        }, (error) => {
+          console.error("Firestore Loading Error:", error);
+          window.showAlert("エラー: データの読み込みに失敗しました。再接続を試みます。");
+        });
+        onSnapshot(settingsDocRef, (snap) => {
+          if (snap.exists()) { tickerText = snap.data().tickerText; globalDuration = snap.data().globalDuration; }
+          window.applyTicker();
+          window.startSlideshowLoop();
+        });
+      });
     });
-
-    // ==================== SECURITY & OFFLINE FALLBACKS ====================
-    // file://スキームでファイルが開かれたときの非常に親切な案内カード
-    window.showLocalFileModeWarning = () => {
-      const loader = document.getElementById('system-initial-loader');
-      if (loader) loader.remove();
-
-      const container = document.getElementById('slides-container');
-      if (!container) return;
-
-      container.innerHTML = `
-        <div class="flex flex-col items-center justify-center p-12 rounded-[32px] satin-glass text-center max-w-lg mx-auto relative z-10">
-          <div class="p-4 bg-amber-50 border border-amber-100 rounded-full text-amber-500 mb-6 animate-pulse">
-            <i data-lucide="shield-alert" class="w-10 h-10"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-800 tracking-wider">ローカルファイル制限エラー</h3>
-          <p class="text-xs text-slate-500 mt-4 leading-relaxed text-left">
-            現在、ファイルをダブルクリックして直接ブラウザで開いているため、ブラウザのセキュリティ制限（<b>file:オリジン規制</b>）によりFirebase（データベース）への接続がブロックされています。
-          </p>
-          <div class="p-4 bg-black/[0.02] border border-black/[0.04] rounded-2xl w-full text-left mt-4 text-[11px] text-slate-500 space-y-1">
-            <p class="font-bold text-slate-700">💡 正常に稼働させるには：</p>
-            <p>1. このHTMLファイルを <b>Vercel（バーセル）</b> や GitHub Pages などの無料Webホスティングにアップロード（デプロイ）してください。</p>
-            <p>2. アップロード後に発行される <b>https://...</b> から始まるアドレスで開くと、すべての機能が正常に連動します。</p>
-          </div>
-          <button onclick="window.loadOfflineSampleSlides()" class="mt-6 w-full py-3 bg-slate-900 text-white text-xs font-bold rounded-xl minimal-tech tracking-widest hover:bg-slate-800 transition-all">OFFLINE PREVIEW (サンプル表示)</button>
-        </div>
-      `;
-      lucide.createIcons();
-    };
-
-    // Firebaseが遮断された・接続不良の際のエラー表示
-    window.showOfflineFallback = () => {
-      const loader = document.getElementById('system-initial-loader');
-      if (loader) loader.remove();
-
-      const container = document.getElementById('slides-container');
-      if (!container) return;
-      container.innerHTML = `
-        <div class="flex flex-col items-center justify-center p-12 rounded-[32px] satin-glass text-center max-w-md mx-auto relative z-10">
-          <div class="p-4 bg-rose-50 border border-rose-100 rounded-full text-rose-500 mb-6 animate-bounce">
-            <i data-lucide="wifi-off" class="w-8 h-8"></i>
-          </div>
-          <h3 class="text-lg font-bold text-slate-800 tracking-wider">データベースに接続できません</h3>
-          <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-            ネットワーク接続がオフラインになっているか、セキュリティポリシーによってデータベースサーバー（Firebase）への接続がブロックされています。
-          </p>
-          <button onclick="window.reloadPage()" class="mt-6 px-6 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl minimal-tech tracking-widest hover:bg-slate-800 transition-all">TRY RECONNECT</button>
-        </div>
-      `;
-      lucide.createIcons();
-    };
-
-    // ローカル環境向け（セキュリティエラー時）にオフライン動作を検証できるサンプル表示機能
-    window.loadOfflineSampleSlides = () => {
-      slides = [
-        { id:"s1", type:"clock", title:"OFFLINE MODE", content:"（file://）セキュリティ制限下で動作しています。Webへアップロードすると完全同期が有効化されます。", duration:8 },
-        { id:"s2", type:"weekly", title:"OHIRA JHS MODEL", content:"月|専門委員会\n火|ノー部活デー\n水|実力テスト\n木|生徒会朝会\n金|英語検定", duration:10 }
-      ];
-      window.renderSlideshow();
-      window.applyTicker();
-      window.startSlideshowLoop();
-      window.showAlert("OFFLINE PREVIEW STARTED");
-    };
 
     window.initUIEngines = () => {
       if (headerClockInterval) clearInterval(headerClockInterval);
       headerClockInterval = setInterval(() => {
         const now = new Date();
-        const dEl = document.getElementById('header-date');
-        const tEl = document.getElementById('header-time');
-        if (dEl) dEl.innerText = now.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' }).toUpperCase();
-        if (tEl) tEl.innerText = now.toLocaleTimeString('ja-JP', { hour12:false });
+        document.getElementById('header-date').innerText = now.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' }).toUpperCase();
+        document.getElementById('header-time').innerText = now.toLocaleTimeString('ja-JP', { hour12:false });
       }, 1000);
       window.initWeather();
       window.initCursorAutoHide();
@@ -414,54 +338,42 @@
     window.initWeather = async () => {
       try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=38.47&longitude=140.88&current_weather=true&timezone=Asia%2FTokyo`);
+        if (!res.ok) throw new Error("Weather API Response not OK");
         const data = await res.json();
         const weatherMap = { 0: "CLEAR", 1: "CLEAR", 2: "CLOUDY", 3: "CLOUDY", 45: "FOG", 61: "RAIN", 71: "SNOW", 95: "THUNDER" };
-        const wEl = document.getElementById('mini-weather-text');
-        if (wEl) wEl.innerText = `OHIRA // ${Math.round(data.current_weather.temperature)}℃ ${weatherMap[data.current_weather.weathercode] || "ONLINE"}`;
+        document.getElementById('mini-weather-text').innerText = `OHIRA // ${Math.round(data.current_weather.temperature)}℃ ${weatherMap[data.current_weather.weathercode] || "ONLINE"}`;
       } catch (e) { 
-        const wEl = document.getElementById('mini-weather-text');
-        if (wEl) wEl.innerText = "OHIRA ONLINE"; 
+        console.error("Weather Error:", e);
+        document.getElementById('mini-weather-text').innerText = "OHIRA ONLINE"; 
       }
     };
 
-    // WEATHER WEEKLY FETCHER
     window.fetchWeeklyWeather = async (slideIdx) => {
       try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=38.47&longitude=140.88&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo`);
+        if (!res.ok) throw new Error("Weekly Weather API Response not OK");
         const data = await res.json();
         const days = ['日','月','火','水','木','金','土'];
         const weatherMap = { 0:'sun', 1:'sun', 2:'cloud-sun', 3:'cloud', 45:'cloud-fog', 51:'cloud-drizzle', 61:'cloud-rain', 71:'cloud-snow', 95:'cloud-lightning' };
-        
         let html = '';
         for(let i=0; i<7; i++) {
           const date = new Date(data.daily.time[i]);
           const dayName = days[date.getDay()];
-          const code = data.daily.weathercode[i];
-          const icon = weatherMap[code] || 'cloud';
+          const icon = weatherMap[data.daily.weathercode[i]] || 'cloud';
           const max = Math.round(data.daily.temperature_2m_max[i]);
           const min = Math.round(data.daily.temperature_2m_min[i]);
           const colorClass = dayName==='日' ? 'text-rose-500' : (dayName==='土' ? 'text-blue-500' : 'text-slate-400');
-          
-          html += `
-            <div class="flex-1 flex flex-col p-6 satin-glass rounded-3xl text-center stagger slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;">
-              <span class="text-sm font-black ${colorClass} uppercase mb-4">${dayName}</span>
-              <div class="my-auto flex flex-col items-center gap-4">
-                 <i data-lucide="${icon}" class="w-10 h-10 ${i===0 ? 'text-indigo-500' : 'text-slate-400'}"></i>
-                 <div class="flex flex-col">
-                   <span class="text-2xl font-bold text-slate-800">${max}°</span>
-                   <span class="text-sm font-medium text-slate-400">${min}°</span>
-                 </div>
-              </div>
-              <span class="text-[8px] font-bold text-slate-300 mt-4 uppercase minimal-tech">${data.daily.time[i].split('-').slice(1).join('/')}</span>
-            </div>
-          `;
+          html += `<div class="flex-1 flex flex-col p-6 satin-glass rounded-3xl text-center stagger" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-sm font-black ${colorClass} uppercase mb-4">${dayName}</span><div class="my-auto flex flex-col items-center gap-4"><i data-lucide="${icon}" class="w-10 h-10 ${i===0 ? 'text-indigo-500' : 'text-slate-400'}"></i><div class="flex flex-col"><span class="text-2xl font-bold text-slate-800">${max}°</span><span class="text-sm font-medium text-slate-400">${min}°</span></div></div><span class="text-[8px] font-bold text-slate-300 mt-4 uppercase minimal-tech">${data.daily.time[i].split('-').slice(1).join('/')}</span></div>`;
         }
         const container = document.getElementById(`weather-weekly-grid-${slideIdx}`);
         if(container) { container.innerHTML = html; lucide.createIcons(); }
-      } catch(e) { console.error("Weather Weekly Error", e); }
+      } catch(e) { 
+        console.error("Weather Weekly Error:", e); 
+        const container = document.getElementById(`weather-weekly-grid-${slideIdx}`);
+        if(container) { container.innerHTML = `<p class="text-slate-400 text-sm py-8 mx-auto">天気情報の取得に失敗しました</p>`; }
+      }
     };
 
-    // SLIDE RENDERER
     window.renderSlideshow = () => {
       const container = document.getElementById('slides-container');
       if (!container) return;
@@ -475,44 +387,53 @@
         slideEl.id = `slide-${idx}`;
         slideEl.className = `slide-transition absolute inset-0 w-full h-full p-20 flex flex-col justify-between rounded-[24px] satin-glass pointer-events-none`;
         
-        let inner = '';
         const t = slide.type;
         const eTitle = window.escapeHTML(slide.title);
         const eContent = window.escapeHTML(slide.content);
         const sImg = window.escapeHTML(slide.content_img);
+        let inner = '';
 
         if (t === 'clock') {
-          inner = `<div class="w-full flex justify-between opacity-50 z-10"><span class="text-xs font-bold minimal-tech uppercase">Chronology</span><i data-lucide="clock" class="w-5 h-5"></i></div><div class="my-auto text-center space-y-6 z-10"><h1 id="live-clock-${idx}" class="text-[13rem] font-black text-slate-800 tracking-tighter serif-letterpress slide-title stagger stagger-delay-1">00:00</h1><p class="text-3xl text-slate-500 font-light slide-body stagger stagger-delay-2">${eContent}</p></div><div class="w-full text-center text-[10px] font-bold opacity-30 minimal-tech uppercase tracking-widest z-10 slide-line">${eTitle}</div>`;
+          inner = `<div class="w-full flex justify-between opacity-50 stagger"><span class="text-xs font-bold minimal-tech uppercase">Timekeeping</span><i data-lucide="clock" class="w-5 h-5"></i></div><div class="my-auto text-center space-y-6"><h1 id="live-clock-${idx}" class="text-[13rem] font-black text-slate-800 tracking-tighter serif-letterpress stagger stagger-delay-1">00:00</h1><p class="text-3xl text-slate-500 font-light stagger stagger-delay-2">${eContent}</p></div><div class="w-full text-center text-[10px] font-bold opacity-30 minimal-tech uppercase tracking-widest stagger stagger-delay-3">${eTitle}</div>`;
           const id = setInterval(() => { const el=document.getElementById(`live-clock-${idx}`); if(el) el.innerText=new Date().toLocaleTimeString('ja-JP',{hour12:false,hour:'2-digit',minute:'2-digit'}); }, 1000);
           clockIntervals.set(`c-${idx}`, id);
         } else if (t === 'schedule') {
           const list = slide.content.split('\n').filter(l=>l.trim()).map((pStr, i) => {
             const p = pStr.split('|');
-            return `<div class="flex items-center gap-10 border-b border-black/[0.04] pb-6 stagger slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-3xl font-bold text-slate-355 minimal-tech w-40 text-right uppercase">${window.escapeHTML(p[0])}</span><span class="text-4xl font-semibold text-slate-700">${window.escapeHTML(p[1])}</span></div>`;
+            return `<div class="flex items-center gap-10 border-b border-black/[0.04] pb-6 stagger" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-3xl font-bold text-slate-330 minimal-tech w-40 text-right uppercase">${window.escapeHTML(p[0]?.trim())}</span><span class="text-4xl font-semibold text-slate-700">${window.escapeHTML(p[1]?.trim())}</span></div>`;
           }).join('');
-          inner = `<div class="w-full flex justify-between opacity-40 mb-6 z-10"><span class="text-xs font-bold minimal-tech uppercase text-slate-400">Daily Protocol</span><i data-lucide="list" class="w-5 h-5"></i></div><div class="flex-grow flex flex-col max-w-4xl mx-auto w-full z-10"><h2 class="text-5xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech text-left slide-title">${eTitle}</h2><div class="space-y-6 custom-scrollbar overflow-y-auto pr-4 slide-body">${list}</div></div>`;
+          inner = `<div class="w-full flex justify-between opacity-40 mb-6 stagger"><span class="text-xs font-bold minimal-tech uppercase">Daily Protocol</span><i data-lucide="list" class="w-5 h-5"></i></div><div class="flex-grow flex flex-col max-w-4xl mx-auto w-full"><h2 class="text-5xl font-black mb-10 border-b-4 border-slate-900 pb-4 uppercase tracking-widest minimal-tech text-left slide-title stagger stagger-delay-1">${eTitle}</h2><div class="space-y-6 custom-scrollbar overflow-y-auto pr-4 slide-body">${list}</div></div>`;
         } else if (t === 'weather_weekly') {
-          inner = `<div class="w-full flex justify-between opacity-40 mb-10 z-10"><span class="text-xs font-bold minimal-tech uppercase text-blue-500">Ohira Meteo 7-Day</span><i data-lucide="cloud-sun" class="w-5 h-5 text-blue-500"></i></div><div class="flex-grow flex flex-col w-full text-center z-10"><h2 class="text-5xl font-black mb-16 uppercase tracking-widest minimal-tech slide-title">${eTitle}</h2><div id="weather-weekly-grid-${idx}" class="flex flex-row gap-4 justify-center items-stretch slide-body"></div></div><div class="w-full text-center text-[9px] font-bold text-slate-300 uppercase minimal-tech slide-line">Real-time Satellite Sync</div>`;
+          inner = `<div class="w-full flex justify-between opacity-40 mb-10 stagger"><span class="text-xs font-bold minimal-tech uppercase text-blue-500">Meteo 7-Day</span><i data-lucide="cloud-sun" class="w-5 h-5 text-blue-500"></i></div><div class="flex-grow flex flex-col w-full text-center"><h2 class="text-5xl font-black mb-16 uppercase tracking-widest minimal-tech stagger stagger-delay-1">${eTitle}</h2><div id="weather-weekly-grid-${idx}" class="flex flex-row gap-4 justify-center items-stretch slide-body"></div></div><div class="w-full text-center text-[9px] font-bold text-slate-300 uppercase minimal-tech slide-line">Real-time Satellite Data</div>`;
           setTimeout(() => window.fetchWeeklyWeather(idx), 100);
         } else if (t === 'weekly') {
           const cards = slide.content.split('\n').filter(l=>l.trim()).map((pStr, i) => {
             const p = pStr.split('|');
-            return `<div class="flex-1 flex flex-col p-8 bg-white/40 border border-white/60 rounded-[32px] text-center shadow-sm stagger slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${window.escapeHTML(p[0])}</span><span class="text-2xl font-bold text-slate-700 leading-snug">${window.escapeHTML(p[1])}</span></div>`;
+            return `<div class="flex-1 flex flex-col p-6 bg-white/40 border border-white/60 rounded-[32px] text-center shadow-sm stagger" style="transition-delay: ${0.2 + i*0.1}s;"><span class="text-lg font-bold text-slate-400 uppercase tracking-widest minimal-tech border-b border-black/[0.04] pb-3 mb-4">${window.escapeHTML(p[0]?.trim())}</span><span class="text-2xl font-bold text-slate-700 leading-snug">${window.escapeHTML(p[1]?.trim())}</span></div>`;
           }).join('');
-          inner = `<div class="w-full flex justify-between opacity-40 mb-8 z-10"><span class="text-xs font-bold minimal-tech uppercase text-slate-400">Weekly Stack</span><i data-lucide="calendar" class="w-5 h-5"></i></div><div class="flex-grow flex flex-col w-full text-center z-10"><h2 class="text-4xl font-black mb-16 uppercase tracking-widest minimal-tech slide-title">${eTitle}</h2><div class="flex flex-row gap-5 justify-center items-stretch slide-body">${cards}</div></div>`;
+          inner = `<div class="w-full flex justify-between opacity-40 mb-8 stagger"><span class="text-xs font-bold minimal-tech uppercase">Weekly Stack</span><i data-lucide="calendar" class="w-5 h-5"></i></div><div class="flex-grow flex flex-col w-full text-center z-10"><h2 class="text-4xl font-black mb-16 uppercase tracking-widest minimal-tech slide-title stagger stagger-delay-1">${eTitle}</h2><div class="flex flex-row gap-6 justify-center items-stretch slide-body">${cards}</div></div>`;
+        } else if (t === 'english') {
+          inner = `<div class="w-full flex justify-between opacity-40 mb-8 stagger"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Knowledge Booster</span><i data-lucide="languages" class="w-5 h-5 text-indigo-500"></i></div><div class="my-auto flex flex-col items-center justify-center text-center space-y-10"><h2 class="text-[9rem] font-black text-slate-800 stagger stagger-delay-1 leading-tight">${eTitle}</h2><div class="h-2 w-32 bg-indigo-500 rounded-full stagger stagger-delay-2"></div><p class="text-5xl font-medium text-slate-500 stagger stagger-delay-3">${eContent}</p></div>`;
+        } else if (t === 'message') {
+          const notes = slide.content.split('|').map((note, i) => `<div class="flex-1 p-10 bg-amber-50/50 border border-amber-100 rounded-[40px] shadow-sm stagger" style="transition-delay: ${0.2 + i*0.1}s;"><p class="text-3xl font-medium text-amber-900 leading-relaxed">${window.escapeHTML(note.trim())}</p></div>`).join('');
+          inner = `<div class="w-full flex justify-between opacity-40 mb-8 stagger"><span class="text-xs font-bold minimal-tech uppercase text-amber-500">Sticky Board</span><i data-lucide="sticky-note" class="w-5 h-5 text-amber-500"></i></div><div class="flex-grow flex flex-col w-full text-center"><h2 class="text-4xl font-black mb-14 uppercase tracking-widest minimal-tech stagger stagger-delay-1">${eTitle}</h2><div class="flex flex-row gap-8 items-stretch justify-center slide-body">${notes}</div></div>`;
+        } else if (t === 'alert') {
+          inner = `<div class="absolute inset-0 bg-rose-500 z-0"></div><div class="my-auto flex flex-col items-center justify-center text-center z-10 space-y-8"><div class="px-8 py-3 bg-white text-rose-600 rounded-full font-black text-xl minimal-tech stagger">IMPORTANT ALERT</div><h1 class="text-8xl font-black text-white slide-title stagger stagger-delay-1">${eTitle}</h1><p class="text-4xl font-bold text-white/80 stagger stagger-delay-2">${eContent}</p></div>`;
+        } else if (t === 'full_photo') {
+          inner = `<div class="absolute inset-0"><img src="${sImg}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'"></div><div class="absolute bottom-10 left-10 z-10"><h2 class="text-4xl font-black text-white/90 serif-letterpress stagger">${eTitle}</h2></div>`;
+        } else if (t === 'hero') {
+          inner = `<div class="absolute inset-0 z-0"><img src="${sImg}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/30 to-transparent"></div></div><div class="mt-auto w-full text-left p-10 z-10 space-y-4"><span class="px-4 py-1.5 bg-amber-500 text-white text-xs font-black rounded-full slide-badge minimal-tech uppercase font-bold tracking-widest">Hot Bulletin</span><h1 class="text-8xl font-black text-white leading-tight slide-title">${eTitle}</h1><p class="text-3xl text-white/70 font-light max-w-4xl slide-body">${eContent}</p></div>`;
         } else if (t === 'lunch') {
-          const items = slide.content.split('\n').filter(l=>l.trim()).map((p, i) => `<div class="p-6 satin-glass rounded-3xl stagger slide-item-card" style="transition-delay: ${0.2 + i*0.1}s;"><p class="text-3xl font-bold text-rose-600">${window.escapeHTML(p)}</p></div>`).join('');
-          inner = `<div class="w-full flex justify-between opacity-40 mb-8 z-10"><span class="text-xs font-bold minimal-tech uppercase text-rose-400">Lunch Menu</span><i data-lucide="utensils" class="w-5 h-5 text-rose-400"></i></div><div class="my-auto flex flex-col max-w-5xl mx-auto w-full z-10 text-center space-y-10"><h2 class="text-6xl font-black text-slate-800 slide-title">${eTitle}</h2><div class="grid grid-cols-2 gap-6 slide-body">${items}</div><p class="text-xl text-slate-400 font-medium italic slide-line">栄養をしっかりとって、午後の授業も楽しもう！</p></div>`;
+          const items = slide.content.split('\n').filter(l=>l.trim()).map((p, i) => `<div class="p-6 satin-glass rounded-3xl stagger" style="transition-delay: ${0.2 + i*0.1}s;"><p class="text-3xl font-bold text-rose-600">${window.escapeHTML(p.trim())}</p></div>`).join('');
+          inner = `<div class="w-full flex justify-between opacity-40 mb-8 stagger"><span class="text-xs font-bold minimal-tech uppercase text-rose-400">Lunch Menu</span><i data-lucide="utensils" class="w-5 h-5 text-rose-400"></i></div><div class="my-auto flex flex-col max-w-5xl mx-auto w-full text-center space-y-10"><h2 class="text-6xl font-black text-slate-800 slide-title">${eTitle}</h2><div class="grid grid-cols-2 gap-6 slide-body">${items}</div><p class="text-xl text-slate-400 font-medium italic slide-line stagger stagger-delay-3">栄養をしっかりとって、午後の授業も楽しもう！</p></div>`;
         } else if (t === 'countdown') {
           const diff = window.getRemainingDays(slide.content_img);
-          inner = `<div class="w-full flex justify-between opacity-40 mb-8 z-10"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Chrono Target</span><i data-lucide="hourglass" class="w-5 h-5 text-indigo-500"></i></div><div class="my-auto flex flex-col items-center justify-center text-center z-10 space-y-12"><h2 class="text-6xl font-black text-slate-800 slide-title">${eTitle}</h2><div class="slide-countdown-box flex flex-col items-center"><div class="text-[16rem] font-black leading-none serif-letterpress text-slate-900 tracking-tighter">${Math.max(0, diff)}</div><div class="text-3xl font-bold text-indigo-500 minimal-tech tracking-[0.5em] mt-4 uppercase">Days Left</div></div><div class="h-1.5 w-32 bg-slate-200 rounded-full slide-line"></div></div>`;
+          inner = `<div class="w-full flex justify-between opacity-40 mb-8 stagger"><span class="text-xs font-bold minimal-tech uppercase text-indigo-500">Chrono Target</span><i data-lucide="hourglass" class="w-5 h-5 text-indigo-500"></i></div><div class="my-auto flex flex-col items-center justify-center text-center space-y-12"><h2 class="text-6xl font-black text-slate-800 stagger stagger-delay-1">${eTitle}</h2><div class="flex flex-col items-center"><div class="text-[16rem] font-black leading-none serif-letterpress text-slate-900 stagger stagger-delay-2">${Math.max(0, diff)}</div><div class="text-3xl font-bold text-indigo-500 minimal-tech tracking-[0.5em] mt-4 stagger stagger-delay-3 uppercase">Days Left</div></div><div class="h-1.5 w-32 bg-slate-200 rounded-full slide-line"></div></div>`;
         } else if (t === 'qrcode') {
           const qr = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(slide.content_img || 'https://ohira.miyagi.jp')}`;
-          inner = `<div class="w-full h-full flex flex-row items-center gap-24"><div class="w-1/2 flex flex-col justify-center text-left space-y-8 z-10"><span class="text-xs font-bold text-emerald-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Direct Portal</span><h2 class="text-7xl font-black text-slate-800 leading-tight slide-title">${eTitle}</h2><div class="h-2 w-24 bg-emerald-500 rounded-full slide-line"></div><p class="text-3xl text-slate-500 font-light leading-relaxed slide-body">${eContent}</p></div><div class="w-1/2 flex justify-center items-center slide-qr-box"><div class="p-8 bg-white rounded-[48px] shadow-2xl relative"><img src="${qr}" class="w-80 h-80 object-contain"><div class="absolute -bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-emerald-500 text-white text-xs font-bold rounded-full shadow-lg minimal-tech">SCAN ME</div></div></div></div>`;
-        } else if (t === 'hero') {
-          inner = `<div class="absolute inset-0 z-0"><img src="${sImg}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/30 to-transparent"></div></div><div class="mt-auto w-full text-left p-10 z-10 space-y-4"><span class="px-4 py-1.5 bg-amber-500 text-white text-xs font-black rounded-full slide-badge minimal-tech uppercase">Hot Bulletin</span><h1 class="text-8xl font-black text-white leading-tight slide-title">${eTitle}</h1><p class="text-3xl text-white/70 font-light max-w-4xl slide-body">${eContent}</p></div>`;
+          inner = `<div class="w-full h-full flex flex-row items-center gap-24"><div class="w-1/2 flex flex-col justify-center text-left space-y-8 z-10"><span class="text-xs font-bold text-emerald-500 tracking-[0.4em] minimal-tech uppercase stagger">Direct Link</span><h2 class="text-7xl font-black text-slate-800 leading-tight stagger stagger-delay-1">${eTitle}</h2><div class="h-2 w-24 bg-emerald-500 rounded-full stagger stagger-delay-2"></div><p class="text-3xl text-slate-500 font-light leading-relaxed stagger stagger-delay-3">${eContent}</p></div><div class="w-1/2 flex justify-center items-center"><div class="p-8 bg-white rounded-[48px] shadow-2xl relative stagger stagger-delay-4"><img src="${qr}" class="w-80 h-80 object-contain"><div class="absolute -bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-emerald-500 text-white text-xs font-bold rounded-full shadow-lg minimal-tech">SCAN ME</div></div></div></div>`;
         } else {
-          inner = `<div class="w-full h-full flex items-center gap-16"><div class="w-1/2 h-full rounded-[40px] overflow-hidden shadow-2xl border-4 border-white bg-slate-100 slide-image-container"><img src="${sImg}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'"></div><div class="w-1/2 space-y-8 text-left z-10"><span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase slide-badge">Information</span><h2 class="text-6xl font-black text-slate-800 leading-tight slide-title">${eTitle}</h2><div class="h-2 w-20 bg-slate-900 rounded-full slide-line"></div><p class="text-2xl text-slate-500 font-light leading-relaxed slide-body">${eContent}</p></div></div>`;
+          inner = `<div class="w-full h-full flex items-center gap-16"><div class="w-1/2 h-full rounded-[40px] overflow-hidden shadow-2xl border-4 border-white bg-slate-100 stagger stagger-delay-1"><img src="${sImg}" class="w-full h-full object-cover slide-zoom-img" onerror="this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'"></div><div class="w-1/2 space-y-8 text-left z-10"><span class="text-xs font-bold text-indigo-500 tracking-[0.4em] minimal-tech uppercase stagger">Information</span><h2 class="text-6xl font-black text-slate-800 leading-tight stagger stagger-delay-1">${eTitle}</h2><div class="h-2 w-20 bg-slate-900 rounded-full stagger stagger-delay-2"></div><p class="text-2xl text-slate-500 font-light leading-relaxed stagger stagger-delay-3">${eContent}</p></div></div>`;
         }
         slideEl.innerHTML = inner;
         container.appendChild(slideEl);
@@ -537,12 +458,12 @@
       slideshowTimer = setTimeout(() => { currentSlideIndex = (currentSlideIndex + 1) % slides.length; window.showSlide(currentSlideIndex); window.startSlideshowLoop(); }, (slides[currentSlideIndex].duration || globalDuration) * 1000);
     };
 
-    // ==================== VISUAL DESIGNER ====================
+    // STUDIO CORE
     window.selectLayout = (type) => {
       activeDesignLayout = type;
       document.querySelectorAll('.layout-btn').forEach(el => el.classList.remove('selected', 'border-indigo-500', 'bg-indigo-50/50'));
       const activeBtn = Array.from(document.querySelectorAll('.layout-btn')).find(el => el.getAttribute('onclick').includes(`'${type}'`));
-      if (activeBtn) activeBtn.classList.add('border-indigo-500', 'bg-indigo-50/50');
+      if (activeBtn) activeBtn.classList.add('selected', 'border-indigo-500', 'bg-indigo-50/50');
       window.updateDesignerInputs();
     };
 
@@ -550,20 +471,38 @@
       const container = document.getElementById('dynamic-visual-inputs');
       if (!container) return;
       container.innerHTML = '';
-      
       if (!editingSlideId) window.tempUploadedImageBase64 = "";
 
-      let commonHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Main Title / 見出し</label><input type="text" id="ds-title" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-indigo-400"></div>`;
+      let commonHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Main Title / 見出し</label><input type="text" id="ds-title" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-400 outline-none"></div>`;
       let specificHTML = '';
       const t = activeDesignLayout;
-      if (t === 'clock') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sub Message</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
-      else if (['schedule', 'weekly'].includes(t)) specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">List Data ( Label | Content )</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono outline-none" placeholder="08:30 | 朝会"></textarea></div>`;
-      else if (t === 'weather_weekly') specificHTML = `<p class="text-[10px] text-slate-400 bg-blue-50 p-4 rounded-xl border border-blue-100">大衡村の週間天気予報が自動的に読み込まれます。見出しを入力するだけで完成です。</p>`;
-      else if (t === 'lunch') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Menu List (One per line)</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
-      else if (t === 'countdown') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Target Date</label><input type="date" id="ds-img" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></div>`;
-      else if (t === 'qrcode') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">URL</label><input type="text" id="ds-img" oninput="window.updateLivePreview()" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-4 block">Description</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
-      else if (['image', 'hero'].includes(t)) specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Upload Photo</label><div onclick="window.triggerImageFileSelect()" class="w-full h-24 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center bg-white cursor-pointer hover:border-indigo-300 text-slate-400 text-xs font-bold uppercase" id="ds-upload-inner">Choose Image</div><input type="file" id="ds-image-file" class="hidden" onchange="window.handleImageSelect(event)" accept="image/*"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-4 block">Caption / Description</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
       
+      if (t === 'clock') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Message</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
+      else if (['schedule', 'weekly'].includes(t)) specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Data (月|朝会 など)</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="6" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono outline-none"></textarea></div>`;
+      else if (t === 'english') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Meaning / Japanese</label><input type="text" id="ds-content" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></div>`;
+      else if (t === 'message') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Messages ( | で区切ると付箋が増えます)</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
+      else if (t === 'alert') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Alert Message</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
+      else if (t === 'weather_weekly') specificHTML = `<p class="text-[10px] text-slate-400 bg-blue-50 p-4 rounded-xl border border-blue-100">大衡村の1週間天気を自動取得します。見出しを入力するだけで完成です。</p>`;
+      else if (t === 'countdown') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Target Date</label><input type="date" id="ds-img" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></div>`;
+      else if (t === 'qrcode') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">URL</label><input type="text" id="ds-img" oninput="window.updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-3 block">Text</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
+      else if (['image', 'hero', 'full_photo'].includes(t)) specificHTML = `
+        <div class="space-y-1.5">
+          <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Photo</label>
+          <div onclick="window.triggerImageFileSelect()" 
+               ondragover="window.handleDragOverFile(event)" 
+               ondragleave="window.handleDragLeaveFile(event)" 
+               ondrop="window.handleDropFile(event)" 
+               class="w-full h-24 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center bg-white cursor-pointer hover:border-indigo-300 text-slate-400 text-[10px] font-bold uppercase transition-all flex-col gap-1" 
+               id="ds-upload-inner">
+            <i data-lucide="image" class="w-5 h-5 animate-pulse"></i>
+            <span>Choose or Drag Photo</span>
+          </div>
+          <input type="file" id="ds-image-file" class="hidden" onchange="window.handleImageSelect(event)" accept="image/*">
+          <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-3 block">Caption</label>
+          <textarea id="ds-content" oninput="window.updateLivePreview()" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea>
+        </div>`;
+      else if (t === 'lunch') specificHTML = `<div class="space-y-1.5"><label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Menus (改行で区切る)</label><textarea id="ds-content" oninput="window.updateLivePreview()" rows="4" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none"></textarea></div>`;
+
       container.innerHTML = commonHTML + specificHTML;
       lucide.createIcons();
       window.updateLivePreview();
@@ -572,17 +511,11 @@
     window.updateLivePreview = () => {
       const p = document.getElementById('live-designer-preview');
       if (!p) return;
-      const t = document.getElementById('ds-title')?.value || 'TITLE PREVIEW';
+      const t = document.getElementById('ds-title')?.value || 'PREVIEW';
       const c = document.getElementById('ds-content')?.value || '';
-      
-      let img = "";
-      if (['image', 'hero'].includes(activeDesignLayout)) {
-        img = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || '';
-      } else {
-        img = document.getElementById('ds-img')?.value || '';
-      }
-      p.innerHTML = `<div class="flex items-center justify-center h-full text-slate-300 text-xl font-bold uppercase tracking-widest">Loading Live Preview...</div>`;
-      window.renderDesignerPreview(activeDesignLayout, t, c, img);
+      const i = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || '';
+      p.innerHTML = `<div class="flex items-center justify-center h-full text-slate-300 text-xl font-bold uppercase tracking-widest">Updating Preview...</div>`;
+      window.renderDesignerPreview(activeDesignLayout, t, c, i);
     };
 
     window.renderDesignerPreview = (type, title, content, img) => {
@@ -591,16 +524,16 @@
       const eC = window.escapeHTML(content);
       const sI = window.escapeHTML(img);
       let html = '';
-      if(type==='clock') html = `<div class="slide-transition active w-full h-full p-20 flex flex-col justify-between items-center text-center"><span class="text-xs font-bold tracking-[0.4em] text-slate-300 minimal-tech">PREVIEW CHRONOS</span><div class="my-auto space-y-6"><h1 class="text-[11rem] font-black text-slate-800 leading-none serif-letterpress">${new Date().getHours()}:${new Date().getMinutes()}</h1><p class="text-3xl text-slate-500 font-light">${eC}</p></div><span class="text-xs font-bold tracking-[0.3em] text-slate-400 uppercase">${eT}</span></div>`;
-      else if(type==='weather_weekly') html = `<div class="slide-transition active w-full h-full p-20 flex flex-col justify-between text-center"><span class="text-xs font-bold tracking-widest minimal-tech text-blue-500 uppercase">Weather Preview</span><div class="my-auto space-y-10"><h2 class="text-6xl font-black text-slate-800">${eT}</h2><div class="flex gap-4 opacity-30 justify-center"><div class="w-24 h-40 bg-slate-100 rounded-3xl"></div><div class="w-24 h-40 bg-slate-100 rounded-3xl"></div><div class="w-24 h-40 bg-slate-100 rounded-3xl"></div><div class="w-24 h-40 bg-slate-100 rounded-3xl"></div></div></div></div>`;
-      else if(type==='countdown') html = `<div class="slide-transition active w-full h-full p-20 flex flex-col justify-between text-center items-center"><span class="text-xs font-bold minimal-tech text-indigo-500 uppercase">Chrono Target</span><div class="my-auto space-y-8"><h2 class="text-6xl font-black text-slate-800">${eT}</h2><div class="text-[14rem] font-black leading-none serif-letterpress text-slate-900">${Math.max(0, window.getRemainingDays(img))}</div></div></div>`;
-      else if(type==='hero' || type==='image') html = `<div class="slide-transition active w-full h-full p-20 flex items-center gap-16"><div class="w-1/2 h-full rounded-[48px] overflow-hidden shadow-2xl border-8 border-white bg-slate-200"><img src="${sI||'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'}" class="w-full h-full object-cover"></div><div class="w-1/2 text-left space-y-8"><h2 class="text-7xl font-black text-slate-800 leading-tight">${eT}</h2><div class="h-2 w-24 bg-indigo-500 rounded-full"></div><p class="text-2xl text-slate-500 font-light leading-relaxed">${eC}</p></div></div>`;
-      else html = `<div class="w-full h-full flex items-center justify-center satin-glass rounded-[40px] text-slate-400 font-bold uppercase tracking-widest">Complex Content Preview Ready</div>`;
+      if(type==='clock') html = `<div class="slide-transition active w-full h-full p-20 flex flex-col justify-between items-center text-center"><span class="text-xs font-bold minimal-tech text-slate-300 uppercase">Chronos</span><div class="my-auto space-y-6"><h1 class="text-[11rem] font-black text-slate-800 leading-none serif-letterpress">${new Date().getHours()}:${new Date().getMinutes()}</h1><p class="text-3xl text-slate-500 font-light">${eC}</p></div><span class="text-xs font-bold text-slate-400 uppercase">${eT}</span></div>`;
+      else if(type==='english') html = `<div class="slide-transition active w-full h-full p-20 flex flex-col justify-between items-center text-center"><span class="text-xs font-bold minimal-tech text-indigo-500 uppercase">Knowledge Preview</span><div class="my-auto space-y-10"><h2 class="text-[8rem] font-black text-slate-800 leading-tight">${eT}</h2><div class="h-2 w-24 bg-indigo-500 rounded-full mx-auto"></div><p class="text-5xl font-medium text-slate-500">${eC}</p></div></div>`;
+      else if(type==='alert') html = `<div class="slide-transition active w-full h-full bg-rose-500 flex flex-col items-center justify-center text-center p-20"><div class="px-8 py-3 bg-white text-rose-600 rounded-full font-black text-xl minimal-tech mb-8">IMPORTANT ALERT</div><h1 class="text-7xl font-black text-white leading-tight mb-4">${eT}</h1><p class="text-3xl font-bold text-white/80">${eC}</p></div>`;
+      else if(type==='full_photo') html = `<div class="slide-transition active w-full h-full"><img src="${sI||'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'}" class="w-full h-full object-cover"><div class="absolute bottom-10 left-10"><h2 class="text-4xl font-black text-white serif-letterpress">${eT}</h2></div></div>`;
+      else if(type==='hero') html = `<div class="slide-transition active w-full h-full p-20 flex items-center gap-16 relative"><div class="absolute inset-0 z-0"><img src="${sI||'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800'}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/30 to-transparent"></div></div><div class="mt-auto w-full text-left p-10 z-10 space-y-4"><span class="px-4 py-1.5 bg-amber-500 text-white text-xs font-black rounded-full minimal-tech uppercase font-bold tracking-widest">Hot Bulletin</span><h1 class="text-[5xl] font-black text-white leading-tight">${eT}</h1><p class="text-xl text-white/70 font-light max-w-4xl">${eC}</p></div></div>`;
+      else html = `<div class="w-full h-full flex items-center justify-center satin-glass rounded-[40px] text-slate-400 font-bold uppercase tracking-widest">Complex Content Visualized</div>`;
       p.innerHTML = html;
       lucide.createIcons();
     };
 
-    // ACTIONS
     window.openNewSlideAction = () => { editingSlideId=null; window.tempUploadedImageBase64=""; document.getElementById('slide-creator-modal').classList.remove('hidden'); window.selectLayout('clock'); };
     window.openEditSlide = (idx) => {
       const s = slides[idx]; editingSlideId = s.id;
@@ -608,110 +541,310 @@
       window.selectLayout(s.type);
       setTimeout(() => {
         document.getElementById('ds-title').value = s.title || '';
-        document.getElementById('ds-content').value = s.content || '';
-        if(['countdown','qrcode','hero','image'].includes(s.type)) {
-          if(!['hero','image'].includes(s.type)) document.getElementById('ds-img').value = s.content_img || '';
-          else { window.tempUploadedImageBase64 = s.content_img; document.getElementById('ds-upload-inner').innerHTML = `<img src="${s.content_img}" class="w-full h-full object-cover rounded-xl">`; }
+        const cIn = document.getElementById('ds-content'); if(cIn) cIn.value = s.content || '';
+        if(s.type === 'image' || s.type === 'hero' || s.type === 'full_photo') {
+           window.tempUploadedImageBase64 = s.content_img;
+           const inner = document.getElementById('ds-upload-inner');
+           if (inner && s.content_img) inner.innerHTML = `<img src="${s.content_img}" class="w-full h-full object-cover rounded-xl">`;
+        } else if (['countdown', 'qrcode'].includes(s.type)) {
+           const imgIn = document.getElementById('ds-img'); if(imgIn) imgIn.value = s.content_img || '';
         }
         window.updateLivePreview();
       }, 100);
     };
 
-    window.saveSlideData = async () => {
-      if (!isFirebaseReady) {
-        window.showAlert("ローカルプレビューモード中は同期保存できません");
-        return;
+    // ==================== 履歴システム(Undo/Redo)の制御ヘルパー ====================
+    window.updateHistoryButtons = () => {
+      const undoBtn = document.getElementById('undo-btn');
+      const redoBtn = document.getElementById('redo-btn');
+      if (undoBtn) undoBtn.disabled = historyIndex <= 0;
+      if (redoBtn) redoBtn.disabled = historyIndex >= slidesHistory.length - 1;
+    };
+
+    window.pushToHistory = (newSlidesState) => {
+      if (historyIndex < slidesHistory.length - 1) {
+        slidesHistory = slidesHistory.slice(0, historyIndex + 1);
       }
+      slidesHistory.push(JSON.parse(JSON.stringify(newSlidesState)));
+      historyIndex = slidesHistory.length - 1;
+      window.updateHistoryButtons();
+    };
+
+    window.undo = async () => {
+      if (historyIndex > 0) {
+        historyIndex--;
+        const prevState = JSON.parse(JSON.stringify(slidesHistory[historyIndex]));
+        slides = prevState;
+        window.updateHistoryButtons();
+        try {
+          await setDoc(slidesDocRef, { slides });
+          window.showAlert("操作を元に戻しました (Undo)");
+        } catch (err) {
+          console.error("Undo Sync Error:", err);
+        }
+      }
+    };
+
+    window.redo = async () => {
+      if (historyIndex < slidesHistory.length - 1) {
+        historyIndex++;
+        const nextState = JSON.parse(JSON.stringify(slidesHistory[historyIndex]));
+        slides = nextState;
+        window.updateHistoryButtons();
+        try {
+          await setDoc(slidesDocRef, { slides });
+          window.showAlert("操作をやり直しました (Redo)");
+        } catch (err) {
+          console.error("Redo Sync Error:", err);
+        }
+      }
+    };
+
+    // ==================== ドラッグ＆ドロップ スライド順並び替え ====================
+    window.handleDragStart = (e, index) => {
+      e.dataTransfer.setData('text/plain', index);
+      e.currentTarget.classList.add('opacity-40');
+    };
+
+    window.handleDragEnd = (e) => {
+      e.currentTarget.classList.remove('opacity-40');
+    };
+
+    window.handleDragOver = (e) => {
+      e.preventDefault();
+    };
+
+    window.handleDrop = async (e, targetIndex) => {
+      e.preventDefault();
+      const sourceIndex = parseInt(e.dataTransfer.getData('text/plain'));
+      if (isNaN(sourceIndex) || sourceIndex === targetIndex) return;
+
+      const newSlides = [...slides];
+      const [movedSlide] = newSlides.splice(sourceIndex, 1);
+      newSlides.splice(targetIndex, 0, movedSlide);
+
+      slides = newSlides;
+      window.pushToHistory(newSlides);
+
+      try {
+        await setDoc(slidesDocRef, { slides });
+        window.showAlert("スライド順を並び替えました");
+      } catch (err) {
+        console.error("Reorder sync error:", err);
+      }
+    };
+
+    // ==================== スライド複製（クローン） ====================
+    window.duplicateSlide = async (idx) => {
+      const original = slides[idx];
+      if (!original) return;
+
+      const cloned = JSON.parse(JSON.stringify(original));
+      cloned.id = "s-" + Date.now();
+      cloned.title = cloned.title + " (コピー)";
+
+      const newSlides = [...slides];
+      newSlides.splice(idx + 1, 0, cloned);
+
+      slides = newSlides;
+      window.pushToHistory(newSlides);
+
+      try {
+        await setDoc(slidesDocRef, { slides });
+        window.showAlert("スライドを複製しました");
+      } catch (err) {
+        console.error("Duplicate sync error:", err);
+        window.showAlert("複製の保存に失敗しました");
+      }
+    };
+
+    // ==================== 画像ドラッグ＆ドロップアップロード ====================
+    window.handleDragOverFile = (e) => {
+      e.preventDefault();
+      e.currentTarget.classList.add('border-indigo-500', 'bg-indigo-50/20');
+    };
+
+    window.handleDragLeaveFile = (e) => {
+      e.preventDefault();
+      e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50/20');
+    };
+
+    window.handleDropFile = (e) => {
+      e.preventDefault();
+      e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50/20');
+      const f = e.dataTransfer.files[0];
+      if (f) {
+        window.processUploadedImage(f);
+      }
+    };
+
+    window.saveSlideData = async () => {
       const btn = document.getElementById('save-slide-btn');
       const ov = document.getElementById('designer-sync-overlay');
-      btn.disabled = true; ov.classList.remove('hidden');
+      if (btn) btn.disabled = true; 
+      if (ov) ov.classList.remove('hidden');
       
-      let imgVal = "";
-      if (['image', 'hero'].includes(activeDesignLayout)) {
-        imgVal = window.tempUploadedImageBase64 || "";
-      } else {
-        imgVal = document.getElementById('ds-img')?.value || "";
+      const imgVal = window.tempUploadedImageBase64 || document.getElementById('ds-img')?.value || "";
+      const sData = { id: editingSlideId || "s-"+Date.now(), type: activeDesignLayout, title: document.getElementById('ds-title').value, content: document.getElementById('ds-content')?.value || "", content_img: imgVal, duration: 8 };
+      
+      const newSlides = [...slides];
+      if(editingSlideId) { 
+        const i = newSlides.findIndex(x=>x.id===editingSlideId); 
+        if (i !== -1) newSlides[i] = sData; 
+      }
+      else {
+        newSlides.push(sData);
       }
 
-      const sData = { id: editingSlideId || "s-"+Date.now(), type: activeDesignLayout, title: document.getElementById('ds-title').value, content: document.getElementById('ds-content')?.value || "", content_img: imgVal, duration: 8 };
-      if(editingSlideId) { const i = slides.findIndex(x=>x.id===editingSlideId); slides[i] = sData; }
-      else slides.push(sData);
-      try { await setDoc(slidesDocRef, { slides }); document.getElementById('slide-creator-modal').classList.add('hidden'); window.showAlert("SUCCESSFULLY SYNCED"); }
-      catch(e) { window.showAlert("同期に失敗しました"); }
-      finally { btn.disabled = false; ov.classList.add('hidden'); }
+      slides = newSlides;
+      window.pushToHistory(newSlides);
+
+      try { 
+        await setDoc(slidesDocRef, { slides }); 
+        document.getElementById('slide-creator-modal').classList.add('hidden'); 
+        window.showAlert("SUCCESSFULLY SYNCED"); 
+      }
+      catch(e) { 
+        window.showAlert("同期に失敗しました"); 
+      }
+      finally { 
+        if (btn) btn.disabled = false; 
+        if (ov) ov.classList.add('hidden'); 
+      }
     };
 
-    window.deleteSlide = (i) => { 
-      if (!isFirebaseReady) return;
-      if(confirm("削除しますか？")) { slides.splice(i,1); setDoc(slidesDocRef, { slides }); } 
+    window.deleteSlide = async (idx) => {
+      if(confirm("スライドを削除しますか？")) { 
+        const newSlides = [...slides];
+        newSlides.splice(idx, 1);
+        
+        slides = newSlides;
+        window.pushToHistory(newSlides);
+
+        try {
+          await setDoc(slidesDocRef, { slides });
+          window.showAlert("スライドを削除しました");
+        } catch (err) {
+          console.error("Delete sync error:", err);
+        }
+      } 
     };
+
     window.toggleAdminPanel = () => { const p=document.getElementById('admin-panel'); p.classList.toggle('translate-x-full'); if(isEditingMode){ document.getElementById('global-duration').value=globalDuration; document.getElementById('global-ticker-input').value=tickerText; } };
-    
-    window.saveGlobalSettings = () => { 
-      if (!isFirebaseReady) return;
-      globalDuration = parseInt(document.getElementById('global-duration').value)||8; tickerText = document.getElementById('global-ticker-input').value; setDoc(settingsDocRef, { tickerText, globalDuration }).then(()=>window.showAlert("GLOBAL SYNCED")); 
-    };
-    window.saveApiKey = () => { apiKey = document.getElementById('api-key-input').value; localStorage.setItem(`${appId}-key`, apiKey); window.showAlert("API KEY SECURED"); };
+    window.saveGlobalSettings = () => { globalDuration = parseInt(document.getElementById('global-duration').value)||8; tickerText = document.getElementById('global-ticker-input').value; setDoc(settingsDocRef, { tickerText, globalDuration }).then(()=>window.showAlert("GLOBAL SYNCED")); };
+    window.saveApiKey = () => { const k=document.getElementById('api-key-input').value; localStorage.setItem(`${appId}-key`, k); window.showAlert("API KEY SECURED"); };
     window.applyTicker = () => { const el = document.getElementById('ticker-content'); if(el) el.innerText = `${tickerText}   +++   ${tickerText}`; };
-    window.showAlert = (m) => { const el=document.getElementById('custom-alert'); document.getElementById('custom-alert-text').innerText=m; el.classList.remove('-translate-y-24'); setTimeout(()=>el.classList.add('-translate-y-24'), 3000); };
+    
+    // window.showAlert 内の DOM 要素存在チェックを完全に安全にするよう修正
+    window.showAlert = (m) => { 
+      const el = document.getElementById('custom-alert'); 
+      const txt = document.getElementById('custom-alert-text');
+      if (el && txt) {
+        txt.innerText = m; 
+        el.classList.remove('-translate-y-24'); 
+        if (window.alertTimeout) clearTimeout(window.alertTimeout);
+        window.alertTimeout = setTimeout(() => {
+          el.classList.add('-translate-y-24');
+        }, 3000);
+      } else {
+        console.warn("Alert elements not fully loaded yet in DOM:", m);
+      }
+    };
+    
     window.renderAdminSlidesList = () => {
       document.getElementById('admin-slides-list').innerHTML = slides.map((s,i)=>`
-        <div class="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between group">
-          <div class="overflow-hidden"><p class="text-[8px] font-bold text-indigo-400 uppercase minimal-tech">${s.type}</p><p class="text-xs font-bold text-slate-700 truncate">${window.escapeHTML(s.title)}</p></div>
-          <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
-            <button onclick="window.openEditSlide(${i})" class="p-1.5 text-slate-400 hover:text-indigo-600"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
-            <button onclick="window.deleteSlide(${i})" class="p-1.5 text-slate-400 hover:text-rose-500"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+        <div class="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between group text-left overflow-hidden cursor-grab active:cursor-grabbing transition-all hover:border-indigo-100" 
+             draggable="true" 
+             ondragstart="window.handleDragStart(event, ${i})" 
+             ondragend="window.handleDragEnd(event)" 
+             ondragover="window.handleDragOver(event)" 
+             ondrop="window.handleDrop(event, ${i})">
+          <div class="overflow-hidden pointer-events-none">
+            <p class="text-[8px] font-bold text-indigo-400 uppercase minimal-tech">${s.type}</p>
+            <p class="text-xs font-bold text-slate-700 truncate">${window.escapeHTML(s.title)}</p>
+          </div>
+          <div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-all shrink-0">
+            <button onclick="event.stopPropagation(); window.openEditSlide(${i})" class="p-1 text-slate-400 hover:text-indigo-600" title="編集"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+            <button onclick="event.stopPropagation(); window.duplicateSlide(${i})" class="p-1 text-slate-400 hover:text-emerald-500" title="複製"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+            <button onclick="event.stopPropagation(); window.deleteSlide(${i})" class="p-1 text-slate-400 hover:text-rose-500" title="削除"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
           </div>
         </div>
-      `).join(''); lucide.createIcons();
+      `).join('');
+      lucide.createIcons();
     };
 
     window.autoInitializeDefaultData = () => {
-      const def = [{ id:"s1", type:"clock", title:"WELCOME", content:"大衡中学校デジタルサイネージへようこそ。今日も一日楽しみましょう！", duration:8 }];
+      const def = [{ id:"s1", type:"clock", title:"WELCOME", content:"大衡中学校へようこそ。今日も新しい発見を楽しもう！", duration:8 }];
       setDoc(slidesDocRef, { slides: def });
-      setDoc(settingsDocRef, { tickerText: "Welcome to Ohira JHS Signage OS", globalDuration: 8 });
+      setDoc(settingsDocRef, { tickerText: "Welcome to Ohira JHS Signage OS v10.0", globalDuration: 8 });
     };
 
-    window.resetToDefaults = () => { 
-      if (!isFirebaseReady) return;
-      if(confirm("リセットしますか？")) window.autoInitializeDefaultData(); 
-    };
+    window.resetToDefaults = () => { if(confirm("全てリセットしますか？")) window.autoInitializeDefaultData(); };
 
-    // IMAGE ENGINE (LOCAL 50% COMPRESSION)
-    window.triggerImageFileSelect = () => document.getElementById('ds-image-file').click();
+    window.triggerImageFileSelect = () => {
+      const fileInput = document.getElementById('ds-image-file');
+      if (fileInput) fileInput.click();
+    };
     window.handleImageSelect = (e) => { const f=e.target.files[0]; if(f) window.processUploadedImage(f); };
+    
     window.processUploadedImage = (file) => {
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        window.showAlert("エラー: 画像ファイルのみ対応しています");
+        return;
+      }
+      if (file.size > 20 * 1024 * 1024) {
+        window.showAlert("エラー: 10MB以下の画像をお使いください");
+        return;
+      }
+
       const r = new FileReader();
       r.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          const cv = document.createElement('canvas'); const MAX=640; let w=img.width, h=img.height;
-          if(w>MAX){ h*=MAX/w; w=MAX; } cv.width=w; cv.height=h;
-          cv.getContext('2d').drawImage(img,0,0,w,h);
-          window.tempUploadedImageBase64 = cv.toDataURL('image/jpeg',0.5);
-          document.getElementById('ds-upload-inner').innerHTML = `<img src="${window.tempUploadedImageBase64}" class="w-full h-full object-cover rounded-xl">`;
-          window.updateLivePreview();
-        }; img.src = e.target.result;
-      }; r.readAsDataURL(file);
+          try {
+            const cv = document.createElement('canvas'); 
+            const MAX = 640; 
+            let w = img.width, h = img.height;
+            if (w > MAX) { h *= MAX / w; w = MAX; } 
+            cv.width = w; cv.height = h;
+            
+            const ctx = cv.getContext('2d');
+            if (!ctx) throw new Error("Canvas generation error");
+            ctx.drawImage(img, 0, 0, w, h);
+            
+            window.tempUploadedImageBase64 = cv.toDataURL('image/jpeg', 0.5);
+            
+            const inner = document.getElementById('ds-upload-inner');
+            if (inner) {
+              inner.innerHTML = `<img src="${window.tempUploadedImageBase64}" class="w-full h-full object-cover rounded-xl animate-fade-in">`;
+            }
+            window.updateLivePreview();
+          } catch (err) {
+            console.error("Image compression crash:", err);
+            window.showAlert("エラー: 画像の圧縮処理に失敗しました");
+          }
+        };
+        img.onerror = () => { window.showAlert("エラー: 画像ファイルを読み込めませんでした"); };
+        img.src = e.target.result;
+      };
+      r.onerror = () => { window.showAlert("エラー: ファイルの読み込みに失敗しました"); };
+      r.readAsDataURL(file);
     };
 
-    // UTILS
     window.toggleFullscreen = () => { if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>window.enterPseudoFullscreen()); else document.exitFullscreen(); };
     window.enterPseudoFullscreen = () => { document.body.classList.add('pseudo-fs-active'); document.getElementById('exit-pseudo-fs-btn').classList.remove('hidden'); };
     window.exitPseudoFullscreen = () => { document.body.classList.remove('pseudo-fs-active'); document.getElementById('exit-pseudo-fs-btn').classList.add('hidden'); };
-    window.reloadPage = () => { window.showAlert("Reloading..."); setTimeout(()=>window.location.reload(), 600); };
+    window.reloadPage = () => { window.showAlert("Reloading System..."); setTimeout(()=>window.location.reload(), 600); };
+    
     window.initCursorAutoHide = () => {
       let lX=0, lY=0; 
       function reset(e){ 
-        // 座標チェック: 本当にマウス移動イベントであり、座標情報を保持している場合のみ安全に処理
         if(e && e.type === 'mousemove') {
           if (typeof e.clientX !== 'undefined' && typeof e.clientY !== 'undefined') {
             if(e.clientX === lX && e.clientY === lY) return; 
-            lX = e.clientX; 
-            lY = e.clientY;
-          } else {
-            return; // 座標がない移動は無視する
-          }
+            lX = e.clientX; lY = e.clientY;
+          } else { return; }
         }
         document.body.classList.remove('hide-cursor'); 
         clearTimeout(cursorTimeout); 
@@ -721,11 +854,7 @@
           }
         }, 3000); 
       }
-      window.addEventListener('mousemove', reset); 
-      window.addEventListener('mousedown', reset); 
-      window.addEventListener('touchstart', reset); 
-      window.addEventListener('keydown', reset); 
-      reset(); // 初回起動（eなしで呼び出し）
+      window.addEventListener('mousemove', reset); window.addEventListener('mousedown', reset); window.addEventListener('touchstart', reset); window.addEventListener('keydown', reset); reset();
     };
     window.tempUploadedImageBase64 = "";
   </script>
